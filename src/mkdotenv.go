@@ -103,6 +103,12 @@ func getParameters()(string,string,string,string){
 		os.Exit(1)
 	}
 
+	if(strings.HasPrefix(variable_value,"-")){
+		fmt.Fprintln(os.Stderr,"Variable value should not start with - or --")
+		printHelp()
+		os.Exit(1)
+	}
+
 	for i, arg := range os.Args[3:] {
 
 		switch arg {
