@@ -52,7 +52,7 @@ DB_USER=xxx
 ## Selecting file to read and write upon
 
 Instead of outputing the .env value you can use the `--output-file` argument in order to write the contents upon a file.
-Also you can use the parameter `--input-file` in order to select which file to read upon, if ommited it automatically *looks* for a file named `.env` if not then it just outputs the provided environmental variable with its value.
+Also you can use the parameter `--input-file` in order to select which file to read upon, if ommited `.env` file is used.
 
 ### Example 1 Read a specified file and output its contents to *stdout*:
 
