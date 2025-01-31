@@ -31,12 +31,12 @@ const VERSION = "0.0.1"
 func printHelp() {
 	printVersion()
 
-	fmt.Println("\nUsage:\n\t"+os.Args[0]+" <variable_name> <variable_value> [--env-file <file_path>] [--output-file <file_path>]\n")
+	fmt.Println("\nUsage:\n\t"+os.Args[0]+" <variable_name> <variable_value> [--env-file | --input-file <file_path>] [--output-file <file_path>]\n")
 	fmt.Println("Arguments:")
 	fmt.Println("\tvariable_name\tREQUIRED The name of the variable")
 	fmt.Println("\tvariable_value\tREQUIRED The value of the variable prtovided upon <variable_name>")
 	fmt.Println("\nOptions:")
-	fmt.Println("\t--env-file <file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
+	fmt.Println("\t--env-file (or --input-file) <file_path> \tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
 	fmt.Println("\t--output-file <file_path> \tOPTIONAL Instead of printing the result into console write it into a file. If value provided it will NOT output the contents of the .env file.")
 }
 
@@ -74,12 +74,10 @@ func append_value_to_dotenv(file *os.File,output *bufio.Writer,variable_name str
 			variableFound=true
 		}
 		output.WriteString(line_to_write+"\n")
-		output.Flush()
 	}
 
 	if !variableFound {
 		output.WriteString(newline+"\n")
-		output.Flush()
 	}
 
 	return true,nil
@@ -108,6 +106,8 @@ func getParameters()(string,string,string,string){
 	for i, arg := range os.Args[3:] {
 
 		switch arg {
+		 	case "--input-file":
+				fallthrough;
 			case "--env-file":
 				// Arguments are parsed with an offset we get the next item + offset
 				dotenv_filename = os.Args[i+3+1]
@@ -116,7 +116,7 @@ func getParameters()(string,string,string,string){
 				output_file = os.Args[i+3+1]
 		}
 	}
-
+	
 	return dotenv_filename,output_file,variable_name,variable_value
 }
 
@@ -197,7 +197,7 @@ func main() {
 
 	writer := bufio.NewWriter(os.Stdout)
 	if output_file != "" {
-		outfile,err := os.OpenFile(output_file,os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		outfile,err := os.OpenFile(output_file,os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			HandleFileError(err,output_file)
 		}
