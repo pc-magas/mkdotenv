@@ -24,6 +24,7 @@ import (
 	"strings"
 	"regexp"
 	"errors"
+	"slices"
 )
 
 const VERSION = "0.0.1"
@@ -63,7 +64,7 @@ func append_value_to_dotenv(file *os.File,output *bufio.Writer,variable_name str
 		return false,err
 	}
 
-	var newline string = fmt.Sprintf("%s=%s\n", variable_name, variable_value)
+	var newline string = fmt.Sprintf("%s=%s", variable_name, variable_value)
 	
 	for scanner.Scan() {
 		line:=scanner.Text()
@@ -98,14 +99,16 @@ func getParameters()(string,string,string,string){
 	var output_file string = ""
 
 	if(strings.HasPrefix(variable_name,"-")){
-		fmt.Fprintln(os.Stderr,"Variable Name should not start with - or --")
 		printHelp()
+		fmt.Fprintln(os.Stderr,"Variable Name should not start with - or --")
 		os.Exit(1)
 	}
 
-	if(strings.HasPrefix(variable_value,"-")){
-		fmt.Fprintln(os.Stderr,"Variable value should not start with - or --")
+	ARGUMENTS:= []string{"--env-file","--input-file","--output-file","-v","--version","-h","--h","--help"}
+
+	if(slices.Contains(ARGUMENTS[:],variable_value)){
 		printHelp()
+		fmt.Fprintln(os.Stderr,"\nVariable value should not contain any of the values:\n"+strings.Join(ARGUMENTS[:],"\n"))
 		os.Exit(1)
 	}
 
