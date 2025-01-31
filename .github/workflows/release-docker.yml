@@ -32,4 +32,5 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           docker build -t pcmagas/mkdotenv:${VERSION} -t pcmagas/mkdotenv:latest .
-          docker push pcmagas/mkdotenv:${VERSION} pcmagas/mkdotenv:latest
+          docker push pcmagas/mkdotenv:${VERSION} 
+          docker push pcmagas/mkdotenv:latest
