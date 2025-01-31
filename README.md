@@ -112,3 +112,4 @@ You can provide a .env via a pipe. A common use is to replace multiple variables
 ```
 mkdotenv DB_HOST 127.0.0.1 | mkdotenv DB_USER maiuser | mkdotenv DB_PASSWORD XXXX --output_file .env.production
 ```
+
