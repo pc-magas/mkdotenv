@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build_binary:
+  build_docker:
     runs-on: ubuntu-latest
     permissions:
       contents: write
