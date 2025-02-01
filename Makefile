@@ -44,15 +44,15 @@ deb: clean build
 	mv $(DEB_DIR).deb mkdotenv.deb
 
 # Install the package
-install:
-	sudo dpkg -i $(PKG_NAME)_$(VERSION)_$(ARCH).deb
+# install:
+# 	sudo dpkg -i mkdotenv.deb
 
 # Uninstall the package
-uninstall:
-	sudo dpkg -r $(PKG_NAME)
+# uninstall:
+# 	sudo dpkg -r $(PKG_NAME)
 
 # Clean up build files
 clean:
-	rm -rf $(PKG_NAME) $(BUILD_DIR) $(PKG_NAME)_$(VERSION)_$(ARCH).deb
+	rm -rf build 
 
 .PHONY: all build deb install uninstall clean
