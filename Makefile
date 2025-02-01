@@ -1,10 +1,12 @@
 # Package metadata
 PKG_NAME = mkdotenv
-VERSION = 0.0.2-1
+VERSION = 0.0.2
+BUILD = 1
 ARCH = amd64
 BUILD_DIR = build
 DEB_DIR = $(BUILD_DIR)/deb
-
+RPM_DIR = $(BUILD_DIR)/rpmbuild
+RPM_NAME = $(PKG_NAME)-$(VERSION)-$(BUILD).$(ARCH).rpm
 
 # Default target
 all: build
@@ -16,8 +18,8 @@ build:
 # Create the .deb package
 deb: clean build
 	mkdir -p $(DEB_DIR)/DEBIAN
-	mkdir -p $(DEB_DIR)/usr/local/bin
-	mkdir -p $(DEB_DIR)/usr/share/man/man1
+	mkdir -p $(BUILD_DIR)/usr/local/bin
+	mkdir -p $(BUILD_DIR)/usr/share/man/man1
 
 	# Create control file
 	echo "Package: $(PKG_NAME)" > $(DEB_DIR)/DEBIAN/control
@@ -43,13 +45,17 @@ deb: clean build
 	dpkg-deb --build $(DEB_DIR)
 	mv $(DEB_DIR).deb mkdotenv.deb
 
-# Install the package
-# install:
-# 	sudo dpkg -i mkdotenv.deb
+# Install the programme
+install:
+	cp $(PKG_NAME) /usr/bin/$(PKG_NAME)
+	chmod 755 /usr/bin/$(PKG_NAME)
+	cp man/mkdotenv.1 /usr/local/share/man/man1/
 
-# Uninstall the package
-# uninstall:
-# 	sudo dpkg -r $(PKG_NAME)
+# Uninstall the programme
+uninstall:
+	rm -f /usr/bin/$(PKG_NAME)
+	rm -f /usr/local/share/man/man1/mkdotenv.1 
+
 
 # Clean up build files
 clean:

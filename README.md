@@ -12,6 +12,47 @@
 
 MkDotenv is a lightweight and efficient tool for managing your `.env` files. Whether you're adding, updating, or replacing environment variables, MkDotenv makes it easy and hassle-free.
 
+# Install
+
+## From source code:
+
+### Step1 Clone repo:
+
+```shell
+git clone https://github.com/pc-magas/mkdotenv.git
+```
+
+### Step 2 build source code
+
+```shell
+make
+```
+
+### Step 3 Install
+
+```shell
+sudo make install
+```
+
+(If run as room ommit `sudo` command)
+
+
+# Uninstall
+
+If cloned this repo and built the tool you can do:
+
+```
+sudo make uninstall
+```
+
+Otherwize you can do it manually:
+
+```
+rm -f /usr/bin/mkdotenv
+rm -f /usr/local/share/man/man1/mkdotenv.1 
+```
+
+
 # Usage
 
 ## Basic
