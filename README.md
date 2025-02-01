@@ -113,3 +113,36 @@ You can provide a .env via a pipe. A common use is to replace multiple variables
 mkdotenv DB_HOST 127.0.0.1 | mkdotenv DB_USER maiuser | mkdotenv DB_PASSWORD XXXX --output_file .env.production
 ```
 
+# Docker
+
+Mkdotenv is also shipped via docker image. Its intention is to use it as a stage for your Dockerfile for example:
+
+```
+
+FROM pcmagas/mkdotenv AS mkdotenv
+
+FROM debian 
+
+COPY --from=mkdotenv /usr/bin/mkdotenv /bin/mkdotenv
+
+```
+
+Or alpine based images:
+
+```
+FROM pcmagas/mkdotenv AS mkdotenv
+
+FROM alpine 
+
+COPY --from=mkdotenv /usr/bin/mkdotenv /bin/mkdotenv
+
+```
+
+
+You can also run it as stanalone image as well:
+
+```
+docker run pcmagas/mkdotenv mkdotenv --version
+```
+
+No volumes are provided with this image.
