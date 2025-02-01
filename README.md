@@ -16,6 +16,17 @@ MkDotenv is a lightweight and efficient tool for managing your `.env` files. Whe
 
 ## From source code:
 
+## Step 0 Install golang:
+
+Upon Linux Mint you can run:
+
+```
+sudo apt-get install golang-go golang-1.23*
+```
+
+For other linux distros look upon: https://go.dev/doc/install
+
+
 ### Step1 Clone repo:
 
 ```shell
@@ -34,7 +45,7 @@ make
 sudo make install
 ```
 
-(If run as room ommit `sudo` command)
+(If run as root ommit `sudo`)
 
 
 # Uninstall
