@@ -19,7 +19,7 @@ jobs:
           go-version: '>=1.17.0'
           check-latest: true
       
-      - run: go build -v -o mkdotenv ./src/mkdotenv.go
+      - run: make deb
 
       - name: get version
         id: version
@@ -39,6 +39,6 @@ jobs:
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: mkdotenv
+          artifacts: mkdotenv, mkdotenv.deb
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
