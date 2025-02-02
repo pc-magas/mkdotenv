@@ -10,6 +10,7 @@ depends=""
 makedepends="make go"
 source="$pkgname-$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/archive/refs/tags/v$pkgver.tar.gz"
 builddir="$srcdir/mkdotenv-$pkgver"
+options="!check"
 
 build() {
     cd "$builddir"
@@ -19,7 +20,7 @@ build() {
 package() {
     cd "$builddir"
     install -Dm755 mkdotenv "$pkgdir/usr/bin/mkdotenv"
-    cp man/mkdotenv.1 "$pkgdir/usr/local/share/man/man1/"
+    install -Dm644 man/mkdotenv.1 "$pkgdir/usr/local/share/man/man1/mkdotenv.1"
 }
 
 sha512sums="
