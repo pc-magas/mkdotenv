@@ -4,4 +4,4 @@ mkdotenv
 *.deb
 *.rpm
 build
-./alpinebuild/src/*
+alpinebuild/src/mkdotenv*
