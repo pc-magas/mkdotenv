@@ -49,6 +49,14 @@ func printVersion(){
 
 func append_value_to_dotenv(file *os.File,output *bufio.Writer,variable_name string,variable_value string) (bool,error) {
 	
+	var newline string = fmt.Sprintf("%s=%s", variable_name, variable_value)
+
+	// If no .env exists then output the variable.
+	if (file == nil){
+		output.WriteString(newline+"\n")
+		return true,nil
+	}
+
 	scanner := bufio.NewScanner(file)
 
 	var variableFound bool = false
@@ -64,7 +72,6 @@ func append_value_to_dotenv(file *os.File,output *bufio.Writer,variable_name str
 		return false,err
 	}
 
-	var newline string = fmt.Sprintf("%s=%s", variable_name, variable_value)
 	
 	for scanner.Scan() {
 		line:=scanner.Text()
@@ -187,6 +194,11 @@ func getFileToRead(dotenv_filename string) *os.File {
 		// Default to .env
 		file, err = os.Open(".env")
 		if err != nil {
+
+			if(os.IsNotExist(err)){
+				return nil
+			}
+
 			HandleFileError(err, ".env")
 			os.Exit(1)
 		}
