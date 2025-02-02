@@ -27,7 +27,7 @@ import (
 	"slices"
 )
 
-const VERSION = "0.0.2"
+const VERSION = "0.1.0"
 
 func printHelp() {
 	printVersion()
@@ -142,6 +142,7 @@ func printVersionOrHelp(){
 		return
 	}
 
+
 	switch(os.Args[1]){
 		case "-h":
 			fallthrough
@@ -208,6 +209,11 @@ func getFileToRead(dotenv_filename string) *os.File {
 }
 
 func main() {
+
+	if (len(os.Args) == 1 ){
+		printHelp()
+		os.Exit(0)
+	}
 
 	printVersionOrHelp()
 
