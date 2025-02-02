@@ -197,10 +197,16 @@ You can also run it as stanalone image as well:
 docker run pcmagas/mkdotenv mkdotenv --version
 ```
 
-If you want to manipulate a `.env` file. You can use it like this:
+If you want to manipulate a `.env` file using the docker image. You can use it like this:
 
 ```shell
- cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA > .env.new
+cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA > .env.new
+```
+
+Or if you want multiple variable:
+
+```shell
+cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA | docker run -i pcmagas/mkdotenv mkdotenv BIG BROTHER > .env.new
 ```
 
 Keep in mind to use the `-i` argument upon 
