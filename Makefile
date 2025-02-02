@@ -60,8 +60,7 @@ docker-push: docker
 
 # Install the programme
 install:
-	cp $(PKG_NAME) /usr/bin/$(PKG_NAME)
-	chmod 755 /usr/bin/$(PKG_NAME)
+	install -Dm755 mkdotenv "/usr/bin/mkdotenv"
 	cp man/mkdotenv.1 /usr/local/share/man/man1/
 
 # Uninstall the programme
