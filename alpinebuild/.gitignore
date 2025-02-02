@@ -1,0 +1,9 @@
+.*
+!.gitignore
+./src
+./src/**/*/
+.ash_history
+src/v0.1.0.tar.gz
+.abuild
+*.tar.gz
+*.zip

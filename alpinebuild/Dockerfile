@@ -11,7 +11,9 @@ RUN apk update && apk add --no-cache \
     sudo \
     make && \
     adduser -D packager &&\
-    echo "packager ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    echo "packager ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers &&\
+    chown -R packager:packager /var/cache/distfiles &&\
+    addgroup packager abuild
 
 USER packager
 WORKDIR /home/packager
