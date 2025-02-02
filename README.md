@@ -197,4 +197,4 @@ You can also run it as stanalone image as well:
 docker run pcmagas/mkdotenv mkdotenv --version
 ```
 
-No volumes are provided with this image.
+No volumes are provided with this image, also no ports are exposed with docker image as well.

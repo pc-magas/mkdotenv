@@ -19,7 +19,9 @@ jobs:
           go-version: '>=1.17.0'
           check-latest: true
       
-      - run: make deb
+      - run: |
+          make 
+          make deb
 
       - name: get version
         id: version
