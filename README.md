@@ -193,8 +193,16 @@ COPY --from=mkdotenv /usr/bin/mkdotenv /bin/mkdotenv
 
 You can also run it as stanalone image as well:
 
-```
+```shell
 docker run pcmagas/mkdotenv mkdotenv --version
 ```
+
+If you want to manipulate a `.env` file. You can use it like this:
+
+```shell
+ cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA > .env.new
+```
+
+Keep in mind to use the `-i` argument upon 
 
 No volumes are provided with this image, also no ports are exposed with docker image as well.
