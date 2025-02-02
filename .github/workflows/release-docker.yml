@@ -21,16 +21,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: get version
-        id: version
-        run: |
-          echo "version=$(grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)".*/\1/')" >> "$GITHUB_OUTPUT"
-
-
       - name: Build Docker
-        env: 
-          VERSION: ${{ steps.version.outputs.version }}
         run: |
-          docker build -t pcmagas/mkdotenv:${VERSION} -t pcmagas/mkdotenv:latest .
-          docker push pcmagas/mkdotenv:${VERSION} 
-          docker push pcmagas/mkdotenv:latest
+          make docker-push

@@ -1,13 +1,18 @@
 # Package metadata
 PKG_NAME = mkdotenv
-VERSION = 0.0.2
 BUILD = 1
+VERSION := $(shell grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)".*/\1/')
 ARCH = amd64
 BUILD_DIR = build
+
+DOCKER_IMAGE = 
+
 DEB_DIR = $(BUILD_DIR)/deb
+DEB_NAME =  $(PKG_NAME)_$(VERSION)_$(BUILD)_$(ARCH).deb
+
 RPM_DIR = $(BUILD_DIR)/rpmbuild
 RPM_NAME = $(PKG_NAME)-$(VERSION)-$(BUILD).$(ARCH).rpm
-DEB_NAME =  $(PKG_NAME)_$(VERSION)_$(BUILD)_$(ARCH).deb
+
 
 # Default target
 all: build
@@ -45,6 +50,13 @@ deb: clean build
 	# Build .deb package
 	dpkg-deb --build $(DEB_DIR)
 	mv $(DEB_DIR).deb $(DEB_NAME)
+
+docker:
+	docker build -t pcmagas/mkdotenv:$(VERSION) -t pcmagas/mkdotenv:latest .
+
+docker-push: docker
+	docker push pcmagas/mkdotenv:$(VERSION)
+	docker push pcmagas/mkdotenv:latest
 
 # Install the programme
 install:
