@@ -7,6 +7,7 @@ BUILD_DIR = build
 DEB_DIR = $(BUILD_DIR)/deb
 RPM_DIR = $(BUILD_DIR)/rpmbuild
 RPM_NAME = $(PKG_NAME)-$(VERSION)-$(BUILD).$(ARCH).rpm
+DEB_NAME =  $(PKG_NAME)_$(VERSION)_$(BUILD)_$(ARCH).deb
 
 # Default target
 all: build
@@ -27,23 +28,23 @@ deb: clean build
 	echo "Section: utils" >> $(DEB_DIR)/DEBIAN/control
 	echo "Priority: optional" >> $(DEB_DIR)/DEBIAN/control
 	echo "Architecture: $(ARCH)" >> $(DEB_DIR)/DEBIAN/control
-	echo "Maintainer: Your Name <your.email@example.com>" >> $(DEB_DIR)/DEBIAN/control
+	echo "Maintainer: Dimitrios Desyllas" >> $(DEB_DIR)/DEBIAN/control
 	echo "Description: A CLI tool for managing .env files" >> $(DEB_DIR)/DEBIAN/control
 	echo " Adds or updates variables in .env files with optional input/output file support." >> $(DEB_DIR)/DEBIAN/control
 
 	# Copy binary
-	cp $(PKG_NAME) $(DEB_DIR)/usr/local/bin/
-	chmod 755 $(DEB_DIR)/usr/local/bin/$(PKG_NAME)
+	cp $(PKG_NAME) $(BUILD_DIR)/usr/local/bin/$(PKG_NAME)
+	chmod 755 $(BUILD_DIR)/usr/local/bin/$(PKG_NAME)
 
 	# Copy man page if exists
 	if [ -f man/$(PKG_NAME).1 ]; then \
-		cp man/$(PKG_NAME).1 $(DEB_DIR)/usr/share/man/man1/$(PKG_NAME).1; \
-		gzip -9 $(DEB_DIR)/usr/share/man/man1/$(PKG_NAME).1; \
+		cp man/$(PKG_NAME).1 $(BUILD_DIR)/usr/share/man/man1/$(PKG_NAME).1; \
+		gzip -9 $(BUILD_DIR)/usr/share/man/man1/$(PKG_NAME).1; \
 	fi
 
 	# Build .deb package
 	dpkg-deb --build $(DEB_DIR)
-	mv $(DEB_DIR).deb mkdotenv.deb
+	mv $(DEB_DIR).deb $(DEB_NAME)
 
 # Install the programme
 install:
