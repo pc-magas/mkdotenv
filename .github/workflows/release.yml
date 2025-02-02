@@ -39,6 +39,6 @@ jobs:
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: mkdotenv, mkdotenv.deb
+          artifacts: mkdotenv, mkdotenv*.deb
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
