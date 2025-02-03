@@ -1,0 +1,17 @@
+mkdotenv (0.1.0) unstable; urgency=medium
+
+  * Build Debian package.
+  * Add build from sources upon documentation.
+  * Build Docker image.
+  * Print usage if no arguments are provided.
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Wed, 29 Jan 2025 00:00:00 +0000
+
+mkdotenv (0.0.1) unstable; urgency=medium
+
+  * Basic .env manipulation.
+  * Write .env files.
+  * Print .env to stdout.
+  * Receive .env contents from Unix pipes.
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Fri, 31 Jan 2025 00:00:00 +0000
