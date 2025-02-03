@@ -7,7 +7,7 @@ bash runAlpine.sh
 Then run:
 
 ```
-su packagebuilder
+su packager
 abuild-keygen -a -i
 ```
 

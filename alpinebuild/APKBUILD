@@ -1,27 +1,21 @@
-# Maintainer: Your Name <your.email@example.com>
+# Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>
 pkgname=mkdotenv
 pkgver=0.1.0
 pkgrel=0
-pkgdesc="MkDotenv is a lightweight and efficient tool for managing your .env files."
+pkgdesc="Lightweight and efficient tool for managing your .env files."
 url="https://github.com/pc-magas/mkdotenv"
-arch="amd64"
-license="GPL-3"
-depends=""
+arch="x86_64"
+license="GPL-3.0-only"
 makedepends="make go"
 source="$pkgname-$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/archive/refs/tags/v$pkgver.tar.gz"
-builddir="$srcdir/mkdotenv-$pkgver"
 
-# Application has no unit tests due to its small nature (single go file that just reads and writes files).
-# If tests provided it will have a check() function.
-options="!check"
+options="!check" # No tests
 
 build() {
-    cd "$builddir"
     make
 }
 
 package() {
-    cd "$builddir"
     install -Dm755 mkdotenv "$pkgdir/usr/bin/mkdotenv"
 }
 
