@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+
+clean:
+	@# Do nothing
+
+build:
+	go build -o mkdotenv ./src/mkdotenv
+
+binary:
+	mkdir -p debian/mkdotenv
+	mkdir -p debian/mkdotenv/usr/local/bin
+    cp mkdotenv debian/mkdotenv/usr/local/bin/
+	dh_gencontrol
+	dh_builddeb

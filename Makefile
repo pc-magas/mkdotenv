@@ -33,10 +33,9 @@ deb: clean build
 	echo "Section: utils" >> $(DEB_DIR)/DEBIAN/control
 	echo "Priority: optional" >> $(DEB_DIR)/DEBIAN/control
 	echo "Architecture: $(ARCH)" >> $(DEB_DIR)/DEBIAN/control
-	echo "Maintainer: Dimitrios Desyllas" >> $(DEB_DIR)/DEBIAN/control
-	echo "Description: A CLI tool for managing .env files" >> $(DEB_DIR)/DEBIAN/control
-	echo " Adds or updates variables in .env files with optional input/output file support." >> $(DEB_DIR)/DEBIAN/control
-
+	echo "Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>" >> $(DEB_DIR)/DEBIAN/control
+	echo "Description: CLI tool for managing .env files." >> $(DEB_DIR)/DEBIAN/control
+	echo " A command line tool that allows you to add or modify variables from .env file." >> $(DEB_DIR)/DEBIAN/control
 	# Copy binary
 	cp $(PKG_NAME) $(BUILD_DIR)/usr/local/bin/$(PKG_NAME)
 	chmod 755 $(BUILD_DIR)/usr/local/bin/$(PKG_NAME)
