@@ -170,7 +170,7 @@ mkdotenv DB_HOST 127.0.0.1 | mkdotenv DB_USER maiuser | mkdotenv DB_PASSWORD XXX
 ## Upon Image building
 Mkdotenv is also shipped via docker image. Its intention is to use it as a stage for your Dockerfile for example:
 
-```
+```Dockerfile
 
 FROM pcmagas/mkdotenv AS mkdotenv
 
@@ -182,13 +182,19 @@ COPY --from=mkdotenv /usr/bin/mkdotenv /bin/mkdotenv
 
 Or alpine based images:
 
-```
+```Dockerfile
 FROM pcmagas/mkdotenv AS mkdotenv
 
 FROM alpine 
 
 COPY --from=mkdotenv /usr/bin/mkdotenv /bin/mkdotenv
 
+```
+
+Or temporaly mounting it on a run command:
+
+```Dockerfile
+RUN --mount=type=bind,from=pcmagas/mkdotenv:latest,source=/usr/bin/mkdotenv,target=/bin/mkdotenv
 ```
 
 ## Run image into standalone container.
