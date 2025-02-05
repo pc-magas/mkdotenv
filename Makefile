@@ -10,8 +10,6 @@ BIN_NAME = mkdotenv_$(VERSION)
 # Default target
 all: build
 
-ci: all deb
-
 # Compile Go binary
 build:
 	GOOS=linux GOARCH=$(ARCH) go build -o $(BIN_NAME) ./src/*
@@ -39,6 +37,9 @@ clean:
 deb:
 	dpkg-buildpackage -b -k42F71A9B087D2AF8786DE39442DD352E68415A45
 	mv ../*.deb ./
+
+# Raw binary build
+bin:
 	mv $(BIN_NAME) $(PKG_NAME)
 
 # Build into docker image

@@ -2,8 +2,8 @@ name: build_and_release_docker
 
 on:
   push:
-    branches:
-      - master
+    tags:        
+      - 'v*' 
 
 jobs:
   build_docker:
@@ -21,6 +21,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker
-        run: |
-          make docker-push
+      # - name: Build Docker
+      #   run: |
+      #     make docker-push
