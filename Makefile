@@ -35,7 +35,7 @@ clean:
 
 # POackage as debian image
 deb:
-	dpkg-buildpackage -b -k42F71A9B087D2AF8786DE39442DD352E68415A45
+	dpkg-buildpackage -b
 	mv ../*.deb ./
 
 # Raw binary build
