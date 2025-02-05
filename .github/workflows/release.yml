@@ -53,4 +53,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.set_tag_version.outputs.tag_version }}
-          
+        
+      - name: Push tags
+        run: git push --tags
