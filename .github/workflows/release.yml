@@ -25,12 +25,6 @@ jobs:
           go-version: '>=1.17.0'
           check-latest: true
       
-      - name: Set up dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install equivs
-          sudo apt install build-essential debhelper
-
       - name: get version
         id: version
         run: |
@@ -130,6 +124,13 @@ jobs:
        with:
         go-version: '>=1.17.0'
         check-latest: true
+
+     - name: Set up dependencies
+       run: |
+          sudo apt-get update
+          sudo apt-get install equivs
+          sudo apt install build-essential debhelper
+
 
      - name: build
        run: make deb
