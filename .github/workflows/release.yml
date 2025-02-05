@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
 
       - uses: actions/checkout@v4
@@ -52,3 +53,94 @@ jobs:
         
       - name: Push tags
         run: git push --tags
+  
+  build_docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: build_image
+        if: github.ref == 'refs/heads/dev'
+        run: make docker
+
+      - name: release_image
+        if: github.ref == 'refs/heads/master'
+        run:
+          make docker-push
+
+
+  release_bin:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '>=1.17.0'
+          check-latest: true
+
+      - name: Check if tag ends with 'pre'
+        id: check_tag
+        run: |
+          TAG_NAME=${GITHUB_REF##*/}
+          if [[ "$TAG_NAME" == *"pre" ]]; then
+            echo "Tag ends with 'pre'"
+            echo "is_pre=true" >> $GITHUB_ENV
+          else
+            echo "Tag does not end with 'pre'"
+            echo "is_pre=false" >> $GITHUB_ENV
+          fi
+      
+      - name: build
+        run: make bin
+
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          draft: ${steps.check_tag.outputs.is_pre} == 'true'
+          artifacts: mkdotenv
+  
+  release_deb:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v4
+       with:
+         fetch-depth: 0
+      
+     - uses: actions/setup-go@v5
+       with:
+        go-version: '>=1.17.0'
+        check-latest: true
+
+     - name: Check if tag ends with 'pre'
+       id: check_tag
+       run: |
+          TAG_NAME=${GITHUB_REF##*/}
+          if [[ "$TAG_NAME" == *"pre" ]]; then
+            echo "Tag ends with 'pre'"
+            echo "is_pre=true" >> $GITHUB_ENV
+          else
+            echo "Tag does not end with 'pre'"
+            echo "is_pre=false" >> $GITHUB_ENV
+          fi
+      
+     - name: build
+       run: make bin
+
+     - name: Create a GitHub release
+       uses: ncipollo/release-action@v1
+       with:
+        draft: ${steps.check_tag.outputs.is_pre} == 'true'
+        artifacts: mkdotenv
