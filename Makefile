@@ -5,7 +5,7 @@ VERSION := $(shell grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)
 ARCH = amd64
 BIN_NAME = mkdotenv_$(VERSION)
 
-.PHONY: all build clean install uninstall
+.PHONY: all ci
 
 # Default target
 all: build
@@ -42,3 +42,5 @@ clean:
 
 deb:
 	dpkg-buildpackage -b -uc -us
+
+ci: all,deb

@@ -1,9 +1,9 @@
-name: build_and_release
+name: test_release
 
 on:
   push:
     branches:
-      - master
+      - dev
 
 jobs:
   build_binary:
@@ -26,22 +26,11 @@ jobs:
 
       - name: Build App
         run: |
-          make 
-          make deb
-
-      - name: Tag version
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{ steps.version.outputs.version }}
-      
-      - name: Fetch new tags
-        run: git fetch --tags
+          make ci
 
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
+          draft: true
           artifacts: mkdotenv, mkdotenv*.deb
-          tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
