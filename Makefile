@@ -21,6 +21,7 @@ docker-push: docker
 	docker push pcmagas/mkdotenv:$(VERSION)
 	docker push pcmagas/mkdotenv:latest
 
+
 # Install the programme
 install:
 	mkdir -p $(DESTDIR)/usr/bin	
@@ -38,3 +39,6 @@ uninstall:
 clean:
 	rm -rf $(BIN_NAME)
 
+
+deb:
+	dpkg-buildpackage -b -uc -us

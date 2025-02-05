@@ -9,6 +9,6 @@ build:
 binary:
 	$(MAKE) install DESTDIR=debian/mkdotenv
 	dh_gencontrol
-	dh_builddeb
+	dh_builddeb --destdir=debian/../
 
 .PHONY: clean build binary
