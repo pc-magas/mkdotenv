@@ -150,7 +150,7 @@ jobs:
       - name: Download binary artifact
         uses: actions/download-artifact@v4
         with:
-          name: mkdotenv
+          name: mkdotenv-bin
 
       - name: Download DEB artifact
         uses: actions/download-artifact@v4
