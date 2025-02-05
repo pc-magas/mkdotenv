@@ -39,6 +39,7 @@ clean:
 deb:
 	dpkg-buildpackage -b -k42F71A9B087D2AF8786DE39442DD352E68415A45
 	mv ../*.deb ./
+	mv mkdotenv_* ./mkdotenv
 
 # Build into docker image
 docker:
