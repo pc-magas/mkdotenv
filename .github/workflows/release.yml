@@ -171,6 +171,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
-          prerelease:  true
+          allowUpdates: true
+          prerelease:  false
           artifacts: mkdotenv*.deb, mkdotenv
       
