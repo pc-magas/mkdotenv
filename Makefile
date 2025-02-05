@@ -5,13 +5,13 @@ VERSION := $(shell grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)
 ARCH = amd64
 BIN_NAME = mkdotenv_$(VERSION)
 
-.PHONY: all build ci
+.PHONY: all compile ci
 
 # Default target
-all: build
+all: compile
 
 # Compile Go binary
-build:
+compile:
 	GOOS=linux GOARCH=$(ARCH) go build -o $(BIN_NAME) ./src/*
 
 

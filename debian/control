@@ -2,7 +2,8 @@ Source: mkdotenv
 Section: devel
 Priority: optional
 Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>
-Build-Depends: debhelper (>= 10)
+Uploaders: Dimitrios Desyllas <pcmagas@disroot.org>
+Build-Depends: debhelper (>= 13)
 
 Package: mkdotenv
 Architecture: amd64
