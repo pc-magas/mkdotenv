@@ -107,6 +107,7 @@ jobs:
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
+          tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           draft: ${needs.tag_git.outputs.is_pre} == 'true'
           artifacts: mkdotenv
@@ -138,6 +139,7 @@ jobs:
      - name: Create a GitHub release
        uses: ncipollo/release-action@v1
        with:
+        tag: "v${{needs.tag_git.outputs.tag_version}}"
         allowUpdates: true
         draft: ${needs.tag_git.outputs.is_pre} == 'true'
         artifacts: mkdotenv*.deb
