@@ -24,6 +24,16 @@ jobs:
         run: |
           echo "version=$(grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)".*/\1/')" >> "$GITHUB_OUTPUT"
 
+      - name: Set tag version
+        id: set_tag_version
+        run: |
+
+          if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
+            echo "tag_version=${{ steps.version.outputs.version }}-pre" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag_version=${{ steps.version.outputs.version }}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build App
         run: |
           make 
@@ -34,8 +44,8 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{ steps.version.outputs.version }}
-      
+          custom_tag: ${{ steps.set_tag_version.outputs.tag_version }}
+                
       - name: Fetch new tags
         run: git fetch --tags
 
