@@ -10,3 +10,4 @@ debian/files
 debian/mkdotenv.debhelper.log
 debian/mkdotenv.substvars
 mkdotenv_*
+keyid
