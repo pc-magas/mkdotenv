@@ -99,7 +99,7 @@ jobs:
         with:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
-          prerelease: github.ref == 'refs/heads/dev'
+          prerelease: ${{ needs.tag_git.outputs.is_pre == 'true' }}
           artifacts: mkdotenv
   
   release_deb:
@@ -133,5 +133,5 @@ jobs:
        with:
         tag: "v${{needs.tag_git.outputs.tag_version}}"
         allowUpdates: true
-        prerelease: github.ref == 'refs/heads/dev'
+        prerelease:  ${{ needs.tag_git.outputs.is_pre == 'true' }}
         artifacts: mkdotenv*.deb
