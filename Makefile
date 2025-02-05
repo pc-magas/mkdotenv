@@ -22,6 +22,7 @@ install:
 	chmod 755 "$(DESTDIR)/usr/bin/$(PKG_NAME)"
 	mkdir -p $(DESTDIR)/usr/local/share/man/man1
 	cp man/$(PKG_NAME).1 $(DESTDIR)/usr/local/share/man/man1/$(PKG_NAME).1
+	chmod 644 $(DESTDIR)/usr/local/share/man/man1/$(PKG_NAME).1
 
 # Uninstall the programme
 uninstall:

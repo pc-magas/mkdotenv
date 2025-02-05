@@ -9,9 +9,14 @@ clean:
 
 build:
 	$(MAKE)
+	dh build
 	
 binary:
 	$(MAKE) install DESTDIR=debian/mkdotenv
+	chmod 755 debian/mkdotenv/usr
+	chmod 755 debian/mkdotenv/usr/bin
+	strip --strip-all debian/mkdotenv/usr/bin/mkdotenv
+	dh_makeshlibs
 	dh_gencontrol
 	dh_builddeb
 
