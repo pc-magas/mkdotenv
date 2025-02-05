@@ -43,4 +43,4 @@ clean:
 deb:
 	dpkg-buildpackage -b -uc -us
 
-ci: all,deb
+ci: all deb
