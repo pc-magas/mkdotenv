@@ -31,20 +31,10 @@ jobs:
 
           if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
             echo "tag_version=${{ steps.version.outputs.version }}-pre" >> "$GITHUB_OUTPUT"
+            echo "is_pre=true" >> "$GITHUB_OUTPUT"
           else
             echo "tag_version=${{ steps.version.outputs.version }}" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Check if tag ends with 'pre'
-        id: is_pre
-        run: |
-          TAG_NAME=${{ needs.tag_git.outputs.tag_version }}  # Use the output from tag_git
-          if [[ "$TAG_NAME" == *"pre" ]]; then
-            echo "Tag ends with 'pre'"
-            echo "is_pre=true" >> $GITHUB_ENV
-          else
-            echo "Tag does not end with 'pre'"
-            echo "is_pre=false" >> $GITHUB_ENV
+            echo "is_pre=false" >> "$GITHUB_OUTPUT"
           fi
       
 
