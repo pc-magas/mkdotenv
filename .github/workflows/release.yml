@@ -138,8 +138,8 @@ jobs:
       contents: write
     needs: 
       - tag_git
-      - release_bin
-      - release_deb
+      - build_bin
+      - build_deb
     steps:
 
       - uses: actions/checkout@v4
