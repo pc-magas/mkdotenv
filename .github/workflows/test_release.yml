@@ -25,14 +25,24 @@ jobs:
           sudo apt-get install equivs
           sudo apt install build-essential debhelper
 
+      - name: Build App
+        run: |
+          make ci
+
       - name: get version
         id: version
         run: |
           echo "version=$(grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)".*/\1/')" >> "$GITHUB_OUTPUT"
 
-      - name: Build App
+      - name: Set tag version
+        id: set_tag_version
         run: |
-          make ci
+
+          if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
+            echo "tag_version=${{ steps.version.outputs.version }}-pre" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag_version=${{ steps.version.outputs.version }}" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
