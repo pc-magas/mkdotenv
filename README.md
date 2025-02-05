@@ -190,6 +190,7 @@ COPY --from=mkdotenv /usr/bin/mkdotenv /bin/mkdotenv
 
 ```
 
+## Run image into standalone container.
 
 You can also run it as stanalone image as well:
 
@@ -203,12 +204,14 @@ If you want to manipulate a `.env` file using the docker image. You can use it l
 cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA > .env.new
 ```
 
-Or if you want multiple variable:
+Or if you want multiple variables:
 
 ```shell
 cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA | docker run -i pcmagas/mkdotenv mkdotenv BIG BROTHER > .env.new
 ```
 
-Keep in mind to use the `-i` argument upon 
+### <ins>**Note**</ins>
+
+Keep in mind to use the `-i` argument upon. Also the arguments `--input-file`, `--output-file` and `--env-file` ***will not work***. Pipe the `.env` file as mentioned on examples above. 
 
 No volumes are provided with this image, also no ports are exposed with docker image as well.
