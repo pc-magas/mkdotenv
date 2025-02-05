@@ -73,7 +73,7 @@ jobs:
           make docker-push
 
 
-  release_bin:
+  build_bin:
     runs-on: ubuntu-latest
     needs: tag_git
     
@@ -94,15 +94,13 @@ jobs:
       - name: build
         run: make bin
 
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1
+      - name: Upload DEB artifact
+        uses: actions/upload-artifact@v4
         with:
-          tag: "v${{needs.tag_git.outputs.tag_version}}"
-          allowUpdates: true
-          prerelease: ${{ needs.tag_git.outputs.is_pre == 'true' }}
-          artifacts: mkdotenv
+          name: mkdotenv-bin
+          path: mkdotenv  
   
-  release_deb:
+  build_deb:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -127,11 +125,52 @@ jobs:
 
      - name: build
        run: make deb
-
-     - name: Create a GitHub release
-       uses: ncipollo/release-action@v1
+   
+     - name: Upload DEB artifact
+       uses: actions/upload-artifact@v4
        with:
-        tag: "v${{needs.tag_git.outputs.tag_version}}"
-        allowUpdates: true
-        prerelease:  ${{ needs.tag_git.outputs.is_pre == 'true' }}
-        artifacts: mkdotenv*.deb
+          name: mkdotenv-deb
+          path: mkdotenv*.deb  
+
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: 
+      - tag_git
+      - release_bin
+      - release_deb
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+         fetch-depth: 0
+
+
+      - name: Download binary artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: mkdotenv
+
+      - name: Download DEB artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: mkdotenv-deb
+
+      - name: Create a GitHub pre release
+        if:   github.ref == 'refs/heads/dev'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "v${{needs.tag_git.outputs.tag_version}}"
+          allowUpdates: true
+          prerelease:  true
+          artifacts: mkdotenv*.deb, mkdotenv
+
+      - name: Create a GitHub release
+        if:  github.ref == 'refs/heads/master'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "v${{needs.tag_git.outputs.tag_version}}"
+          prerelease:  true
+          artifacts: mkdotenv*.deb, mkdotenv
+      
