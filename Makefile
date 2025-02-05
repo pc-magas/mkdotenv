@@ -5,21 +5,16 @@ VERSION := $(shell grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)
 ARCH = amd64
 BIN_NAME = mkdotenv_$(VERSION)
 
-.PHONY: all ci
+.PHONY: all build ci
 
 # Default target
 all: build
 
+ci: all deb
+
 # Compile Go binary
 build:
 	GOOS=linux GOARCH=$(ARCH) go build -o $(BIN_NAME) ./src/*
-
-docker:
-	docker build -t pcmagas/mkdotenv:$(VERSION) -t pcmagas/mkdotenv:latest .
-
-docker-push: docker
-	docker push pcmagas/mkdotenv:$(VERSION)
-	docker push pcmagas/mkdotenv:latest
 
 
 # Install the programme
@@ -38,9 +33,17 @@ uninstall:
 # Clean up build files
 clean:
 	rm -rf $(BIN_NAME)
+	rm -rf *.deb
 
-
+# POackage as debian image
 deb:
-	dpkg-buildpackage -b -uc -us
+	dpkg-buildpackage -b -k42F71A9B087D2AF8786DE39442DD352E68415A45
+	mv ../*.deb ./
 
-ci: all deb
+# Build into docker image
+docker:
+	docker build -t pcmagas/mkdotenv:$(VERSION) -t pcmagas/mkdotenv:latest .
+
+docker-push: docker
+	docker push pcmagas/mkdotenv:$(VERSION)
+	docker push pcmagas/mkdotenv:latest

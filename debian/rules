@@ -1,7 +1,11 @@
 #!/usr/bin/make -f
 
+%:
+	dh $@
+
 clean:
 	$(MAKE) clean
+	dh clean
 
 build:
 	$(MAKE)
@@ -9,6 +13,6 @@ build:
 binary:
 	$(MAKE) install DESTDIR=debian/mkdotenv
 	dh_gencontrol
-	dh_builddeb --destdir=debian
+	dh_builddeb
 
 .PHONY: clean build binary

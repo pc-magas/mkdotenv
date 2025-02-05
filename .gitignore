@@ -9,3 +9,4 @@ debian/compatclear
 debian/files
 debian/mkdotenv.debhelper.log
 debian/mkdotenv.substvars
+mkdotenv_*
