@@ -1,13 +1,14 @@
 #!/usr/bin/make -f
 
 clean:
-	make clean
+	$(MAKE) clean
 
 build:
-	@
+	$(MAKE)
 	
 binary:
-	make build
-	make install DESTDIR=debian/mkdotenv
+	$(MAKE) install DESTDIR=debian/mkdotenv
 	dh_gencontrol
 	dh_builddeb
+
+.PHONY: clean build binary
