@@ -20,11 +20,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '>=1.17.0'
-          check-latest: true
-      
       - name: get version
         id: version
         run: |
@@ -113,7 +108,7 @@ jobs:
         with:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
-          draft: ${needs.tag_git.outputs.is_pre} == 'true'
+          draft: ${needs.tag_git.outputs.is_pre} == true
           artifacts: mkdotenv
   
   release_deb:
@@ -147,5 +142,5 @@ jobs:
        with:
         tag: "v${{needs.tag_git.outputs.tag_version}}"
         allowUpdates: true
-        draft: ${needs.tag_git.outputs.is_pre} == 'true'
+        draft: ${needs.tag_git.outputs.is_pre} == true
         artifacts: mkdotenv*.deb
