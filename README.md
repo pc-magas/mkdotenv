@@ -167,6 +167,7 @@ mkdotenv DB_HOST 127.0.0.1 | mkdotenv DB_USER maiuser | mkdotenv DB_PASSWORD XXX
 
 # Docker
 
+## Upon Image building
 Mkdotenv is also shipped via docker image. Its intention is to use it as a stage for your Dockerfile for example:
 
 ```
@@ -209,9 +210,25 @@ Or if you want multiple variables:
 ```shell
 cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA | docker run -i pcmagas/mkdotenv mkdotenv BIG BROTHER > .env.new
 ```
+Keep in mind to use the `-i` argument upon docker command that enables to read the input via the pipes. If ommited the `mkdotenv` command residing inside the container will not be able to read the contents of .env file piped to it.
 
 ### <ins>**Note**</ins>
 
-Keep in mind to use the `-i` argument upon. Also the arguments `--input-file`, `--output-file` and `--env-file` ***will not work***. Pipe the `.env` file as mentioned on examples above. 
+If running the `pcmagas/mkdotenv` image **as is** the arguments `--env-file`,`--input-file` and `--input-file` will result an unsucessfull execution of `mkdotenv`. 
+
+If a `.env` file needs to be manipulated either pipe the ouitputs as shown upon examples above or extend the `pcmagas/mkdotenv` using a your own Dockerfile providing a nessesary volume:
+
+```Dockerfile
+FROM `pcmagas/mkdotenv`
+
+RUN mkdir app
+
+VOLUME app
+
+```
+
+These do not apply if following the instructions shown into [Upon Image building](#upon-image-building) section.
+
+### Ports and volumes
 
 No volumes are provided with this image, also no ports are exposed with docker image as well.
