@@ -148,12 +148,12 @@ jobs:
 
 
       - name: Download binary artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: mkdotenv
 
       - name: Download DEB artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: mkdotenv-deb
 
