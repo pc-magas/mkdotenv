@@ -13,7 +13,7 @@ jobs:
       contents: write
     outputs:
       tag_version: ${{ steps.set_tag_version.outputs.tag_version }}
-      
+      is_pre: ${{steps.is_pre.outputs.tag_version}}
     steps:
 
       - uses: actions/checkout@v4
@@ -45,6 +45,19 @@ jobs:
           else
             echo "tag_version=${{ steps.version.outputs.version }}" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Check if tag ends with 'pre'
+        id: is_pre
+        run: |
+          TAG_NAME=${{ needs.tag_git.outputs.tag_version }}  # Use the output from tag_git
+          if [[ "$TAG_NAME" == *"pre" ]]; then
+            echo "Tag ends with 'pre'"
+            echo "is_pre=true" >> $GITHUB_ENV
+          else
+            echo "Tag does not end with 'pre'"
+            echo "is_pre=false" >> $GITHUB_ENV
+          fi
+      
 
       - name: Tag version
         id: tag_version
@@ -94,30 +107,21 @@ jobs:
           go-version: '>=1.17.0'
           check-latest: true
 
-      - name: Check if tag ends with 'pre'
-        id: check_tag
-        run: |
-          TAG_NAME=${{ needs.tag_git.outputs.tag_version }}  # Use the output from tag_git
-          if [[ "$TAG_NAME" == *"pre" ]]; then
-            echo "Tag ends with 'pre'"
-            echo "is_pre=true" >> $GITHUB_ENV
-          else
-            echo "Tag does not end with 'pre'"
-            echo "is_pre=false" >> $GITHUB_ENV
-          fi
-      
       - name: build
         run: make bin
 
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          draft: ${steps.check_tag.outputs.is_pre} == 'true'
+          allowUpdates: true
+          draft: ${needs.tag_git.outputs.is_pre} == 'true'
           artifacts: mkdotenv
   
   release_deb:
     runs-on: ubuntu-latest
+    needs: tag_git
     steps:
+
      - uses: actions/checkout@v4
        with:
          fetch-depth: 0
@@ -127,23 +131,12 @@ jobs:
         go-version: '>=1.17.0'
         check-latest: true
 
-     - name: Check if tag ends with 'pre'
-       id: check_tag
-       run: |
-          TAG_NAME=${{ needs.tag_git.outputs.tag_version }}  # Use the output from tag_git
-          if [[ "$TAG_NAME" == *"pre" ]]; then
-            echo "Tag ends with 'pre'"
-            echo "is_pre=true" >> $GITHUB_ENV
-          else
-            echo "Tag does not end with 'pre'"
-            echo "is_pre=false" >> $GITHUB_ENV
-          fi
-      
      - name: build
        run: make deb
 
      - name: Create a GitHub release
        uses: ncipollo/release-action@v1
        with:
-        draft: ${steps.check_tag.outputs.is_pre} == 'true'
-        artifacts: mkdotenv
+        allowUpdates: true
+        draft: ${needs.tag_git.outputs.is_pre} == 'true'
+        artifacts: mkdotenv*.deb
