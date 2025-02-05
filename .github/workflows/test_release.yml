@@ -19,6 +19,12 @@ jobs:
           go-version: '>=1.17.0'
           check-latest: true
       
+      - name: Set up dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install equivs
+          sudo mk-build-deps --install debian/control
+
       - name: get version
         id: version
         run: |
