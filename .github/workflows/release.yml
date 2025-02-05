@@ -1,12 +1,13 @@
-name: build_and_release_binary
+name: test_release
 
 on:
   push:
-    tags:        
-      - 'v*'
+    branches:
+      - dev
+      - master
 
 jobs:
-  build_binary:
+  tag_git:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,29 +16,39 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - uses: actions/setup-go@v5
         with:
           go-version: '>=1.17.0'
           check-latest: true
-
-      - name: Check if tag ends with 'pre'
-        id: check_tag
-        run: |
-          TAG_NAME=${GITHUB_REF##*/}
-          if [[ "$TAG_NAME" == *"pre" ]]; then
-            echo "Tag ends with 'pre'"
-            echo "is_pre=true" >> $GITHUB_ENV
-          else
-            echo "Tag does not end with 'pre'"
-            echo "is_pre=false" >> $GITHUB_ENV
-          fi
       
-      - name: build
-        run: make bin
+      - name: Set up dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install equivs
+          sudo apt install build-essential debhelper
 
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1
+      - name: get version
+        id: version
+        run: |
+          echo "version=$(grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)".*/\1/')" >> "$GITHUB_OUTPUT"
+
+      - name: Set tag version
+        id: set_tag_version
+        run: |
+
+          if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
+            echo "tag_version=${{ steps.version.outputs.version }}-pre" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag_version=${{ steps.version.outputs.version }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Tag version
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
         with:
-          draft: ${steps.check_tag.outputs.is_pre} == 'true'
-          artifacts: mkdotenv
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ steps.set_tag_version.outputs.tag_version }}
+        
+      - name: Push tags
+        run: git push --tags
