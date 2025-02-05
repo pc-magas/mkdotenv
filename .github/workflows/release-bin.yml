@@ -33,6 +33,9 @@ jobs:
             echo "is_pre=false" >> $GITHUB_ENV
           fi
       
+      - name: build
+        run: make bin
+
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:

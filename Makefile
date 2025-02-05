@@ -39,7 +39,7 @@ deb:
 	mv ../*.deb ./
 
 # Raw binary build
-bin:
+bin: build
 	mv $(BIN_NAME) $(PKG_NAME)
 
 # Build into docker image
