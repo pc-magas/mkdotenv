@@ -31,7 +31,7 @@ binary:
 	chmod 644 debian/mkdotenv/usr/share/man/man1/mkdotenv.1.gz
 
 	
-	gzip -9 --no-name -k debian/changelog
+	gzip -9 --no-name -f -k debian/changelog
 	install -D -m644 debian/changelog.gz debian/mkdotenv/usr/share/doc/mkdotenv/changelog.gz
 
 
