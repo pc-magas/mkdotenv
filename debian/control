@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>
 Uploaders: Dimitrios Desyllas <pcmagas@disroot.org>
 Build-Depends: debhelper (>= 13)
+Version: 0.1.0-1
 
 Package: mkdotenv
 Architecture: amd64

@@ -13,3 +13,4 @@ debian/debhelper-build-stamp
 debian/.debhelper
 mkdotenv_*
 keyid
+debian/changelog.gz
