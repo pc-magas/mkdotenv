@@ -1,0 +1,2 @@
+# Suppress the static binary warning for mkdotenv
+mkdotenv: statically-linked-binary

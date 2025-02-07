@@ -2,9 +2,12 @@ Source: mkdotenv
 Section: devel
 Priority: optional
 Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>
-Build-Depends: debhelper (>= 10)
+Uploaders: Dimitrios Desyllas <pcmagas@disroot.org>
+Build-Depends: debhelper (>= 13)
+Version: 0.1.0-1
 
 Package: mkdotenv
 Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: CLI tool for managing .env files.
  A command line tool that allows you to add or modify variables from .env file.

@@ -9,9 +9,34 @@ clean:
 
 build:
 	$(MAKE)
+	dh build
 	
 binary:
+	mkdir -p debian/mkdotenv/usr/share/lintian/overrides
+	mkdir -p debian/mkdotenv/usr/share/doc/mkdotenv
+	chmod -R 755 debian/mkdotenv/usr
+
 	$(MAKE) install DESTDIR=debian/mkdotenv
+	chmod -R 755 debian/mkdotenv/usr/bin
+
+	install -D -m644 debian/copyright debian/mkdotenv/usr/share/doc/mkdotenv/copyright
+
+	gzip -9 --no-name -k debian/mkdotenv/usr/share/man/man1/mkdotenv.1
+	rm -rf debian/mkdotenv/usr/share/man/man1/mkdotenv.1
+	chmod 755 debian/mkdotenv/usr/share/man
+	chmod 755 debian/mkdotenv/usr/share/man/man1
+
+	install -D -m644 debian/lintian-overrides debian/mkdotenv/usr/share/lintian/overrides/mkdotenv
+	chmod 644 debian/mkdotenv/usr/share/doc/mkdotenv/copyright
+	chmod 644 debian/mkdotenv/usr/share/man/man1/mkdotenv.1.gz
+
+	
+	gzip -9 --no-name -f -k debian/changelog
+	install -D -m644 debian/changelog.gz debian/mkdotenv/usr/share/doc/mkdotenv/changelog.gz
+
+
+	strip --strip-all debian/mkdotenv/usr/bin/mkdotenv
+	dh_makeshlibs
 	dh_gencontrol
 	dh_builddeb
 

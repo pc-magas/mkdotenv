@@ -9,4 +9,8 @@ debian/compatclear
 debian/files
 debian/mkdotenv.debhelper.log
 debian/mkdotenv.substvars
+debian/debhelper-build-stamp
+debian/.debhelper
 mkdotenv_*
+keyid
+debian/changelog.gz
