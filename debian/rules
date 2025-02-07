@@ -33,7 +33,7 @@ binary:
 	
 	gzip -9 --no-name -f -k debian/changelog
 	install -D -m644 debian/changelog.gz debian/mkdotenv/usr/share/doc/mkdotenv/changelog.gz
-
+	rm -f debian/changelog.gz
 
 	strip --strip-all debian/mkdotenv/usr/bin/mkdotenv
 	dh_makeshlibs

@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>
 Uploaders: Dimitrios Desyllas <pcmagas@disroot.org>
 Build-Depends: debhelper (>= 13)
-Version: 0.1.0-1
+Version: 0.1.0
 Standards-Version: 4.6.0
 
 Package: mkdotenv

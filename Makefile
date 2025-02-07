@@ -41,8 +41,8 @@ deb:
 
 #create files for PPA
 ppa:
+	tar --exclude=debian --exclude=alpinebuild -czf ../mkdotenv_$(VERSION).orig.tar.gz src man Makefile
 	dpkg-buildpackage -S
-	dpkg-buildpackage -b
 
 
 # Raw binary build
