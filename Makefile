@@ -39,6 +39,11 @@ deb:
 	dpkg-buildpackage -b
 	mv ../*.deb ./
 
+#create files for PPA
+ppa:
+	dpkg-buildpackage -S
+	
+
 # Raw binary build
 bin: build
 	mv $(BIN_NAME) $(PKG_NAME)
