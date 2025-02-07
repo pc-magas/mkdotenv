@@ -1,6 +1,6 @@
-mkdotenv (0.1.0-2) unstable; urgency=medium
+mkdotenv (0.1.0-3) jammy; urgency=medium
 
-  * Building source packages preparing for ppa
+  * Supporet multiple distros
 
  -- Dimitrios Desyllas <pcmagas@disroot.org>  Sun, 02 Feb 2025 00:00:00 +0200
 
@@ -21,5 +21,3 @@ mkdotenv (0.0.1-1) unstable; urgency=medium
   * Receive .env contents from Unix pipes.
 
  -- Dimitrios Desyllas <pcmagas@disroot.org>  Fri, 31 Jan 2025 00:00:00 +0200
-
- 
