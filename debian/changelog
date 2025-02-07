@@ -1,4 +1,4 @@
-mkdotenv (0.1.0-3) jammy; urgency=medium
+mkdotenv (0.1.0-3) unstable; urgency=medium
 
   * Supporet multiple distros
 
