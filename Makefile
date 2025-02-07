@@ -4,7 +4,7 @@ BUILD = 1
 VERSION := $(shell grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)".*/\1/')
 ARCH = amd64
 BIN_NAME = mkdotenv_$(VERSION)
-DIST ?= unstable
+DIST ?= jammy
 
 .PHONY: all compile ci
 
@@ -42,9 +42,12 @@ deb:
 
 #create files for PPA
 ppa:
+	cp ./debian/changelog ./changelog.debian
+	sed -i 's/unstable/$(DIST)/g' debian/changelog
 	tar --exclude=debian --exclude=alpinebuild -czf ../mkdotenv_$(VERSION).orig.tar.gz src man Makefile
 	dpkg-buildpackage -S
 	dput ppa:pcmagas/mkdotenv ../mkdotenv_$(VERSION)-3_source.changes
+	cp ./changelog.debian ./debian/changelog
 
 # Raw binary build
 bin: compile
