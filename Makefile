@@ -46,7 +46,7 @@ ppa:
 
 
 # Raw binary build
-bin: build
+bin: compile
 	mv $(BIN_NAME) $(PKG_NAME)
 
 # Build into docker image
