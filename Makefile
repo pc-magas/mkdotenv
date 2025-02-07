@@ -42,7 +42,8 @@ deb:
 #create files for PPA
 ppa:
 	dpkg-buildpackage -S
-	
+	dpkg-buildpackage -b
+
 
 # Raw binary build
 bin: build
