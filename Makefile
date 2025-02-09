@@ -40,14 +40,19 @@ deb:
 	dpkg-buildpackage -b
 	mv ../*.deb ./
 
+create_source_folder:
+	mkdir -p mkdotenv_$(VERSION)
+	cp -r src mkdotenv_$(VERSION)/
+	cp -r man mkdotenv_$(VERSION)/
+	cp Makefile mkdotenv_$(VERSION)/
+	tar --exclude=debian --exclude=alpinebuild -czf ../mkdotenv_$(VERSION)_6.orig.tar.gz mkdotenv_$(VERSION)
+
 #create files for PPA
-ppa:
-	cp ./debian/changelog ./changelog.debian
+ppa: create_source_folder
 	sed -i 's/unstable/$(DIST)/g' debian/changelog
-	tar --exclude=debian --exclude=alpinebuild -czf ../mkdotenv_$(VERSION).orig.tar.gz src man Makefile
-	dpkg-buildpackage -S
-	dput ppa:pcmagas/mkdotenv ../mkdotenv_$(VERSION)-3_source.changes
-	cp ./changelog.debian ./debian/changelog
+	dpkg-buildpackage -S -sa
+	dput ppa:pcmagas/mkdotenv ../mkdotenv_$(VERSION)-6_source.changes ../mkdotenv_$(VERSION)_6.orig.tar.gz
+	sed -i 's/$(DIST)/unstable/g' debian/changelog
 
 # Raw binary build
 bin: compile
