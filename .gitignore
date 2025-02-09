@@ -16,3 +16,4 @@ keyid
 debian/changelog.gz
 .vagrant
 changelog.debian
+*.log

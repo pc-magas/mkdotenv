@@ -1,5 +1,11 @@
 # Packaging app as a Debian package.
 
+## Required tools and dependencies (for building only)
+
+```
+sudo apt-get install golang-1.23-go golang-go debhelper make
+```
+
 ## Commands:
 
 It is assumed that you cloned the repository.

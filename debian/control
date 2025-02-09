@@ -3,7 +3,7 @@ Section: devel
 Priority: optional
 Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>
 Uploaders: Dimitrios Desyllas <pcmagas@disroot.org>
-Build-Depends: debhelper (>= 13)
+Build-Depends: debhelper (>= 13),golang-1.23-go
 Standards-Version: 4.6.0
 
 Package: mkdotenv
