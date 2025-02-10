@@ -46,14 +46,20 @@ create_source_folder:
 	cp -r src mkdotenv_$(VERSION)/
 	cp -r man mkdotenv_$(VERSION)/
 	cp Makefile mkdotenv_$(VERSION)/
-	tar --exclude=debian --exclude=alpinebuild -czf ../mkdotenv_$(VERSION)_6.orig.tar.gz mkdotenv_$(VERSION)
+	tar --exclude=debian --exclude=alpinebuild -czf ../mkdotenv_$(VERSION).orig.tar.gz mkdotenv_$(VERSION)
 
-#create files for PPA
-ppa: create_source_folder
+# Step 1: Create the source package
+source_package: create_source_folder
 	sed -i 's/unstable/$(DIST)/g' debian/changelog
 	dpkg-buildpackage -S -sa
-	dput ppa:pcmagas/mkdotenv ../mkdotenv_$(VERSION)-6_source.changes ../mkdotenv_$(VERSION)_6.orig.tar.gz
 	sed -i 's/$(DIST)/unstable/g' debian/changelog
+
+build_source_deb: source_package
+	sbuild --dist=$(DIST) --arch=amd64 -A -c $(DIST)-amd64 ../mkdotenv_$(VERSION)-6.dsc
+
+#create files for PPA
+ppa: source_package
+	dput ppa:pcmagas/mkdotenv -f -c ../mkdotenv_$(VERSION)-6_source.changes -c ../mkdotenv_$(VERSION).orig.tar.gz
 
 # Raw binary build
 bin: compile

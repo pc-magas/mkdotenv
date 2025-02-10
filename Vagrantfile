@@ -11,5 +11,13 @@ Vagrant.configure("2") do |config|
 
 
   config.vm.synced_folder "./.", "/home/vagrant/code"
+  config.vm.synced_folder "~/.gnupg", "/home/vagrant/.gnupg"
   
+  config.vm.provision "shell", privileged: true, inline: <<-SHELL
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
+    DEBIAN_FRONTEND=noninteractive apt-get install -y golang-1.23-go debhelper make sbuild devscripts
+    usermod -aG sbuild vagrant
+  SHELL
+
 end
