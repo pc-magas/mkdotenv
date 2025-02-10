@@ -55,11 +55,11 @@ source_package: create_source_folder
 	sed -i 's/$(DIST)/unstable/g' debian/changelog
 
 build_source_deb: source_package
-	sbuild --dist=$(DIST) --arch=amd64 -A -c $(DIST)-amd64 ../mkdotenv_$(VERSION)-6.dsc
+	sbuild --dist=$(DIST) --arch=amd64 -A -c $(DIST)-amd64 ../mkdotenv_$(VERSION)-0.dsc
 
 #create files for PPA
 ppa: source_package
-	dput ppa:pcmagas/mkdotenv -f -c ../mkdotenv_$(VERSION)-6_source.changes -c ../mkdotenv_$(VERSION).orig.tar.gz
+	dput ppa:pcmagas/mkdotenv ../mkdotenv_$(VERSION)-0_source.changes
 
 # Raw binary build
 bin: compile
