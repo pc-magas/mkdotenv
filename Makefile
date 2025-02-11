@@ -4,10 +4,12 @@ BUILD = 1
 VERSION := $(shell grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)".*/\1/')
 ARCH = amd64
 BIN_NAME = mkdotenv_$(VERSION)
+LINUX_DIST?=ubuntu
 DIST ?= jammy
+
 GO := go
 
-.PHONY: all compile ci
+.PHONY: all compile
 
 # Default target
 all: compile
@@ -51,11 +53,11 @@ create_source_folder:
 # Step 1: Create the source package
 source_package: create_source_folder
 	sed -i 's/unstable/$(DIST)/g' debian/changelog
+	sed -i 's/debian/$(LINUX_DIST)/g' debian/changelog
 	dpkg-buildpackage -S -sa
 	sed -i 's/$(DIST)/unstable/g' debian/changelog
+	sed -i 's/$(LINUX_DIST)/debian/g' debian/changelog
 
-build_source_deb: source_package
-	sbuild --dist=$(DIST) --arch=amd64 -A -c $(DIST)-amd64 ../mkdotenv_$(VERSION)-0.dsc
 
 #create files for PPA
 ppa: source_package
