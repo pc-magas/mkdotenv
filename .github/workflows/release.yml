@@ -132,6 +132,17 @@ jobs:
           name: mkdotenv-deb
           path: mkdotenv*.deb  
 
+  upload_ppa:
+    needs: tag_git
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run: make ppa
+
+
   release:
     runs-on: ubuntu-latest
     permissions:
