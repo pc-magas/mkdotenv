@@ -1,0 +1,2 @@
+# Exclude alpinebuild directory from the source package
+extend-diff-ignore = alpinebuild|.*|Vagrantfile|docs

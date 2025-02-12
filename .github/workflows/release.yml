@@ -107,28 +107,34 @@ jobs:
     needs: tag_git
     steps:
 
-     - uses: actions/checkout@v4
-       with:
+      - uses: actions/checkout@v4
+        with:
          fetch-depth: 0
       
-     - uses: actions/setup-go@v5
-       with:
-        go-version: '>=1.17.0'
-        check-latest: true
+      - name: Import GPG Key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_SECRET }}
+        run: |
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          KEY_ID=$(gpg --list-secret-keys --keyid-format=long | awk '/sec/{print $2}' | cut -d'/' -f2)
+          echo "DEB_SIGN_KEYID=$KEY_ID" >> $GITHUB_ENV
 
-     - name: Set up dependencies
-       run: |
+      - name: Install dependencies
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
           sudo apt-get update
-          sudo apt-get install equivs
-          sudo apt install build-essential debhelper
+          sudo apt-get install golang-1.23-go debhelper make build-essential debhelper equivs
 
+      - name: Show Key ID
+        run: echo "Using DEB_SIGN_KEYID=$DEB_SIGN_KEYID"
 
-     - name: build
-       run: make deb
+      - name: build
+        run: make deb
    
-     - name: Upload DEB artifact
-       uses: actions/upload-artifact@v4
-       with:
+      - name: Upload DEB artifact
+        uses: actions/upload-artifact@v4
+        with:
           name: mkdotenv-deb
           path: mkdotenv*.deb  
 
