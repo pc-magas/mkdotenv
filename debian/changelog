@@ -2,7 +2,7 @@ mkdotenv (0.1.6-0debian1~unstable1) unstable; urgency=medium
 
   * Set Distro and distro version
 
- -- Dimitrios Desyllas <pcmagas@disroot.org>  Sun, 11 Feb 2025 00:00:00 +0200
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Sun, 12 Feb 2025 00:00:00 +0200
 
 mkdotenv (0.1.5-0debian1~unstable1) unstable; urgency=medium
 
