@@ -1,15 +1,23 @@
 # Packaging app as a Debian package.
 
-## Commands:
+## Required tools and dependencies (for building only)
 
-It is assumed that you cloned the repository.
+```
+sudo apt-get install golang-1.23-go debhelper make build-essential dput
+```
+
+## Generate a key and export key_id
+
+Either uploading to ppa or building a binary deb you need to export the signature at the command.
 
 ```
 export DEB_SIGN_KEYID=^key_id^
-make deb
 ```
 
-Where the `^key_id^` is rthe signature of your key id. In order to found the key_id run:
+Where the `^key_id^` is the signature of your key. 
+
+
+In order to find the `^key_id^` run:
 
 ```
 gpg --list-keys
@@ -30,4 +38,22 @@ The `^key_id` value is the line bellow pub for example for the output above is:
 
 ```
 42F71A9B087D2AF8786DE39442DD352E68415A45
+```
+
+## Build Binary Deb:
+
+Just run
+
+```
+make deb
+```
+
+## Upload To PPA
+
+Run: 
+
+```
+sudo apt-get update
+sudo apt-get install dput
+make ppa
 ```

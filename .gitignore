@@ -14,3 +14,6 @@ debian/.debhelper
 mkdotenv_*
 keyid
 debian/changelog.gz
+.vagrant
+changelog.debian
+*.log

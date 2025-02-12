@@ -1,15 +1,16 @@
 #!/usr/bin/make -f
 
+GO := $(shell command -v go || echo /usr/lib/go-1.23/bin/go)
+
 %:
 	dh $@
 
 clean:
-	$(MAKE) clean
+	$(MAKE) clean GO=$(GO)
 	dh clean
 
 build:
-	$(MAKE)
-	dh build
+	$(MAKE) GO=$(GO)
 	
 binary:
 	mkdir -p debian/mkdotenv/usr/share/lintian/overrides
@@ -33,7 +34,7 @@ binary:
 	
 	gzip -9 --no-name -f -k debian/changelog
 	install -D -m644 debian/changelog.gz debian/mkdotenv/usr/share/doc/mkdotenv/changelog.gz
-
+	rm -f debian/changelog.gz
 
 	strip --strip-all debian/mkdotenv/usr/bin/mkdotenv
 	dh_makeshlibs

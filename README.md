@@ -16,12 +16,12 @@ MkDotenv is a lightweight and efficient tool for managing your `.env` files. Whe
 
 ## From source code:
 
-## Step 0 Install golang:
+### Step 0 Install golang:
 
-Upon Linux Mint you can run:
+Upon Linux Mint and ubuntu you can run:
 
 ```
-sudo apt-get install golang-go golang-1.23*
+sudo apt-get install make golang-1.23*
 ```
 
 For other linux distros look upon: https://go.dev/doc/install
@@ -39,6 +39,12 @@ git clone https://github.com/pc-magas/mkdotenv.git
 make
 ```
 
+In case you use the `golang-1.23` package sdhipped with ubuntu and linux mint, and unable to run `go` command line into the shell you can also run this command:
+
+```shell
+make GO=/usr/lib/go-1.23/bin/go
+```
+
 ### Step 3 Install
 
 ```shell
@@ -48,7 +54,7 @@ sudo make install
 (If run as root ommit `sudo`)
 
 
-# Uninstall
+### Uninstall
 
 If cloned this repo and built the tool you can do:
 
@@ -63,6 +69,75 @@ rm -f /usr/bin/mkdotenv
 rm -f /usr/local/share/man/man1/mkdotenv.1 
 ```
 
+
+## From Statically Built Binaries
+
+### Install
+
+In short you must do
+
+```
+export VERSION=v0.1.0
+wget https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv
+
+sudo cp mkdotenv /bin/mkdotenv
+sudo chmod 755 /bin/mkdotenv
+
+mkdotenv --version
+```
+
+#### Detect latest Version
+
+In order to see the latest version check the https://github.com/pc-magas/mkdotenv/releases page once you found the desired release instead of:
+
+```
+export VERSION=v0.1.0
+```
+
+Do (replace `^found_version^` with the version you found upon releases page):
+
+```
+export VERSION=^found_version^
+```
+
+And execute the commands:
+
+```
+wget https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv
+
+sudo cp mkdotenv /bin/mkdotenv
+sudo chmod 755 /bin/mkdotenv
+
+mkdotenv --version
+```
+
+### Uninstall
+
+```
+rm -rf /bin/mkdotenv
+```
+
+## From debian package
+
+### Via PPA
+
+Is running ubuntu or Linux mint ytou can use out ppa repository:
+
+```
+sudo add-apt-repository ppa:pcmagas/mkdotenv
+sudo apt-get update
+sudo apt-get install mkdotenv
+```
+
+### Via debian file
+
+```
+export VERSION=^found_version^
+wget https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv_${VERSION}_amd64.deb
+sudo dpkg -i mkdotenv_${VERSION}_amd64.deb
+```
+
+At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
 
 # Usage
 
