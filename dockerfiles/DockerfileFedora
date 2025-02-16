@@ -1,0 +1,14 @@
+FROM fedora:41
+
+RUN dnf update -y && \
+    dnf install -y rpmdevtools rpmlint make && \
+    useradd -m pkgbuild
+
+USER pkgbuild
+WORKDIR /home/pkgbuild
+
+RUN mkdir code &&\
+    rpmdev-setuptree
+
+VOLUME /home/pkgbuild/code
+VOLUME /home/pkgbuild/rpmbuild
