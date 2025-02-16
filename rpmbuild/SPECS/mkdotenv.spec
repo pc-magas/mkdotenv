@@ -8,6 +8,7 @@ URL:            https://github.com/pc-magas/mkdotenv
 Source0:        %{name}-%{version}.tar.gz
 
 BuildRequires:  make
+BuildRequires:  golang
 
 %description
 MkDotenv is a lightweight and efficient tool for managing your `.env` files. 

@@ -1,7 +1,7 @@
 FROM fedora:41
 
 RUN dnf update -y && \
-    dnf install -y rpmdevtools rpmlint make && \
+    dnf install -y rpmdevtools rpmlint make golang && \
     useradd -m pkgbuild
 
 USER pkgbuild
