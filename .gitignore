@@ -17,3 +17,7 @@ debian/changelog.gz
 .vagrant
 changelog.debian
 *.log
+rpmbuild/SOURCES/*
+rpmbuid/BUILD*/*
+rpmbuid/RPMS/*
+rpmbuid/SRPMS/*

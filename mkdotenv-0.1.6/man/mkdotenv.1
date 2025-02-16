@@ -1,0 +1,54 @@
+.TH MKDOTENV 1 "February 2025" "mkdotenv 0.0.1"
+.SH NAME
+mkdotenv \- A command-line tool to add or update environment variables in a .env file
+.SH SYNOPSIS
+.B mkdotenv
+[\fIVARIABLE_NAME\fR] [\fIVARIABLE_VALUE\fR] [\fI--env-file <file_path>\fR | \fI--input-file <file_path>\fR] [\fI--output-file <file_path>\fR]
+.SH DESCRIPTION
+The \fBmkdotenv\fR command allows users to add or update a variable in a .env file. 
+It modifies the specified .env file and can optionally save the output to another file.
+.SH ARGUMENTS
+.TP
+.B VARIABLE_NAME
+(REQUIRED) The name of the environment variable to be added or updated.
+.TP
+.B VARIABLE_VALUE
+(REQUIRED) The value assigned to the \fIVARIABLE_NAME\fR.
+.SH OPTIONS
+.TP
+.B \-\-env-file <file_path>, \-\-input-file <file_path>
+(OPTIONAL) Specifies the .env file to be modified. If not provided, the default is \fB.env\fR.
+.TP
+.B \-\-output-file <file_path>
+(OPTIONAL) Instead of printing the result to the console, write the output to the specified file.
+If this option is used, the modified .env file will not be printed.
+.SH EXAMPLES
+Add a variable to the default .env file:
+.PP
+.RS
+$ mkdotenv API_KEY 123456
+.RE
+.PP
+Add a variable to a specific .env file:
+.PP
+.RS
+$ mkdotenv API_KEY 123456 --env-file config.env
+.RE
+.PP
+Write the output to a separate file:
+.PP
+.RS
+$ mkdotenv API_KEY 123456 --output-file output.env
+.RE
+.PP
+Update multiple variables
+.PP
+.RS
+$ mkdotenv API_KEY 123456 | mkdotenv API_KEY2 123456 --output-file output.env
+.RE
+.SH AUTHOR
+Written by Desyllas Dimitrios.
+.SH BUGS
+Report issues at https://github.com/pc-magas/mkdotenv/issues
+.SH SEE ALSO
+.BR dotenv (1)
