@@ -61,6 +61,7 @@ create_source_folder:
 	cp -r man mkdotenv_$(VERSION)
 	cp Makefile mkdotenv_$(VERSION)
 	cp LICENCE mkdotenv_$(VERSION)
+	cp go.mod mkdotenv_$(VERSION)
 	tar --exclude=debian --exclude=alpinebuild -czf ../mkdotenv_$(VERSION).orig.tar.gz mkdotenv_$(VERSION);
 
 
@@ -78,6 +79,7 @@ source_rpm:
 	cp -r man mkdotenv-$(VERSION)
 	cp Makefile mkdotenv-$(VERSION)
 	cp LICENCE mkdotenv-$(VERSION)
+	cp go.mod mkdotenv-$(VERSION)
 	tar --exclude=debian --exclude=alpinebuild -czf ./rpmbuild/SOURCES/mkdotenv-$(VERSION).tar.gz mkdotenv-$(VERSION);
 
 #create files for PPA

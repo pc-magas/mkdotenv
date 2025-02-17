@@ -14,18 +14,14 @@ BuildRequires:  golang
 MkDotenv is a lightweight and efficient tool for managing your `.env` files. 
 Whether you're adding, updating, or replacing environment variables, MkDotenv makes it easy and hassle-free.
 
-%prep
-%autosetup
+%define debug_package %{nil}
 
-# Download and install Go 1.23 if it's not available in Fedora repos
-sudo rm -rf /usr/local/go
-export GO_VERSION=1.23.6
-curl -L https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz | sudo tar -C /usr/local -xz 
-export PATH=/usr/local/go/bin:$PATH
+%prep
+%setup -q
 
 %build
-make %{?_smp_mflags}
-
+	go build -o mkdotenv ./src/*
+    
 %install
 mkdir -p %{buildroot}/usr/bin
 mkdir -p %{buildroot}/usr/share/man/man1
@@ -33,7 +29,7 @@ install -m 0755 mkdotenv %{buildroot}/usr/bin/mkdotenv
 install -m 0644 man/mkdotenv.1 %{buildroot}/usr/share/man/man1/mkdotenv.1
 
 %files
-%license LICENSE
+%license LICENCE
 /usr/bin/mkdotenv
 /usr/share/man/man1/mkdotenv.1.gz
 
