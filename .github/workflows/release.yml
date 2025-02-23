@@ -137,6 +137,26 @@ jobs:
         with:
           name: mkdotenv-deb
           path: mkdotenv*.deb  
+  
+  build_rpm:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: tag_git
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+         fetch-depth: 0
+      
+      - id: build_docker
+        run: ./build_fedora_docker.sh
+
+      - name: Upload RPM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mkdotenv-rpm
+          path: rpmbuild/RPMS/x86_64/mkdotenv*.rpm  
 
   release:
     runs-on: ubuntu-latest
@@ -162,6 +182,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mkdotenv-deb
+      
+      - name: Download RPM artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mkdotenv-rpm
 
       - name: Create a GitHub pre release
         if:   github.ref == 'refs/heads/dev'
