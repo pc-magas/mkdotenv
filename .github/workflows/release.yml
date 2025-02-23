@@ -166,6 +166,7 @@ jobs:
       - tag_git
       - build_bin
       - build_deb
+      - build_rpm
     steps:
 
       - uses: actions/checkout@v4
