@@ -1,0 +1,19 @@
+FROM fedora:41
+
+RUN dnf update -y && \
+    dnf install -y rpmdevtools rpmlint make golang && \
+    useradd -m pkgbuild
+    
+COPY --chmod=0755 ./dockerfiles/entrypoint.sh /usr/local/bin/entrypoint
+
+USER pkgbuild
+WORKDIR /home/pkgbuild
+
+RUN mkdir code &&\
+    rpmdev-setuptree
+
+VOLUME /home/pkgbuild/code
+VOLUME /home/pkgbuild/rpmbuild
+
+USER root
+ENTRYPOINT [ "/usr/local/bin/entrypoint" ]

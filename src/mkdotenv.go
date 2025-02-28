@@ -27,7 +27,7 @@ import (
 	"slices"
 )
 
-const VERSION = "0.1.6"
+const VERSION = "0.1.7"
 
 func printHelp() {
 	printVersion()

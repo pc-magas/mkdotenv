@@ -1,3 +1,7 @@
+# Version 0.1.7 2025-02-23
+
+1. Release rpm image
+
 # Version 0.1.5 2025-02-12
 
 1. Build for PPA

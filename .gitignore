@@ -3,17 +3,36 @@
 mkdotenv
 *.deb
 *.rpm
+
 build
+
+# Alpine package building
 alpinebuild/src/mkdotenv*
+
+# Debian Package building
 debian/compatclear
 debian/files
 debian/mkdotenv.debhelper.log
 debian/mkdotenv.substvars
 debian/debhelper-build-stamp
 debian/.debhelper
-mkdotenv_*
-keyid
 debian/changelog.gz
-.vagrant
 changelog.debian
+
+# Folder containing dource code before packaging
+mkdotenv_*
+mkdotenv-*
+
+# Vagrant files
+.vagrant
 *.log
+
+# RMP built files
+rpmbuild/SOURCES/*
+rpmbuid/BUILD*/*
+rpmbuid/RPMS/*
+rpmbuid/SRPMS/*
+
+# Misc files
+.bash_history
+keyid

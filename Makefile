@@ -60,7 +60,9 @@ create_source_folder:
 	cp -r src mkdotenv_$(VERSION)
 	cp -r man mkdotenv_$(VERSION)
 	cp Makefile mkdotenv_$(VERSION)
+	cp LICENCE mkdotenv_$(VERSION)
 	tar --exclude=debian --exclude=alpinebuild -czf ../mkdotenv_$(VERSION).orig.tar.gz mkdotenv_$(VERSION);
+
 
 # Step 2: Create the source package
 source_package: ../mkdotenv_$(VERSION).orig.tar.gz
@@ -69,6 +71,14 @@ source_package: ../mkdotenv_$(VERSION).orig.tar.gz
 	dpkg-buildpackage -S -sa
 	sed -i 's/$(DIST)/unstable/g' debian/changelog
 	sed -i 's/$(LINUX_DIST)/debian/g' debian/changelog
+
+source_rpm:
+	mkdir -p mkdotenv-$(VERSION)
+	cp -r src mkdotenv-$(VERSION)
+	cp -r man mkdotenv-$(VERSION)
+	cp Makefile mkdotenv-$(VERSION)
+	cp LICENCE mkdotenv-$(VERSION)
+	tar --exclude=debian --exclude=alpinebuild -czf ./rpmbuild/SOURCES/mkdotenv-$(VERSION).tar.gz mkdotenv-$(VERSION);
 
 #create files for PPA
 ppa: 

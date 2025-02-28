@@ -139,6 +139,18 @@ sudo dpkg -i mkdotenv_${VERSION}_amd64.deb
 
 At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
 
+
+## From rpm package
+
+```
+export VERSION=^found_version^
+wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}-pre/mkdotenv-${VERSION}-1.fc41.x86_64.rpm
+sudo rpm -i mkdotenv_${VERSION}_amd64.deb
+```
+
+At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
+
+
 # Usage
 
 ## Basic
