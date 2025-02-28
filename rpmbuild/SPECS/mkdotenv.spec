@@ -27,7 +27,6 @@ install -m 0755 mkdotenv %{buildroot}/usr/bin/mkdotenv
 install -m 0644 man/mkdotenv.1 %{buildroot}/usr/share/man/man1/mkdotenv.1
 
 %files
-%license LICENSE
 /usr/bin/mkdotenv
 /usr/share/man/man1/mkdotenv.1.gz
 
