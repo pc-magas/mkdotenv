@@ -1,10 +1,11 @@
-FROM golang AS build
+FROM golang:1.23 AS build
 
 WORKDIR /usr/src/app
-COPY ./src/mkdotenv.go .
+COPY ./mkdotenv ./mkdotenv
 
 RUN mkdir -p ./bin && ls -l
-RUN go build -v -o ./bin/mkdotenv mkdotenv.go
+WORKDIR /usr/src/app/mkdotenv
+RUN go build -v -o ../bin/mkdotenv mkdotenv.go
 
 FROM scratch
 

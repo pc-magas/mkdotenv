@@ -41,7 +41,6 @@ clean:
 	rm -rf *.deb
 	rm -rf mkdotenv_$(VERSION)
 
-
 clean-deb:
 	rm -rf mkdotenv_$(VERSION)
 	rm -rf ../*.changes
