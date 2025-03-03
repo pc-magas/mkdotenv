@@ -31,4 +31,5 @@ jobs:
       - name: Show Key ID
         run: echo "Using DEB_SIGN_KEYID=$DEB_SIGN_KEYID"
 
-      - run: make ppa
+      - name: Build Sources upon PPA
+        run: bash ./ppa/create.sh

@@ -50,37 +50,10 @@ clean-deb:
 	rm -rf ../*.orig.tar.gz
 	rm -rf ../*.debian.tar.xz
 
-# POackage as debian image
+# Package as binary debian image
 deb:
 	dpkg-buildpackage -b
 	mv ../*.deb ./
-
-# Step 1: Create the source folder if the tarball does not exist
-create_source_folder:
-	mkdir -p mkdotenv_$(VERSION)
-	cp -r src mkdotenv_$(VERSION)
-	cp -r man mkdotenv_$(VERSION)
-	cp Makefile mkdotenv_$(VERSION)
-	cp LICENCE mkdotenv_$(VERSION)
-	tar --exclude=debian --exclude=alpinebuild -czf ../mkdotenv_$(VERSION).orig.tar.gz mkdotenv_$(VERSION);
-
-
-# Step 2: Create the source package
-source_package: ../mkdotenv_$(VERSION).orig.tar.gz
-	sed -i 's/unstable/$(DIST)/g' debian/changelog
-	sed -i 's/debian/$(LINUX_DIST)/g' debian/changelog
-	dpkg-buildpackage -S -sa
-	sed -i 's/$(DIST)/unstable/g' debian/changelog
-	sed -i 's/$(LINUX_DIST)/debian/g' debian/changelog
-
-#create files for PPA
-ppa: 
-	$(MAKE) create_source_folder
-	for dist in $(DISTROS); do \
-		$(MAKE) source_package DIST=$$dist; \
-	done
-	dput ppa:pcmagas/mkdotenv ../mkdotenv_*_source.changes
-
 
 # Raw binary build
 bin: compile
