@@ -1,0 +1,9 @@
+mkdotenv
+compatclear
+files
+mkdotenv.debhelper.log
+mkdotenv.substvars
+debhelper-build-stamp
+.debhelper
+changelog.gz
+changelog.debian
