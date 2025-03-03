@@ -196,7 +196,7 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  true
-          artifacts: mkdotenv*.deb, mkdotenv
+          artifacts: mkdotenv*.deb, mkdotenv,rpmbuild/RPMS/x86_64/mkdotenv*.rpm 
 
       - name: Create a GitHub release
         if:  github.ref == 'refs/heads/master'
