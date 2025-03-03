@@ -22,6 +22,7 @@ changelog.debian
 # Folder containing dource code before packaging
 mkdotenv_*
 mkdotenv-*
+!mkdotenv
 
 # Vagrant files
 .vagrant

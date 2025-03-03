@@ -24,28 +24,10 @@ import (
 	"strings"
 	"regexp"
 	"errors"
-	"slices"
+	"mkdotenv/params"
+	"mkdotenv/msg"
+
 )
-
-const VERSION = "0.1.7"
-
-func printHelp() {
-	printVersion()
-
-	fmt.Println("\nUsage:\n\t"+os.Args[0]+" <variable_name> <variable_value> [--env-file | --input-file <file_path>] [--output-file <file_path>]\n")
-	fmt.Println("Arguments:")
-	fmt.Println("\tvariable_name\tREQUIRED The name of the variable")
-	fmt.Println("\tvariable_value\tREQUIRED The value of the variable prtovided upon <variable_name>")
-	fmt.Println("\nOptions:")
-	fmt.Println("\t--env-file (or --input-file) <file_path> \tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
-	fmt.Println("\t--output-file <file_path> \tOPTIONAL Instead of printing the result into console write it into a file. If value provided it will NOT output the contents of the .env file.")
-}
-
-func printVersion(){
-	fmt.Println("\nMkDotenv VERSION: ",VERSION)
-	fmt.Println("Replace or add a variable into a .env file.")
-}
-
 
 func append_value_to_dotenv(file *os.File,output *bufio.Writer,variable_name string,variable_value string) (bool,error) {
 	
@@ -89,76 +71,6 @@ func append_value_to_dotenv(file *os.File,output *bufio.Writer,variable_name str
 	}
 
 	return true,nil
-}
-
-
-func getParameters()(string,string,string,string){
-    
-	if(len(os.Args) < 3){
-        fmt.Fprintln(os.Stderr,"Not enough arguments provided")
-		printHelp()
-		os.Exit(1)
-    }
-
-    var dotenv_filename string = ".env"
-    var variable_name string = os.Args[1]
-	var variable_value string = os.Args[2]
-	var output_file string = ""
-
-	if(strings.HasPrefix(variable_name,"-")){
-		printHelp()
-		fmt.Fprintln(os.Stderr,"Variable Name should not start with - or --")
-		os.Exit(1)
-	}
-
-	ARGUMENTS:= []string{"--env-file","--input-file","--output-file","-v","--version","-h","--h","--help"}
-
-	if(slices.Contains(ARGUMENTS[:],variable_value)){
-		printHelp()
-		fmt.Fprintln(os.Stderr,"\nVariable value should not contain any of the values:\n"+strings.Join(ARGUMENTS[:],"\n"))
-		os.Exit(1)
-	}
-
-	for i, arg := range os.Args[3:] {
-
-		switch arg {
-		 	case "--input-file":
-				fallthrough;
-			case "--env-file":
-				// Arguments are parsed with an offset we get the next item + offset
-				dotenv_filename = os.Args[i+3+1]
-				
-			case "--output-file":
-				output_file = os.Args[i+3+1]
-		}
-	}
-	
-	return dotenv_filename,output_file,variable_name,variable_value
-}
-
-func printVersionOrHelp(){
-
-	if(len(os.Args) > 2 ){
-		return
-	}
-
-
-	switch(os.Args[1]){
-		case "-h":
-			fallthrough
-		case "--help":
-			printHelp()
-			os.Exit(0)
-		case "-v":
-			fallthrough
-		case "--version":
-			printVersion()
-			os.Exit(0)
-		default:
-			fmt.Fprintln(os.Stderr,"Not enough arguments provided")
-			printHelp()
-			os.Exit(1)
-	}
 }
 
 func HandleFileError(err error, filename string) {
@@ -211,13 +123,13 @@ func getFileToRead(dotenv_filename string) *os.File {
 func main() {
 
 	if (len(os.Args) == 1 ){
-		printHelp()
+		msg.PrintHelp()
 		os.Exit(0)
 	}
 
-	printVersionOrHelp()
+	params.PrintVersionOrHelp()
 
-	dotenv_filename,output_file,variable_name,variable_value := getParameters()
+	dotenv_filename,output_file,variable_name,variable_value := params.GetParameters(os.Args)
 
 	file:=getFileToRead(dotenv_filename)
 	defer file.Close()
