@@ -205,5 +205,5 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  false
-          artifacts: mkdotenv*.deb, mkdotenv,rpmbuild/RPMS/x86_64/mkdotenv*.rpm 
+          artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm 
       
