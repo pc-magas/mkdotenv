@@ -55,5 +55,5 @@ Run:
 ```
 sudo apt-get update
 sudo apt-get install dput
-make ppa
+bash ./ppa/create.sh
 ```

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=$(grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)".*/\1/')
+VERSION=$(grep 'const VERSION' ./mkdotenv/msg/msg.go | sed -E 's/.*"([^"]+)".*/\1/')
 
 
 docker run \
