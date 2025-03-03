@@ -1,7 +1,7 @@
 # Package metadata
 PKG_NAME = mkdotenv
 BUILD = 1
-VERSION := $(shell grep 'const VERSION' ./src/mkdotenv.go | sed -E 's/.*"([^"]+)".*/\1/')
+VERSION := $(shell grep 'const VERSION' ./mkdotenv/msg/msg.go | sed -E 's/.*"([^"]+)".*/\1/')
 ARCH = amd64
 BIN_NAME = mkdotenv_$(VERSION)
 LINUX_DIST?=ubuntu
@@ -17,8 +17,9 @@ all: compile
 
 # Compile Go binary
 compile:
-	GOOS=linux GOARCH=$(ARCH) $(GO) build -o $(BIN_NAME) ./src/*
-
+	cd ./mkdotenv &&\
+	GOOS=linux GOARCH=$(ARCH) $(GO) build -o ../$(BIN_NAME) mkdotenv.go &&\
+	cd ../
 
 # Install the programme
 install:
@@ -71,14 +72,6 @@ source_package: ../mkdotenv_$(VERSION).orig.tar.gz
 	dpkg-buildpackage -S -sa
 	sed -i 's/$(DIST)/unstable/g' debian/changelog
 	sed -i 's/$(LINUX_DIST)/debian/g' debian/changelog
-
-source_rpm:
-	mkdir -p mkdotenv-$(VERSION)
-	cp -r src mkdotenv-$(VERSION)
-	cp -r man mkdotenv-$(VERSION)
-	cp Makefile mkdotenv-$(VERSION)
-	cp LICENCE mkdotenv-$(VERSION)
-	tar --exclude=debian --exclude=alpinebuild -czf ./rpmbuild/SOURCES/mkdotenv-$(VERSION).tar.gz mkdotenv-$(VERSION);
 
 #create files for PPA
 ppa: 
