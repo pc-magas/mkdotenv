@@ -18,8 +18,10 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 %setup -q
 
 %build
+	ls -l 
 	cd ./mkdotenv &&\
-	go build -o mkdotenv ./mkdotenv.go
+	go build -o mkdotenv ./mkdotenv.go &&\
+	cd ..
 
 %install
 mkdir -p %{buildroot}/usr/bin
