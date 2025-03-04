@@ -20,13 +20,14 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 %build
 	ls -l 
 	cd ./mkdotenv &&\
-	go build -o mkdotenv ./mkdotenv.go &&\
+	rm -rf mkdotenv
+	go build -o ./mkdotenv ./mkdotenv.go &&\
 	cd ..
 
 %install
 mkdir -p %{buildroot}/usr/bin
 mkdir -p %{buildroot}/usr/share/man/man1
-install -m 0755 mkdotenv %{buildroot}/usr/bin/mkdotenv
+install -m 0755 mkdotenv/mkdotenv %{buildroot}/usr/bin/mkdotenv
 install -m 0644 man/mkdotenv.1 %{buildroot}/usr/share/man/man1/mkdotenv.1
 
 %files
