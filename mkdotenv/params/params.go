@@ -33,16 +33,15 @@ func GetParameters(osArguments []string)(string,string,string,string){
 
 		value:= ""
 		arg,value = sliceArgument(arg)
-		value = getValue(value,i,3,osArguments)
 
 		switch arg {
 		 	case "--input-file":
 				fallthrough;
 			case "--env-file":
-				dotenv_filename = value
+				dotenv_filename = getValue(value,i,3,osArguments)
 				
 			case "--output-file":
-				output_file = value
+				output_file = getValue(value,i,3,osArguments)
 		}
 	}
 	

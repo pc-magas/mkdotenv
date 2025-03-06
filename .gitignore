@@ -37,4 +37,7 @@ rpmbuid/SRPMS/*
 # Misc files
 .bash_history
 keyid
+.vscode
 
+notes.txt
+.env.*

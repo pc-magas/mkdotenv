@@ -5,7 +5,7 @@ import(
 	"fmt"
 )
 
-const VERSION = "0.1.7"
+const VERSION = "dev"
 
 func ExitError(msg string){
 	fmt.Fprintln(os.Stderr,msg)
