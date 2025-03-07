@@ -7,8 +7,6 @@ import (
 	"strings"
 	"regexp"
 	"errors"
-	"time"
-	"strconv"
 	"io"
 )
 
@@ -113,13 +111,8 @@ func GetFileToRead(dotenv_filename string) *os.File {
 	}
 	
 	HandleFileError(err, dotenv_filename)
-	new_filename:=dotenv_filename+"."+strconv.FormatInt(time.Now().UnixMilli(),10)
-
-	// There are cases that we need to read and write upon the same file,
-	// Therefore it can have some unwanted bytes
-	CopyFile(dotenv_filename,new_filename)
 	
-	file,err = os.Open(new_filename)
+	file,err = os.Open(dotenv_filename)
 	HandleFileError(err,dotenv_filename)
 
 	return file

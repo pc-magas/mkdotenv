@@ -46,8 +46,8 @@ func main() {
 	if(sameFileToReadAndWrite){
 		files.CopyFile(dotenv_filename,filenameCopy)
 		filenameToRead=filenameCopy
-		defer os.Remove(filenameCopy)
 	}
+
 
 	file:=files.GetFileToRead(filenameToRead)
 	defer file.Close()
@@ -56,9 +56,9 @@ func main() {
 	if(outfile!=nil){
 		defer outfile.Close()
 	}
+	defer writer.Flush()
 
 	_,err := files.AppendValueToDotenv(file,writer,variable_name,variable_value)
-	defer writer.Flush()
 
     if(err!=nil){
         fmt.Fprintln(os.Stderr, "Error:", err)
@@ -68,5 +68,11 @@ func main() {
         os.Exit(1)
     }
 
-	os.Remove(filenameCopy)
+	if sameFileToReadAndWrite {
+		file.Close()
+		err := os.Remove(filenameCopy)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: Failed to remove temp file %s: %v\n", filenameCopy, err)
+		}
+	}
 }
