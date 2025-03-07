@@ -20,7 +20,8 @@ package main
 import (
     "os"
     "fmt"
-    "bufio"
+	"time"
+	"strconv"
 	"mkdotenv/params"
 	"mkdotenv/msg"
 	"mkdotenv/files"
@@ -37,23 +38,35 @@ func main() {
 
 	dotenv_filename,output_file,variable_name,variable_value := params.GetParameters(os.Args)
 
-	file:=files.GetFileToRead(dotenv_filename)
+	filenameToRead := dotenv_filename
+	filenameCopy:=dotenv_filename+"."+strconv.FormatInt(time.Now().UnixMilli(),10)
+	sameFileToReadAndWrite:=dotenv_filename == output_file 
+
+	// If inputfile is same as Outputfile copy the input file to a temporary one
+	if(sameFileToReadAndWrite){
+		files.CopyFile(dotenv_filename,filenameCopy)
+		filenameToRead=filenameCopy
+		defer os.Remove(filenameCopy)
+	}
+
+	file:=files.GetFileToRead(filenameToRead)
 	defer file.Close()
 
-	writer := bufio.NewWriter(os.Stdout)
-	if output_file != "" {
-		outfile,err := os.OpenFile(output_file,os.O_CREATE|os.O_WRONLY, 0644)
-		if err != nil {
-			files.HandleFileError(err,output_file)
-		}
-		defer file.Close()
-		writer = bufio.NewWriter(outfile)
+	writer,outfile := files.CreateWriter(output_file)
+	if(outfile!=nil){
+		defer outfile.Close()
 	}
+
+	_,err := files.AppendValueToDotenv(file,writer,variable_name,variable_value)
 	defer writer.Flush()
 
-    _,err := files.AppendValueToDotenv(file,writer,variable_name,variable_value)
     if(err!=nil){
         fmt.Fprintln(os.Stderr, "Error:", err)
+		if(sameFileToReadAndWrite){
+			files.CopyFile(filenameCopy,dotenv_filename)
+		}
         os.Exit(1)
     }
+
+	os.Remove(filenameCopy)
 }

@@ -7,11 +7,15 @@ import (
 	"strings"
 	"regexp"
 	"errors"
+	"time"
+	"strconv"
+	"io"
 )
 
 
 func AppendValueToDotenv(file *os.File,output *bufio.Writer,variable_name string,variable_value string) (bool,error) {
 	
+
 	var newline string = fmt.Sprintf("%s=%s", variable_name, variable_value)
 
 	// If no .env exists then output the variable.
@@ -40,17 +44,13 @@ func AppendValueToDotenv(file *os.File,output *bufio.Writer,variable_name string
 		line:=scanner.Text()
 		line_to_write:=line
 		
-		length_delta:=len(line)- len(newline)
-		if(length_delta < 0){
-			length_delta = -length_delta
-		}
-
 		if re.MatchString(line) {
 			line_to_write = newline	
 			variableFound=true
 		}
-
-		output.WriteString(line_to_write+"\n"+strings.Repeat(" ",length_delta))
+		
+		fmt.Println(line_to_write)
+		output.WriteString(line_to_write+"\n")
 	}
 
 	if !variableFound {
@@ -61,6 +61,11 @@ func AppendValueToDotenv(file *os.File,output *bufio.Writer,variable_name string
 }
 
 func HandleFileError(err error, filename string) {
+
+	if (err == nil){
+		return;
+	}
+
 	if os.IsNotExist(err) {
 		fmt.Fprintf(os.Stderr, "Error: The file '%s' does not exist.\n", filename)
 	} else if os.IsPermission(err) {
@@ -72,6 +77,25 @@ func HandleFileError(err error, filename string) {
 	os.Exit(1)
 }
 
+
+func CopyFile(dotenv_filename string,dest_filename string) {
+
+	file, err:= os.Open(dotenv_filename)
+	HandleFileError(err, dotenv_filename)
+
+	newFile,err:= os.Create(dest_filename)
+	HandleFileError(err, dest_filename)
+
+	_,err=io.Copy(newFile,file)
+	HandleFileError(err,dest_filename)
+	
+	err = newFile.Sync()
+	HandleFileError(err,dest_filename)
+
+	file.Close()
+	newFile.Close()
+}
+
 func GetFileToRead(dotenv_filename string) *os.File {
 
 	var file *os.File
@@ -80,29 +104,39 @@ func GetFileToRead(dotenv_filename string) *os.File {
 	stat, _ := os.Stdin.Stat()
 	hasPipeInput := (stat.Mode() & os.ModeCharDevice) == 0
 
-	if dotenv_filename != ".env" { 
-		// User explicitly provided a file, use it
-		file, err = os.Open(dotenv_filename)
-		if err != nil {
-			HandleFileError(err, dotenv_filename)
-			os.Exit(1)
-		}
-	} else if hasPipeInput {
-		// No --env-file, but we have pipe input
-		file = os.Stdin
-	} else {
-		// Default to .env
-		file, err = os.Open(".env")
-		if err != nil {
-
-			if(os.IsNotExist(err)){
-				return nil
-			}
-
-			HandleFileError(err, ".env")
-			os.Exit(1)
-		}
+	// Input is piped through STDIN
+	if(hasPipeInput){
+		return os.Stdin
 	}
 
+	if(dotenv_filename == ""){
+		dotenv_filename = ".env"
+	}
+	
+	HandleFileError(err, dotenv_filename)
+	new_filename:=dotenv_filename+"."+strconv.FormatInt(time.Now().UnixMilli(),10)
+
+	// There are cases that we need to read and write upon the same file,
+	// Therefore it can have some unwanted bytes
+	CopyFile(dotenv_filename,new_filename)
+	
+	file,err = os.Open(new_filename)
+	HandleFileError(err,dotenv_filename)
+
 	return file
+}
+
+
+func CreateWriter(filename string) (*bufio.Writer,*os.File) {
+	
+	if(filename == ""){
+		return bufio.NewWriter(os.Stdout),nil
+	}
+
+	outfile,err := os.OpenFile(filename,os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
+	if err != nil {
+		HandleFileError(err,filename)
+	}
+		
+	return bufio.NewWriter(outfile),outfile
 }
