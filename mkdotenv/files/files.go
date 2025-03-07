@@ -49,7 +49,6 @@ func AppendValueToDotenv(file *os.File,output *bufio.Writer,variable_name string
 			variableFound=true
 		}
 		
-		fmt.Println(line_to_write)
 		output.WriteString(line_to_write+"\n")
 	}
 
