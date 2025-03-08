@@ -57,7 +57,7 @@ bin: compile
 
 # Build into docker image
 docker:
-	docker build -t pcmagas/mkdotenv:$(VERSION) -t pcmagas/mkdotenv:latest .
+	docker build -t pcmagas/mkdotenv:$(VERSION) --build-arg VERSION=${VERSION} -t pcmagas/mkdotenv:latest .
 
 docker-push: docker
 	docker push pcmagas/mkdotenv:$(VERSION)

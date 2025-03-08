@@ -1,11 +1,13 @@
 FROM golang:1.23 AS build
 
+ARG VERSION
 WORKDIR /usr/src/app
+
 COPY ./mkdotenv ./mkdotenv
 
 RUN mkdir -p ./bin && ls -l
 WORKDIR /usr/src/app/mkdotenv
-RUN go build -v -o ../bin/mkdotenv mkdotenv.go
+RUN go build -v -ldflags "-X 'mkdotenv/msg.version=${VERSION}'" -o ../bin/mkdotenv mkdotenv.go
 
 FROM scratch
 
