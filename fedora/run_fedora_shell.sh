@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-VERSION=$(grep 'const VERSION' ./mkdotenv/msg/msg.go | sed -E 's/.*"([^"]+)".*/\1/')
+SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+SOURCEPATH=${SCRIPTPATH}/../ 
+
+VERSION=$(cat ${SOURCEPATH}/VERSION)
 
 
 docker run \

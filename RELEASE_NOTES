@@ -1,5 +1,4 @@
-1. Split codebase into multiple files
-2. Use a seperate version time and define built version upon compile
-3. Do not leave leftover characters if input file is same as output file
-4. If input file is same as output file copy input file into a temporary one
-5. Set version upon build time
+1. Split codebase into multiple files.
+2. Use a seperate version file and define built version upon compile.
+3. Do not leave leftover characters if input file is same as output file.
+4. [BUGFIX] If input file is same as output file copy input file into a temporary one.

@@ -4,7 +4,7 @@
 SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 SOURCEPATH=${SCRIPTPATH}/../ 
 
-VERSION=$(grep 'const VERSION' ./mkdotenv/msg/msg.go | sed -E 's/.*"([^"]+)".*/\1/')
+VERSION=$(cat ${SOURCEPATH}/VERSION)
 
 SRC_FOLDER=mkdotenv-${VERSION}
 CHANGES_FILE=${SCRIPTPATH}/../../mkdotenv_*_source.changes
