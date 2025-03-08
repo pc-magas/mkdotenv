@@ -1,12 +1,15 @@
 .TH MKDOTENV 1 "February 2025" "mkdotenv 0.0.1"
 .SH NAME
-mkdotenv \- A command-line tool to add or update environment variables in a .env file
+mkdotenv \- A command-line tool to add or update environment variables in a .env file.
 .SH SYNOPSIS
 .B mkdotenv
-[\fIVARIABLE_NAME\fR] [\fIVARIABLE_VALUE\fR] [\fI--env-file <file_path>\fR | \fI--input-file <file_path>\fR] [\fI--output-file <file_path>\fR]
+[\fI-h\fR | \fI--help\fR | \fI-v\fR | \fI--version\fR] 
+[\fIVARIABLE_NAME\fR] [\fIVARIABLE_VALUE\fR] 
+[\fI--env-file\fR \fI<file_path>\fR | \fI--input-file\fR \fI<file_path>\fR] 
+[\fI--output-file\fR \fI<file_path>\fR]
 .SH DESCRIPTION
-The \fBmkdotenv\fR command allows users to add or update a variable in a .env file. 
-It modifies the specified .env file and can optionally save the output to another file.
+The \fBmkdotenv\fR command allows users to add or update environment variables in a .env file. 
+By default, it modifies the current .env file, but users can specify a different file for input and output.
 .SH ARGUMENTS
 .TP
 .B VARIABLE_NAME
@@ -16,35 +19,48 @@ It modifies the specified .env file and can optionally save the output to anothe
 (REQUIRED) The value assigned to the \fIVARIABLE_NAME\fR.
 .SH OPTIONS
 .TP
-.B \-\-env-file <file_path>, \-\-input-file <file_path>
-(OPTIONAL) Specifies the .env file to be modified. If not provided, the default is \fB.env\fR.
+.B -h, --help
+Display the help message and exit. If provided with any other arguments, the command is ignored.
 .TP
-.B \-\-output-file <file_path>
-(OPTIONAL) Instead of printing the result to the console, write the output to the specified file.
-If this option is used, the modified .env file will not be printed.
+.B -v, --version
+Display the application version and exit. If provided with any other arguments, the command is ignored.
+.TP
+.B --env-file \fI<file_path>\fR, --input-file \fI<file_path>\fR, --env-file=\fI<file_path>\fR, --input-file=\fI<file_path>\fR
+(OPTIONAL) Specifies the .env file to be modified. If not provided, the default is \fB.env\fR in the current directory.
+.TP
+.B --output-file \fI<file_path>\fR, --output-file=<file_path>
+(OPTIONAL) Write the modified .env contents to the specified file instead of printing to the console.
+If this option is used, the result will not be printed to the terminal.
 .SH EXAMPLES
+.TP
 Add a variable to the default .env file:
-.PP
 .RS
 $ mkdotenv API_KEY 123456
 .RE
-.PP
+.TP
 Add a variable to a specific .env file:
-.PP
 .RS
 $ mkdotenv API_KEY 123456 --env-file config.env
 .RE
-.PP
+.TP
+The value can also be provided using the `=` syntax:
+.RS
+$ mkdotenv API_KEY=123456 --env-file=config.env
+.RE
+.TP
 Write the output to a separate file:
-.PP
 .RS
 $ mkdotenv API_KEY 123456 --output-file output.env
 .RE
-.PP
-Update multiple variables
-.PP
+.TP
+The value can also be provided using the `=` syntax:
 .RS
-$ mkdotenv API_KEY 123456 | mkdotenv API_KEY2 123456 --output-file output.env
+$ mkdotenv API_KEY=123456 --output-file=output.env
+.RE
+.TP
+Update multiple variables:
+.RS
+$ mkdotenv API_KEY 123456 | mkdotenv API_KEY2 7890 --output-file output.env
 .RE
 .SH AUTHOR
 Written by Desyllas Dimitrios.

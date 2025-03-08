@@ -4,6 +4,7 @@
 2. Use a seperate version file and define built version upon compile.
 3. Do not leave leftover characters if input file is same as output file.
 4. [BUGFIX] If input file is same as output file copy input file into a temporary one.
+5. Improved Documentation
 
 # Version 0.1.7 2025-02-23
 
