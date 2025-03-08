@@ -1,13 +1,9 @@
 # Package metadata
 PKG_NAME = mkdotenv
 BUILD = 1
-VERSION := $(shell grep 'const VERSION' ./mkdotenv/msg/msg.go | sed -E 's/.*"([^"]+)".*/\1/')
+VERSION := $(shell cat VERSION)
 ARCH = amd64
 BIN_NAME = mkdotenv_$(VERSION)
-LINUX_DIST?=ubuntu
-DISTROS ?= jammy noble
-DIST=jammy
-
 GO := go
 
 .PHONY: all compile
@@ -18,7 +14,8 @@ all: compile
 # Compile Go binary
 compile:
 	cd ./mkdotenv &&\
-	GOOS=linux GOARCH=$(ARCH) $(GO) build -o ../$(BIN_NAME) mkdotenv.go &&\
+	echo $(VERSION) &&\
+	GOOS=linux GOARCH=$(ARCH) $(GO) build -ldflags "-X 'mkdotenv/msg.version=$(VERSION)'" -o ../$(BIN_NAME) mkdotenv.go &&\
 	cd ../
 
 # Install the programme

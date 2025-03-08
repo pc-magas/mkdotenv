@@ -5,7 +5,8 @@ import(
 	"fmt"
 )
 
-const VERSION = "dev"
+// This is changed upon runtime.
+var version = "dev"
 
 func ExitError(msg string){
 	fmt.Fprintln(os.Stderr,msg)
@@ -26,6 +27,6 @@ func PrintHelp() {
 }
 
 func PrintVersion(){
-	fmt.Println("\nMkDotenv VERSION: ",VERSION)
+	fmt.Println("\nMkDotenv VERSION: ",version)
 	fmt.Println("Replace or add a variable into a .env file.")
 }
