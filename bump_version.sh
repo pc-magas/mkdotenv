@@ -3,7 +3,7 @@
 CHANGELOG="Changelog.md"
 DEBIAN_CHANGELOG="debian/changelog"
 SPEC_FILE="rpmbuild/SPECS/mkdotenv.spec"
-UPSTREAM_VERSION=$(cat VERSION)  # Read the new upstream version
+UPSTREAM_VERSION=$(cat VERSION)
 DATE=$(date +%Y-%m-%d)
 
 # Function to select an editor
@@ -74,8 +74,11 @@ rpmdev-bumpspec -c "$RELEASE_NOTES" -u "$(whoami)" "$SPEC_FILE"
 $EDITOR_CHOICE "$SPEC_FILE"
 
 # Update Debian changelog
+
+DEB_RELEASE_NOTES=$(printf '  * %s\n' "$(cat RELEASE_NOTES)")
+
 echo "Adding new Debian changelog entry for version $UPSTREAM_VERSION."
-dch -D unstable -m "$RELEASE_NOTES" --newversion "$UPSTREAM_VERSION-0debian1-unstable1"
+dch -D unstable -m "$DEB_RELEASE_NOTES" --newversion "$UPSTREAM_VERSION-0debian1-unstable1"
 
 # Prompt user to edit Debian changelog
 $EDITOR_CHOICE "$DEBIAN_CHANGELOG"
