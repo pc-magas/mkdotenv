@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.1.7
+Version:        0.2.0
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
