@@ -75,10 +75,14 @@ $EDITOR_CHOICE "$SPEC_FILE"
 
 # Update Debian changelog
 
-DEB_RELEASE_NOTES=$(printf '  * %s\n' "$(cat RELEASE_NOTES)")
-
 echo "Adding new Debian changelog entry for version $UPSTREAM_VERSION."
-dch -D unstable -m "$DEB_RELEASE_NOTES" --newversion "$UPSTREAM_VERSION-0debian1-unstable1"
+DEB_VERSION="$UPSTREAM_VERSION-0debian1-unstable1"
+dch --newversion "$DEB_VERSION-0debian1-unstable1"
+while IFS= read -r line; do
+    echo $line;
+    dch --newversion "$DEB_VERSION-0debian1-unstable1" -a "$line"
+done < RELEASE_NOTES
+dch --newversion "$DEB_VERSION-0debian1-unstable1" --distribution unstable ignored
 
 # Prompt user to edit Debian changelog
 $EDITOR_CHOICE "$DEBIAN_CHANGELOG"

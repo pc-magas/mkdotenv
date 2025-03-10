@@ -7,3 +7,4 @@ debhelper-build-stamp
 .debhelper
 changelog.gz
 changelog.debian
+changelog.dch
