@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 CHANGELOG="Changelog.md"
+DEBIAN_CHANGELOG="debian/changelog"
+UPSTREAM_VERSION=$(cat VERSION)  # Read the new upstream version
+DATE=$(date +%Y-%m-%d)
 
 # Function to select an editor
 select_editor() {
@@ -21,35 +24,32 @@ select_editor() {
 
 EDITOR_CHOICE=$(select_editor) || exit 1
 
-# Edit version file
-$EDITOR_CHOICE VERSION
-VERSION=$(cat VERSION)
-
 # Edit release notes
 $EDITOR_CHOICE RELEASE_NOTES
 RELEASE_NOTES=$(cat RELEASE_NOTES)
-DATE=$(date +%Y-%m-%d)
 
 # Format new entry
-NEW_ENTRY="# Version $VERSION $DATE"
+NEW_ENTRY="# Version $UPSTREAM_VERSION $DATE"
 
-# Check if entry already exists
-if grep -q "$NEW_ENTRY" "$CHANGELOG"; then
-  echo "Entry for version $VERSION already exists in $CHANGELOG."
-  # Prompt user whether to prepend or skip
-  read -p "Do you want to prepend this entry to the changelog? (y/n): " user_input
-  if [[ "$user_input" =~ ^[Yy]$ ]]; then
-    echo -e "$NEW_ENTRY\n\n$RELEASE_NOTES\n\n$(cat $CHANGELOG)" > "$CHANGELOG"
-    echo "Prepended new entry to $CHANGELOG."
-  else
-    echo "Skipped updating $CHANGELOG."
-  fi
+# Insert release notes into the changelog
+echo -e "$NEW_ENTRY\n\n$RELEASE_NOTES\n\n$(cat $CHANGELOG)" > "$CHANGELOG"
+$EDITOR_CHOICE "$CHANGELOG"
+
+# Check if the version already exists in debian/changelog
+if grep -q "$UPSTREAM_VERSION" "$DEBIAN_CHANGELOG"; then
+    echo "Version $UPSTREAM_VERSION already exists, updating changelog entry."
+
+    # Replace the existing entry with the new one
+    sed -i "/$UPSTREAM_VERSION/{
+        r /dev/stdin
+        d
+    }" "$DEBIAN_CHANGELOG" <<< "$NEW_ENTRY $RELEASE_NOTES"
 else
-  # If entry doesn't exist, prepend it
-  echo -e "$NEW_ENTRY\n\n$RELEASE_NOTES\n\n$(cat $CHANGELOG)" > "$CHANGELOG"
-  echo "Updated $CHANGELOG with version $VERSION."
+    # Version doesn't exist, add a new entry
+    echo "Version $UPSTREAM_VERSION not found, adding new changelog entry."
+    dch -D unstable -m "$RELEASE_NOTES" --newversion "$UPSTREAM_VERSION-0debian1" # Add -0debian1 as the debian revision
 fi
 
-# Edit changelog
+# Finally, edit the changelog file
 echo "Editing changelog"
-$EDITOR_CHOICE "$CHANGELOG"
+$EDITOR_CHOICE "$DEBIAN_CHANGELOG"

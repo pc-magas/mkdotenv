@@ -1,3 +1,14 @@
+# Version 0.2.0 2025-03-10 1. Split codebase into multiple files.
+
+  * Split codebase into multiple files.
+  * Use a seperate version file and define built version upon compile. 
+  * Do not leave leftover characters if input file is same as output file. 
+  * [BUGFIX] If input file is same as output file copy input file into a temporary
+    one. 
+  * Improved Documentation
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Mon, 10 Mar 2025 18:43:08 +0200
+
 mkdotenv (0.1.7-0debian1~unstable1) unstable; urgency=medium
 
   * Set Distro and distro version
