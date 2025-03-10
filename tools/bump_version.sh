@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 
+test -n "$BASH_VERSION" || exec /bin/bash $0 "$@"
+
+SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+SOURCEPATH=${SCRIPTPATH}/../ 
+
+cd ${SOURCEPATH}
+
 CHANGELOG="Changelog.md"
 DEBIAN_CHANGELOG="debian/changelog"
 SPEC_FILE="rpmbuild/SPECS/mkdotenv.spec"
 DATE=$(date +%Y-%m-%d)
-
 
 sensible-editor VERSION
 UPSTREAM_VERSION=$(cat VERSION)
@@ -77,3 +83,5 @@ dch --newversion "$DEB_VERSION" --distribution unstable ignored
 sensible-editor "$DEBIAN_CHANGELOG"
 
 echo "Version updated successfully: $UPSTREAM_VERSION"
+
+cd ${SCRIPTPATH}
