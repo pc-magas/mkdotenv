@@ -20,8 +20,8 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 %build
 	ls -l 
 	cd ./mkdotenv &&\
-	rm -rf mkdotenv
-	go build -o ./mkdotenv ./mkdotenv.go &&\
+	rm -rf mkdotenv &&\
+    go build -o ./mkdotenv -ldflags "-X mkdotenv/msg.version=%{version}" ./mkdotenv.go && \
 	cd ..
 
 %install
