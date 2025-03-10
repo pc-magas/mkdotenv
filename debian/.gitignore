@@ -8,3 +8,4 @@ debhelper-build-stamp
 changelog.gz
 changelog.debian
 changelog.dch
+.changelog.swp
