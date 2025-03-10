@@ -3,26 +3,15 @@
 CHANGELOG="Changelog.md"
 DEBIAN_CHANGELOG="debian/changelog"
 SPEC_FILE="rpmbuild/SPECS/mkdotenv.spec"
-UPSTREAM_VERSION=$(cat VERSION)
 DATE=$(date +%Y-%m-%d)
 
-# Function to select an editor
-select_editor() {
-  local editor="$VISUAL"
-  [ -z "$editor" ] && editor="$EDITOR"
-  [ -z "$editor" ] && command -v nano >/dev/null && editor=nano
-  [ -z "$editor" ] && command -v vim >/dev/null && editor=vim
-  [ -z "$editor" ] && echo "No editor found" >&2 && return 1
-  echo "$editor"
-}
 
-EDITOR_CHOICE=$(select_editor) || exit 1
+sensible-editor VERSION
+UPSTREAM_VERSION=$(cat VERSION)
 
-# Edit release notes
-$EDITOR_CHOICE RELEASE_NOTES
+sensible-editor RELEASE_NOTES
 RELEASE_NOTES=$(cat RELEASE_NOTES)
 
-# Format new entry
 NEW_ENTRY="# Version $UPSTREAM_VERSION $DATE"
 
 # Check if the first line contains the same version
@@ -37,7 +26,7 @@ else
 fi
 
 # Let user edit the changelog
-$EDITOR_CHOICE "$CHANGELOG"
+sensible-editor "$CHANGELOG"
 
 # Extract version and release from RPM spec file
 CURRENT_RPM_VERSION=$(grep -E '^Version:' "$SPEC_FILE" | awk '{print $2}')
@@ -71,7 +60,7 @@ sed -i "s/^Release:.*/Release:        $NEW_RPM_RELEASE%{?dist}/" "$SPEC_FILE"
 rpmdev-bumpspec -c "$RELEASE_NOTES" -u "$(whoami)" "$SPEC_FILE"
 
 # Prompt user to edit spec file
-$EDITOR_CHOICE "$SPEC_FILE"
+sensible-editor "$SPEC_FILE"
 
 # Update Debian changelog
 
@@ -85,6 +74,6 @@ done < RELEASE_NOTES
 dch --newversion "$DEB_VERSION" --distribution unstable ignored
 
 # Prompt user to edit Debian changelog
-$EDITOR_CHOICE "$DEBIAN_CHANGELOG"
+sensible-editor "$DEBIAN_CHANGELOG"
 
 echo "Version updated successfully: $UPSTREAM_VERSION"
