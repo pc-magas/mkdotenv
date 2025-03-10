@@ -18,14 +18,25 @@ select_editor() {
 
 EDITOR_CHOICE=$(select_editor) || exit 1
 
+# Edit release notes
 $EDITOR_CHOICE RELEASE_NOTES
 RELEASE_NOTES=$(cat RELEASE_NOTES)
 
 # Format new entry
 NEW_ENTRY="# Version $UPSTREAM_VERSION $DATE"
 
-# Insert release notes into the changelog
-echo -e "$NEW_ENTRY\n\n$RELEASE_NOTES\n\n$(cat $CHANGELOG)" > "$CHANGELOG"
+# Check if the first line contains the same version
+if head -n 1 "$CHANGELOG" | grep -q "$UPSTREAM_VERSION"; then
+    echo "Version $UPSTREAM_VERSION already exists at the top of $CHANGELOG, overwriting."
+    # Overwrite existing top entry
+    sed -i "1,/^$/c\\$NEW_ENTRY\n\n$RELEASE_NOTES\n" "$CHANGELOG"
+else
+    echo "Prepending new version entry to $CHANGELOG."
+    # Prepend new entry at the top
+    echo -e "$NEW_ENTRY\n\n$RELEASE_NOTES\n\n$(cat $CHANGELOG)" > "$CHANGELOG"
+fi
+
+# Let user edit the changelog
 $EDITOR_CHOICE "$CHANGELOG"
 
 # Extract version and release from RPM spec file
@@ -64,7 +75,7 @@ $EDITOR_CHOICE "$SPEC_FILE"
 
 # Update Debian changelog
 echo "Adding new Debian changelog entry for version $UPSTREAM_VERSION."
-dch -D unstable -m "$RELEASE_NOTES" --newversion "$UPSTREAM_VERSION-0debian1"
+dch -D unstable -m "$RELEASE_NOTES" --newversion "$UPSTREAM_VERSION-0debian1-unstable1"
 
 # Prompt user to edit Debian changelog
 $EDITOR_CHOICE "$DEBIAN_CHANGELOG"
