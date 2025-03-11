@@ -2,6 +2,7 @@
 
 remote_branch="dev"
 SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+PROJECT_ROOT=${SCRIPTPATH}/../..
 
 while read local_ref local_sha remote_ref remote_sha
 do
@@ -9,8 +10,7 @@ do
     if [[ "$remote_ref" == "refs/heads/$remote_branch" ]]; then
         echo "Pushing to $remote_branch branch detected. Running script..."
         
-        # Call your script here (replace with actual script)
-        ${SCRIPTPATH}/../tools/bump-version.sh  # Change this to your actual script
+        ${PROJECT_ROOT}/tools/bump_version.sh
         
         if [ $? -ne 0 ]; then
             echo "Script execution failed. Aborting push."
