@@ -1,3 +1,16 @@
+mkdotenv (0.2.3-0debian1~unstable1.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * 
+
+ -- pcmagas <pcmagas@pcmagas-System-Product-Name>  Tue, 11 Mar 2025 18:25:04 +0200
+
+mkdotenv (0.2.3-0debian1~unstable1) jammy; urgency=medium
+
+  * 
+
+ -- pcmagas <pcmagas@disroot.org>  Tue, 11 Mar 2025 18:25:04 +0200
+
 mkdotenv (0.2.1-0debian1~unstavble1) unstable; urgency=medium
 
   [ Dimitrios Desyllas ]
