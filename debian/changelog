@@ -1,9 +1,18 @@
+mkdotenv (0.2.2-0debian2) unstable; urgency=medium
+
+  * ignored
+
+ -- pcmagas <pcmagas@pcmagas-System-Product-Name>  Tue, 11 Mar 2025 18:17:49 +0200
+
 mkdotenv (0.2.2-0debian1) unstable; urgency=medium
 
   * 
   * ignored
+  * 1. Split codebase into multiple files.
+  * 4. [BUGFIX] If input file is same as output file copy input file
+    into a temporary one.
 
- -- pcmagas <pcmagas@pcmagas-System-Product-Name>  Tue, 11 Mar 2025 18:16:32 +0200
+ -- pcmagas <pcmagas@pcmagas-System-Product-Name>  Tue, 11 Mar 2025 18:17:47 +0200
 
 mkdotenv (0.2.1-0debian1-unstable1) unstable; urgency=medium
 
