@@ -1,15 +1,3 @@
-mkdotenv (0.2.3-0debian1~unstable2) unstable; urgency=medium
-
-  * 
-
- -- pcmagas <pcmagas@distoot.org>  Tue, 11 Mar 2025 18:29:09 +0200
-
-mkdotenv (0.2.3-0debian1~unstable1) jammy; urgency=medium
-
-  * ignored
-
- -- pcmagas <pcmagas@distoot.org>  Tue, 11 Mar 2025 18:29:09 +0200
-
 mkdotenv (0.2.1-0debian1~unstable1) unstable; urgency=medium
 
   [ Dimitrios Desyllas ]
