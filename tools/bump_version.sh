@@ -84,4 +84,7 @@ sensible-editor "$DEBIAN_CHANGELOG"
 
 echo "Version updated successfully: $UPSTREAM_VERSION"
 
+git commit -m "[Autotool] Bump version and fix into nessesary files" ./$CHANGELOG ./$DEBIAN_CHANGELOG ./$SPEC_FILE ./Changelog.md ./VERSION ./RELEASE_NOTES
+
 cd ${SCRIPTPATH}
+
