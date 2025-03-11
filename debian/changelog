@@ -1,31 +1,17 @@
-mkdotenv (0.2.3-0debian1~unstable1.3) unstable; urgency=medium
-
-  * Non-maintainer upload.
-  * 
-
- -- pcmagas <pcmagas@distoot.org>  Tue, 11 Mar 2025 18:25:55 +0200
-
-mkdotenv (0.2.3-0debian1~unstable1.2) unstable; urgency=medium
-
-  * Non-maintainer upload.
-  * 
-
- -- pcmagas <pcmagas@disroot.org>  Tue, 11 Mar 2025 18:25:55 +0200
-
 mkdotenv (0.2.3-0debian1~unstable1.1) unstable; urgency=medium
 
   * Non-maintainer upload.
   * 
 
- -- pcmagas <pcmagas@disroot.org>  Tue, 11 Mar 2025 18:25:22 +0200
+ -- pcmagas <pcmagas@distoot.org>  Tue, 11 Mar 2025 18:26:45 +0200
 
 mkdotenv (0.2.3-0debian1~unstable1) jammy; urgency=medium
 
   * 
 
- -- pcmagas <pcmagas@disroot.org>  Tue, 11 Mar 2025 18:25:04 +0200
+ -- pcmagas <pcmagas@disroot.org>  Tue, 11 Mar 2025 18:26:44 +0200
 
-mkdotenv (0.2.1-0debian1~unstavble1) unstable; urgency=medium
+mkdotenv (0.2.1-0debian1~unstable1) unstable; urgency=medium
 
   [ Dimitrios Desyllas ]
   * 1. Split codebase into multiple files.   
