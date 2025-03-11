@@ -71,13 +71,12 @@ sensible-editor "$SPEC_FILE"
 # Update Debian changelog
 
 echo "Adding new Debian changelog entry for version $UPSTREAM_VERSION."
-DEB_VERSION="$UPSTREAM_VERSION-0debian1-unstable1"
-dch --newversion "$DEB_VERSION"
+DEB_VERSION="$UPSTREAM_VERSION-0debian1~unstable1"
+dch --distribution unstable --newversion $DEB_VERSION -m ""
 while IFS= read -r line; do
     echo $line;
-    dch --newversion "$DEB_VERSION" -a "$line"
+    dch -a "$line"
 done < RELEASE_NOTES
-dch --newversion "$DEB_VERSION" --distribution unstable ignored
 
 # Prompt user to edit Debian changelog
 sensible-editor "$DEBIAN_CHANGELOG"
