@@ -1,3 +1,9 @@
+mkdotenv (0.2.3-0debian1~unstable1.2) unstable; urgency=medium
+
+  * 
+
+ -- pcmagas <pcmagas@distoot.org>  Tue, 11 Mar 2025 18:27:47 +0200
+
 mkdotenv (0.2.3-0debian1~unstable1.1) unstable; urgency=medium
 
   * Non-maintainer upload.
