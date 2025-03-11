@@ -1,10 +1,3 @@
-mkdotenv (0.2.3-0debian1~unstable1.1) unstable; urgency=medium
-
-  * Non-maintainer upload.
-  * 
-
- -- pcmagas <pcmagas@distoot.org>  Tue, 11 Mar 2025 18:39:22 +0200
-
 mkdotenv (0.2.3-0debian1~unstable1) unstable; urgency=medium
 
   * 1. Split codebase into multiple files.
@@ -14,7 +7,7 @@ mkdotenv (0.2.3-0debian1~unstable1) unstable; urgency=medium
     into a temporary one.
   * 5. Improved Documentation
 
- -- pcmagas <pcmagas@pcmagas-System-Product-Name>  Tue, 11 Mar 2025 18:39:22 +0200
+ -- pcmagas <pcmagas@pcmagas-System-Product-Name>  Tue, 11 Mar 2025 18:40:01 +0200
 
 mkdotenv (0.2.1-0debian1~unstable1) unstable; urgency=medium
 
