@@ -1,6 +1,18 @@
+mkdotenv (0.2.3-0debian1~unstable3) unstable; urgency=medium
+
+  * 
+
+ -- pcmagas <pcmagas@distoot.org>  Tue, 11 Mar 2025 18:38:39 +0200
+
 mkdotenv (0.2.3-0debian1~unstable2) unstable; urgency=medium
 
   * 
+  * 1. Split codebase into multiple files.
+  * 2. Use a seperate version file and define built version upon
+    compile.
+  * 4. [BUGFIX] If input file is same as output file copy input file
+    into a temporary one.
+  * 5. Improved Documentation
 
  -- pcmagas <pcmagas@distoot.org>  Tue, 11 Mar 2025 18:37:53 +0200
 
