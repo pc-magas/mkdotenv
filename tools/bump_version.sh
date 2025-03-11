@@ -2,6 +2,26 @@
 
 test -n "$BASH_VERSION" || exec /bin/bash $0 "$@"
 
+
+if ! command -v dialog &> /dev/null; then
+    echo "Error: 'dialog' is not installed. Install it with: sudo apt install dialog"
+    exit 1
+fi
+
+# Use dialog to show an ncurses-style prompt
+dialog --title "Version Bump Confirmation" --yesno "Do you want to bump the version and update changelogs?" 7 50
+
+# Capture the exit status of dialog (0 = Yes, 1 = No)
+response=$?
+
+clear  # Clear the screen after dialog closes
+
+if [[ $response -ne 0 ]]; then
+    echo "Aborting version bump process."
+    exit 0
+fi
+
+
 SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 SOURCEPATH=${SCRIPTPATH}/../ 
 
