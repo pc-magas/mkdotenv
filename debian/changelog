@@ -1,9 +1,3 @@
-mkdotenv (0.2.2-0debian2) unstable; urgency=medium
-
-  * ignored
-
- -- pcmagas <pcmagas@pcmagas-System-Product-Name>  Tue, 11 Mar 2025 18:17:49 +0200
-
 mkdotenv (0.2.2-0debian1) unstable; urgency=medium
 
   * 
@@ -14,7 +8,7 @@ mkdotenv (0.2.2-0debian1) unstable; urgency=medium
 
  -- pcmagas <pcmagas@pcmagas-System-Product-Name>  Tue, 11 Mar 2025 18:17:47 +0200
 
-mkdotenv (0.2.1-0debian1-unstable1) unstable; urgency=medium
+mkdotenv (0.2.1-0debian1) unstable; urgency=medium
 
   [ Dimitrios Desyllas ]
   * 1. Split codebase into multiple files.   
