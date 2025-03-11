@@ -8,3 +8,4 @@ src/v0.1.0.tar.gz
 *.tar.gz
 *.zip
 packages
+apkbuild-overlay/*
