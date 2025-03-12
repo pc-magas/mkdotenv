@@ -1,23 +1,29 @@
 # Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>
 pkgname=mkdotenv
-pkgver=0.1.0
+pkgver=0.2.1
 pkgrel=0
 pkgdesc="Lightweight and efficient tool for managing your .env files."
 url="https://github.com/pc-magas/mkdotenv"
 arch="x86_64"
 license="GPL-3.0-only"
-makedepends="make go"
+makedepends="go"
+
 source="$pkgname-$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/archive/refs/tags/v$pkgver.tar.gz"
+source="$pkgname-$pkgver.tar.gz"
+
 
 options="!check" # No tests
 
-prepare() {
-    tar -xzf "${SRCDEST}/${pkgname}-${pkgver}.tar.gz" -C "$srcdir"
-    cd "$srcdir/${pkgname}-${pkgver}"
-}
+# prepare() {
+#     tar -xzf "${SRCDEST}/${pkgname}-${pkgver}.tar.gz" -C "$srcdir"
+#     cd "$srcdir/${pkgname}-${pkgver}"
+# }
 
 build() {
-    make
+    ls -l &&\
+    cd ./mkdotenv &&\
+    go build -ldflags "-X 'mkdotenv/msg.version=${pkgver}'" -o ../${pkgname} mkdotenv.go &&\
+    cd ../
 }
 
 package() {
