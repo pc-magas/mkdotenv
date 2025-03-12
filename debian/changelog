@@ -6,6 +6,26 @@ mkdotenv (0.2.2-0debian1~unstable1) unstable; urgency=medium
   * 4. [BUGFIX] If input file is same as output file copy input file
     into a temporary one.
 
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Wed, 12 Mar 2025 23:35:11 +0200
+
+mkdotenv (0.2.2-0debian1~unstable1) unstable; urgency=medium
+
+
+  [ pcmagas ]
+  * 1. Split codebase into multiple files.
+  * 4. [BUGFIX] If input file is same as output file copy input file
+    into a temporary one.
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Wed, 12 Mar 2025 23:34:51 +0200
+
+mkdotenv (0.2.2-0debian1~unstable1) unstable; urgency=medium
+
+
+  [ pcmagas ]
+  * 1. Split codebase into multiple files.
+  * 4. [BUGFIX] If input file is same as output file copy input file
+    into a temporary one.
+
  -- Dimitrios Desyllas <pcmagas@disroot.org>  Wed, 12 Mar 2025 23:34:29 +0200
 
 mkdotenv (0.2.1-0debian1~unstable1) unstable; urgency=medium
