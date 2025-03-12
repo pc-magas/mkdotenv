@@ -25,8 +25,8 @@ cp -r ../mkdotenv ${SRC_FOLDER}/mkdotenv
 cp -r ../man ${SRC_FOLDER}/man
 cp ../Makefile ${SRC_FOLDER}/Makefile
 cp ../LICENCE ${SRC_FOLDER}/LICENCE
-docker build -f ${SCRIPTPATH}/dockerfiles/DockerfileFedora -t pcmagas/gopkgbuild:fedora-41 ${SCRIPTPATH}
 
+docker build -f ${SCRIPTPATH}/dockerfiles/DockerfileFedora -t pcmagas/gopkgbuild:fedora-41 ${SCRIPTPATH}
 docker run \
     -e UID=$(id -u) -e GID=$(id -g)\
     -v "${SOURCEPATH}/rpmbuild/SOURCES:/home/pkgbuild/rpmbuild/SOURCES" \

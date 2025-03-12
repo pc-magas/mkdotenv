@@ -92,7 +92,7 @@ sensible-editor "$SPEC_FILE"
 
 echo "Adding new Debian changelog entry for version $UPSTREAM_VERSION."
 DEB_VERSION="$UPSTREAM_VERSION-0debian1~unstable1"
-dch --distribution unstable --newversion $DEB_VERSION -m ""
+dch -M --distribution unstable --newversion $DEB_VERSION -m ""
 while IFS= read -r line; do
     echo $line;
     dch -a "$line"
@@ -104,6 +104,11 @@ sensible-editor "$DEBIAN_CHANGELOG"
 echo "Version updated successfully: $UPSTREAM_VERSION"
 
 git commit -m "[Autotool] Bump version and fix into nessesary files" ./$CHANGELOG ./$DEBIAN_CHANGELOG ./$SPEC_FILE ./Changelog.md ./VERSION ./RELEASE_NOTES
+
+echo "Bump Version for Alpine"
+sed -i "s|pkgver=".*"|pkgver="${UPSTREAM_VERSION}"|" ${SOURCEPATH}/alpinebuild/APKBUILD-template
+sensible-editor "${SOURCEPATH}/alpinebuild/APKBUILD-template"
+
 
 cd ${SCRIPTPATH}
 
