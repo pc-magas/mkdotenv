@@ -11,6 +11,11 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/archive/re
 
 options="!check" # No tests
 
+prepare() {
+    tar -xzf "${SRCDEST}/${pkgname}-${pkgver}.tar.gz" -C "$srcdir"
+    cd "$srcdir/${pkgname}-${pkgver}"
+}
+
 build() {
     make
 }

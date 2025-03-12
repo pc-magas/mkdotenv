@@ -21,8 +21,10 @@ cp -r ../man ${SRC_FOLDER}/man
 cp ../Makefile ${SRC_FOLDER}/Makefile
 cp ../LICENCE ${SRC_FOLDER}/LICENCE
 
-tar -czf ${SOURCEPATH}/rpmbuild/SOURCES/mkdotenv-${VERSION}.tar.gz ${SRC_FOLDER}
-
+cp -r ../mkdotenv ${SRC_FOLDER}/mkdotenv
+cp -r ../man ${SRC_FOLDER}/man
+cp ../Makefile ${SRC_FOLDER}/Makefile
+cp ../LICENCE ${SRC_FOLDER}/LICENCE
 docker build -f ${SCRIPTPATH}/dockerfiles/DockerfileFedora -t pcmagas/gopkgbuild:fedora-41 ${SCRIPTPATH}
 
 docker run \
