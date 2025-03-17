@@ -5,41 +5,6 @@
 4. [BUGFIX] If input file is same as output file copy input file into a temporary one.
 5. Improved Documentation
 
-# Version 0.2.1 2025-03-11
-
-1. Split codebase into multiple files.
-2. Use a seperate version file and define built version upon compile.
-4. [BUGFIX] If input file is same as output file copy input file into a temporary one.
-5. Improved Documentation
-
-# Version 0.2.3 2025-03-11
-
-1. Split codebase into multiple files.
-2. Use a seperate version file and define built version upon compile.
-4. [BUGFIX] If input file is same as output file copy input file into a temporary one.
-5. Improved Documentation
-
-# Version 0.2.2 2025-03-11
-
-1. Split codebase into multiple files.
-2. Use a seperate version file and define built version upon compile.
-4. [BUGFIX] If input file is same as output file copy input file into a temporary one.
-5. Improved Documentation
-
-# Version 0.2.1 2025-03-11
-
-1. Split codebase into multiple files.
-2. Use a seperate version file and define built version upon compile.
-4. [BUGFIX] If input file is same as output file copy input file into a temporary one.
-5. Improved Documentation
-
-# Version 0.2.0 2025-03-10
-
-1. Split codebase into multiple files.
-2. Use a seperate version file and define built version upon compile.
-4. [BUGFIX] If input file is same as output file copy input file into a temporary one.
-5. Improved Documentation
-
 # Version 0.1.7 2025-02-23
 
 1. Release rpm image
