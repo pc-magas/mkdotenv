@@ -90,10 +90,9 @@ jobs:
         id: make_tar
         run:
           ls -l &&\
-          chmod +x ./alpinebuild/make_tar.sh &&\
           cd ./alpinebuild &&\
           ls -l &&\
-          echo tar_file=$(./make_tar.sh) >> "$GITHUB_OUTPUT" 
+          echo tar_file=$(bash ./make_tar.sh) >> "$GITHUB_OUTPUT" 
       
       - name: Upload Source Tarball
         uses: actions/upload-artifact@v4
