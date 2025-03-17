@@ -230,7 +230,8 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  true
-          artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm 
+          artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm, mkdotenv*.tar.gz
+          bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
         if:  github.ref == 'refs/heads/master'
@@ -240,4 +241,5 @@ jobs:
           allowUpdates: true
           prerelease:  false
           artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm ,mkdotenv*.tar.gz
+          bodyFile: RELEASE_NOTES
       
