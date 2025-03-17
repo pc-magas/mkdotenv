@@ -7,6 +7,8 @@ SOURCEPATH=${SCRIPTPATH}/../
 VERSION=$(cat ${SOURCEPATH}/VERSION)
 
 SRC_FOLDER=mkdotenv-${VERSION}
+TAR_NAME=${SRC_FOLDER}.tar.gz
+
 CHANGES_FILE=${SCRIPTPATH}/../../mkdotenv_*_source.changes
 
 
@@ -21,10 +23,9 @@ cp -r ../man ${SRC_FOLDER}/man
 cp ../Makefile ${SRC_FOLDER}/Makefile
 cp ../LICENCE ${SRC_FOLDER}/LICENCE
 
-cp -r ../mkdotenv ${SRC_FOLDER}/mkdotenv
-cp -r ../man ${SRC_FOLDER}/man
-cp ../Makefile ${SRC_FOLDER}/Makefile
-cp ../LICENCE ${SRC_FOLDER}/LICENCE
+FINAL_TAR_DEST=${SOURCEPATH}rpmbuild/SOURCES/${TAR_NAME}
+rm -rf ${FINAL_TAR_DEST}
+tar -czf ${FINAL_TAR_DEST} ${SRC_FOLDER}
 
 docker build -f ${SCRIPTPATH}/dockerfiles/DockerfileFedora -t pcmagas/gopkgbuild:fedora-41 ${SCRIPTPATH}
 docker run \
