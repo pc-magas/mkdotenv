@@ -89,15 +89,16 @@ jobs:
       - name: make-tar
         id: make_tar
         run:
-          chmod +x ./alpinebuild/make_tar.sh
-          cd ./alpinebuild
+          chmod +x ./alpinebuild/make_tar.sh &&\
+          cd ./alpinebuild &&\
+          ls -l &&\
           echo tar_file=$(./make_tar.sh) >> "$GITHUB_OUTPUT" 
       
       - name: Upload Source Tarball
         uses: actions/upload-artifact@v4
         with:
           name: mkdotenv-source-tar
-          path: ./alpinebuild/${{ env.tar_file }}
+          path: ./alpinebuild/${{ env.make_tar.tar_file }}
 
 
   build_bin:
@@ -194,6 +195,7 @@ jobs:
       - build_bin
       - build_deb
       - build_rpm
+      - alpine_source
     steps:
 
       - uses: actions/checkout@v4
