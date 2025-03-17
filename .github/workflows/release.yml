@@ -220,8 +220,6 @@ jobs:
         with:
           name: mkdotenv-rpm
 
-   
-
       - name: Create a GitHub pre release
         if:   github.ref == 'refs/heads/dev'
         uses: ncipollo/release-action@v1
