@@ -177,6 +177,9 @@ jobs:
       - id: build_docker
         run: bash ./fedora/build_fedora_docker.sh
 
+      - id: build_docker
+        run: ls -l rpmbuild/RPMS/x86_64/
+
       - name: Upload RPM artifact
         uses: actions/upload-artifact@v4
         with:
