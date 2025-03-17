@@ -73,6 +73,33 @@ jobs:
           make docker-push
 
 
+  alpine_source:
+    runs-on: ubuntu-latest
+    needs: tag_git
+    
+    permissions:
+      contents: write
+    
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0       
+
+      - name: make-tar
+        id: make_tar
+        run:
+          chmod +x ./alpinebuild/make_tar.sh
+          cd ./alpinebuild
+          echo tar_file=$(./make_tar.sh) >> "$GITHUB_OUTPUT" 
+      
+      - name: Upload Source Tarball
+        uses: actions/upload-artifact@v4
+        with:
+          name: mkdotenv-source-tar
+          path: ./alpinebuild/${{ env.tar_file }}
+
+
   build_bin:
     runs-on: ubuntu-latest
     needs: tag_git
@@ -94,7 +121,7 @@ jobs:
       - name: build
         run: make bin
 
-      - name: Upload DEB artifact
+      - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
         with:
           name: mkdotenv-bin
@@ -189,6 +216,11 @@ jobs:
         with:
           name: mkdotenv-rpm
 
+      - name: Download Alpine Source code artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mkdotenv-source-tar
+
       - name: Create a GitHub pre release
         if:   github.ref == 'refs/heads/dev'
         uses: ncipollo/release-action@v1
@@ -205,5 +237,5 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  false
-          artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm 
+          artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm ,mkdotenv*.tar.gz
       
