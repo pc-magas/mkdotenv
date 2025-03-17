@@ -200,6 +200,11 @@ jobs:
          fetch-depth: 0
 
 
+      - name: Download Alpine Source code artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mkdotenv-source-tar
+
       - name: Download binary artifact
         uses: actions/download-artifact@v4
         with:
@@ -215,10 +220,7 @@ jobs:
         with:
           name: mkdotenv-rpm
 
-      - name: Download Alpine Source code artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: mkdotenv-source-tar
+   
 
       - name: Create a GitHub pre release
         if:   github.ref == 'refs/heads/dev'
