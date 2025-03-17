@@ -89,10 +89,10 @@ jobs:
       - name: make-tar
         id: make_tar
         run:
-          ls -l
-          chmod +x ./alpinebuild/make_tar.sh
-          cd ./alpinebuild 
-          ls -l
+          ls -l &&\
+          chmod +x ./alpinebuild/make_tar.sh &&\
+          cd ./alpinebuild &&\
+          ls -l &&\
           echo tar_file=$(./make_tar.sh) >> "$GITHUB_OUTPUT" 
       
       - name: Upload Source Tarball
