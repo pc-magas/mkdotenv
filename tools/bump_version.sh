@@ -101,14 +101,13 @@ done < RELEASE_NOTES
 # Prompt user to edit Debian changelog
 sensible-editor "$DEBIAN_CHANGELOG"
 
-echo "Version updated successfully: $UPSTREAM_VERSION"
-
-git commit -m "[Autotool] Bump version and fix into nessesary files" ./$CHANGELOG ./$DEBIAN_CHANGELOG ./$SPEC_FILE ./Changelog.md ./VERSION ./RELEASE_NOTES
 
 echo "Bump Version for Alpine"
 sed -i "s|pkgver=".*"|pkgver="${UPSTREAM_VERSION}"|" ${SOURCEPATH}/alpinebuild/APKBUILD-template
 sensible-editor "${SOURCEPATH}/alpinebuild/APKBUILD-template"
 
+echo "Version updated successfully: $UPSTREAM_VERSION"
+git commit -m "[Autotool] Bump version and fix into nessesary files" ./$CHANGELOG ./$DEBIAN_CHANGELOG ./$SPEC_FILE ./Changelog.md ./VERSION ./RELEASE_NOTES ${SOURCEPATH}/alpinebuild/APKBUILD-template
 
 cd ${SCRIPTPATH}
 
