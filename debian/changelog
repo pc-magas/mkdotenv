@@ -5,6 +5,9 @@ mkdotenv (0.2.2-0debian1~unstable1) unstable; urgency=medium
   * 1. Split codebase into multiple files.
   * 4. [BUGFIX] If input file is same as output file copy input file
     into a temporary one.
+  * 1. Split codebase into multiple files.
+  * 4. [BUGFIX] If input file is same as output file copy input file
+    into a temporary one.
 
  -- Dimitrios Desyllas <pcmagas@disroot.org>  Wed, 12 Mar 2025 23:35:11 +0200
 

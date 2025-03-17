@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.2.2
-Release:        2%{?dist}
+Version:        0.2.0
+Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
 License:        GPL-3

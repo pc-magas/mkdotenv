@@ -1,4 +1,4 @@
-# Version 0.2.2 2025-03-12
+# Version 0.2.0 2025-03-17
 
 1. Split codebase into multiple files.
 2. Use a seperate version file and define built version upon compile.
