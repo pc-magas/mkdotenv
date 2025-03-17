@@ -86,10 +86,9 @@ jobs:
         with:
           fetch-depth: 0       
 
-      - name: make-tar
+      - name: make tar
         id: make_tar
         run:
-          ls -l &&\
           echo "tar_file=$(bash ./alpinebuild/make_tar.sh)" >> "$GITHUB_OUTPUT" 
       
       - name: Upload Source Tarball
