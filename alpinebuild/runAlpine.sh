@@ -28,6 +28,4 @@ sed -i '/^source="\$pkgname-\$pkgver.tar.gz::https:\/\/github.com\/pc-magas\/mkd
 
 
 docker build -f ${SCRIPT_DIR}/Dockerfile -t pcmagas/alpinebuild ${SCRIPT_DIR}
-docker run  \
-    -v ${OVERLAY}:/home/packager \
-    -ti -u root pcmagas/alpinebuild bash -c "chown -R packager:packager /home/packager/* && bash"
+docker run  -v ${OVERLAY}:/home/packager -ti pcmagas/alpinebuild bash
