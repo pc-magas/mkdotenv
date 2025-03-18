@@ -19,4 +19,8 @@ cp ${SCRIPT_DIR}/../LICENCE ${SOURCE_FOLDER}/LICENCE
   cd ${SCRIPT_DIR} && tar -czf ${TARGZ_NAME} -C $(basename ${SOURCE_FOLDER}) .
 )
 
+date > TAR_FILES
+echo ${TARGZ_NAME} > TAR_FILES
+tar -tzf ${TARGZ_NAME} >> TAR_FILES
+
 echo ${TARGZ_NAME}

@@ -10,3 +10,4 @@ src/v0.1.0.tar.gz
 packages
 apkbuild-overlay/*
 APKFILE
+TAR_FILES
