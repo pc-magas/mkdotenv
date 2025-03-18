@@ -11,12 +11,21 @@ GO := go
 # Default target
 all: compile
 
+make_bin_folder:
+	mkdir -p bin
+
+
 # Compile Go binary
 compile:
 	cd ./mkdotenv &&\
 	echo $(VERSION) &&\
 	GOOS=linux GOARCH=$(ARCH) $(GO) build -ldflags "-X 'mkdotenv/msg.version=$(VERSION)'" -o ../$(BIN_NAME) mkdotenv.go &&\
 	cd ../
+
+# Raw binary build
+bin: compile make_bin_folder
+	mv $(BIN_NAME) ./bin/$(PKG_NAME)
+
 
 # Install the programme
 install:
@@ -50,10 +59,6 @@ clean-deb:
 deb:
 	dpkg-buildpackage -b
 	mv ../*.deb ./
-
-# Raw binary build
-bin: compile
-	mv $(BIN_NAME) $(PKG_NAME)
 
 # Build into docker image
 docker:

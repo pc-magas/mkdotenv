@@ -130,7 +130,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mkdotenv-bin
-          path: mkdotenv  
+          path: ./bin/mkdotenv  
   
   build_deb:
     runs-on: ubuntu-latest
@@ -237,7 +237,7 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  true
-          artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
+          artifacts: mkdotenv*.deb, mkdotenv, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
           bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
