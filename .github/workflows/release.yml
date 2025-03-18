@@ -91,9 +91,12 @@ jobs:
         run:
           echo "tar_file=$(bash ./alpinebuild/make_tar.sh)" >> "$GITHUB_OUTPUT" 
 
-      - name: make apkfile
+      - name: list_tar
         run:
           ls -l ${{ env.make_tar.tar_file }}
+
+      - name: make apkfile
+        run:
           bash ./alpinebuild/release_apkfile.sh
 
       - name: Upload Source Tarball
