@@ -26,6 +26,5 @@ tar -tzf ${TARGZ}
 
 sed -i '/^source="\$pkgname-\$pkgver.tar.gz::https:\/\/github.com\/pc-magas\/mkdotenv\/archive\/refs\/tags\/v\$pkgver.tar.gz"/d' ${APKBUILD_OVERLAY}
 
-
 docker build -f ${SCRIPT_DIR}/Dockerfile -t pcmagas/alpinebuild ${SCRIPT_DIR}
 docker run  -v ${OVERLAY}:/home/packager -ti pcmagas/alpinebuild bash
