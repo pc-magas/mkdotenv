@@ -234,7 +234,7 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  true
-          artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm, mkdotenv*.tar.gz
+          artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
           bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
@@ -244,6 +244,6 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  false
-          artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm ,mkdotenv*.tar.gz
+          artifacts: mkdotenv*.deb, mkdotenv,mkdotenv*.rpm ,mkdotenv*.tar.gz, APKFILE
           bodyFile: RELEASE_NOTES
       
