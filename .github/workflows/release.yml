@@ -93,6 +93,7 @@ jobs:
 
       - name: make apkfile
         run:
+          ls -l ${{ env.make_tar.tar_file }}
           bash ./alpinebuild/release_apkfile.sh
 
       - name: Upload Source Tarball
