@@ -93,7 +93,8 @@ jobs:
 
       - name: list_tar
         run:
-          ls -l ${{ env.make_tar.tar_file }}
+          echo ./alpinebuild/${{ env.make_tar.tar_file }}
+          ls -l ./alpinebuild/${{ env.make_tar.tar_file }}
 
       - name: make apkfile
         run:
