@@ -99,7 +99,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mkdotenv-source-tar
-          path: ./alpinebuild/${{ env.make_tar.tar_file }}, APKFILE
+          path: ./alpinebuild/${{ env.make_tar.tar_file }}, ./alpinebuild/APKFILE
 
 
   build_bin:
