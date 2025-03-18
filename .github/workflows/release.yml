@@ -106,7 +106,7 @@ jobs:
         with:
           name: mkdotenv-source-tar
           path: ./alpinebuild/${{ env.make_tar.tar_file }}, ./alpinebuild/APKFILE
-          if-no-file-found: error
+          if-no-files-found: error
 
 
   build_bin:
