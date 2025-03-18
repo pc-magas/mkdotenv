@@ -9,3 +9,4 @@ src/v0.1.0.tar.gz
 *.zip
 packages
 apkbuild-overlay/*
+APKFILE
