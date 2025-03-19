@@ -221,6 +221,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mkdotenv-bin
+          path: ./bin
 
       - name: Download DEB artifact
         uses: actions/download-artifact@v4
