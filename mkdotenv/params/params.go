@@ -9,7 +9,7 @@ import(
 
 
 func GetParameters(osArguments []string)(string,string,string,string){
-    
+
 	if(len(osArguments) < 3){
 		msg.ExitError("Not enough arguments provided")
     }
