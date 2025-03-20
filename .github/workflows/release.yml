@@ -43,7 +43,7 @@ jobs:
           check-latest: true
 
       # Install dependencies
-      - name: Install dependencies
+      - name: Run tests
         run: |
           cd ./mkdotenv &&\
           go mod tidy &&\
