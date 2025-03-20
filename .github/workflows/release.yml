@@ -46,7 +46,7 @@ jobs:
       - name: Run tests
         run: |
           cd ./mkdotenv &&\
-          rm -rf ./tools &&/
+          rm -rf ./tools &&\
           go mod tidy &&\
           go test ./...
      
