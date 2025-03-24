@@ -8,10 +8,10 @@ import(
 )
 
 
-func GetParameters(osArguments []string)(string,string,string,string){
+func GetParameters(osArguments []string,errorHandle func(msg string))(string,string,string,string){
 
 	if(len(osArguments) < 3){
-		msg.ExitError("Not enough arguments provided")
+		errorHandle("Not enough arguments provided")
     }
 
     var dotenv_filename string = ".env"
@@ -20,13 +20,13 @@ func GetParameters(osArguments []string)(string,string,string,string){
 	var output_file string = ""
 
 	if(strings.HasPrefix(variable_name,"-")){
-		msg.ExitError("Variable Name should not start with - or --")
+		errorHandle("Variable Name should not start with - or --")
 	}
 
 	ARGUMENTS:= []string{"--env-file","--input-file","--output-file","-v","--version","-h","--h","--help"}
 
 	if(slices.Contains(ARGUMENTS[:],variable_value)){
-		msg.ExitError("\nVariable value should not contain any of the values:\n"+strings.Join(ARGUMENTS[:],"\n"))
+		errorHandle("\nVariable value should not contain any of the values:\n"+strings.Join(ARGUMENTS[:],"\n"))
 	}
 
 	for i, arg := range osArguments[3:] {

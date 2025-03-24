@@ -36,7 +36,7 @@ func main() {
 
 	params.PrintVersionOrHelp()
 
-	dotenv_filename,output_file,variable_name,variable_value := params.GetParameters(os.Args)
+	dotenv_filename,output_file,variable_name,variable_value := params.GetParameters(os.Args,msg.ExitError)
 
 	filenameToRead := dotenv_filename
 	filenameCopy:=dotenv_filename+"."+strconv.FormatInt(time.Now().UnixMilli(),10)
