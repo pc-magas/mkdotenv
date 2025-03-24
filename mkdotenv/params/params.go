@@ -95,8 +95,6 @@ func sliceArgument(argument string) (string, string) {
 }
 
 func getValue(value string,i int,offset int,arguments []string)(error,string){
-
-
 	if(slices.Contains(FLAG_ARGUMENTS[:],value)){
 		return errors.New("Value contains argumwent value"),value
 	}

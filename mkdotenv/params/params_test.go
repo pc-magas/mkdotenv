@@ -46,9 +46,7 @@ func TestValidParams(t *testing.T){
 func TestMissingParams(t *testing.T){
 	
 	arguments:=[][]string{
-		{"exec","123","XXXX","--input-file","--output-file","zzzz"},
 		{"exec","123","XXXX","--input-file","--output-file"},
-		{"exec","123","XXXX","--input-file=","--output-file","zzzz"},
 		{"exec","123","XXXX","--input-file","xxxx","--output-file="},
 		{"exec","123","XXXX","--input-file=","--output-file="},
 	}
@@ -71,4 +69,27 @@ func TestMissingParams(t *testing.T){
 		}
 	}
 
+}
+
+func TestMissingInputFile(t *testing.T){
+	arguments:=[][]string {
+		{"exec","123","XXXX","--input-file=","--output-file","zzzz"},
+		{"exec","123","XXXX","--input-file","--output-file","zzzz"},
+	}
+
+	for _, args := range arguments {
+
+		callbackCalled := false // Flag to check if callback was called
+
+		emptyCallback := func(msg string) {
+			callbackCalled = true // Set flag when callback is called
+		}
+
+		_, _, _, _ = GetParameters(args, emptyCallback)
+
+		// Ensure callback was called, indicating invalid parameters
+		if !callbackCalled {
+			t.Errorf("Expected emptyCallback to be called for args: %v", args)
+		}
+	}
 }
