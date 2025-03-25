@@ -43,3 +43,4 @@ notes.txt
 .env.*
 
 TAR_FILES
+DEBEMAIL

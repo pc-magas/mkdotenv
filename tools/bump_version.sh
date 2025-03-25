@@ -40,16 +40,8 @@ RELEASE_NOTES=$(cat RELEASE_NOTES)
 
 NEW_ENTRY="# Version $UPSTREAM_VERSION $DATE"
 
-# Check if the first line contains the same version
-if head -n 1 "$CHANGELOG" | grep -q "$UPSTREAM_VERSION"; then
-    echo "Version $UPSTREAM_VERSION already exists at the top of $CHANGELOG, overwriting."
-    # Overwrite existing top entry
-    sed -i "1,/^$/c\\$NEW_ENTRY\n\n$RELEASE_NOTES\n" "$CHANGELOG"
-else
-    echo "Prepending new version entry to $CHANGELOG."
-    # Prepend new entry at the top
-    echo -e "$NEW_ENTRY\n\n$RELEASE_NOTES\n\n$(cat $CHANGELOG)" > "$CHANGELOG"
-fi
+echo "Prepending new version entry to $CHANGELOG."
+echo -e "$NEW_ENTRY\n\n$RELEASE_NOTES\n\n$(cat $CHANGELOG)" > "$CHANGELOG"
 
 # Let user edit the changelog
 sensible-editor "$CHANGELOG"
@@ -92,8 +84,22 @@ sensible-editor "$SPEC_FILE"
 
 echo "Adding new Debian changelog entry for version $UPSTREAM_VERSION."
 DEB_VERSION="$UPSTREAM_VERSION-0debian1~unstable1"
+
+if [ -f DEBEMAIL ];then
+    DEBEMAIL_VAL=$(cat DEBEMAIL)
+fi
+
+DEBEMAIL_VAL=$(dialog --inputbox "Enter your email:" 8 50 "$DEBEMAIL_VAL" 3>&1 1>&2 2>&3)
+
+if [ ! -z "$DEBEMAIL_VAL" ]; then
+    echo $DEBEMAIL_VAL > DEBEMAIL
+fi
+
+export DEBEMAIL=$DEBEMAIL_VAL
+
 dch -M --distribution unstable --newversion $DEB_VERSION -m ""
 while IFS= read -r line; do
+    [[ -z "$line" ]] && echo "LINE EMPTY"&& continue  # Skip empty lines
     echo $line;
     dch -a "$line"
 done < RELEASE_NOTES
@@ -108,6 +114,4 @@ sensible-editor "${SOURCEPATH}/alpinebuild/APKBUILD-template"
 
 echo "Version updated successfully: $UPSTREAM_VERSION"
 git commit -m "[Autotool] Bump version and fix into nessesary files" ./$CHANGELOG ./$DEBIAN_CHANGELOG ./$SPEC_FILE ./Changelog.md ./VERSION ./RELEASE_NOTES ${SOURCEPATH}/alpinebuild/APKBUILD-template
-
-cd ${SCRIPTPATH}
 
