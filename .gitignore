@@ -43,4 +43,7 @@ notes.txt
 .env.*
 
 TAR_FILES
-DEBEMAIL
+EMAIL
+NAME
+
+*.swp

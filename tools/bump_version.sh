@@ -2,7 +2,6 @@
 
 test -n "$BASH_VERSION" || exec /bin/bash $0 "$@"
 
-
 if ! command -v dialog &> /dev/null; then
     echo "Error: 'dialog' is not installed. Install it with: sudo apt install dialog"
     exit 1
@@ -21,7 +20,6 @@ if [[ $response -ne 0 ]]; then
     exit 0
 fi
 
-
 SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 SOURCEPATH=${SCRIPTPATH}/../ 
 
@@ -31,6 +29,29 @@ CHANGELOG="Changelog.md"
 DEBIAN_CHANGELOG="debian/changelog"
 SPEC_FILE="rpmbuild/SPECS/mkdotenv.spec"
 DATE=$(date +%Y-%m-%d)
+
+if [ -f EMAIL ];then
+    DEBEMAIL_VAL=$(cat EMAIL)
+fi
+
+DEBEMAIL_VAL=$(dialog --inputbox "Enter your email:" 8 50 "$DEBEMAIL_VAL" 3>&1 1>&2 2>&3)
+
+if [ ! -z "$DEBEMAIL_VAL" ]; then
+    echo $DEBEMAIL_VAL > EMAIL
+fi
+
+clear
+
+if [ -f NAME ];then
+    NAME_VAL=$(cat NAME)
+fi
+
+NAME_VAL=$(dialog --inputbox "Enter your name:" 8 50 "$NAME_VAL" 3>&1 1>&2 2>&3)
+
+if [ ! -z "$NAME_VAL" ]; then
+    echo $NAME_VAL > NAME
+fi
+clear
 
 sensible-editor VERSION
 UPSTREAM_VERSION=$(cat VERSION)
@@ -74,8 +95,16 @@ fi
 sed -i "s/^Version:.*/Version:        $UPSTREAM_VERSION/" "$SPEC_FILE"
 sed -i "s/^Release:.*/Release:        $NEW_RPM_RELEASE%{?dist}/" "$SPEC_FILE"
 
-# Add changelog entry to RPM spec
-rpmdev-bumpspec -c "$RELEASE_NOTES" -u "$(whoami)" "$SPEC_FILE"
+RPM_DATE=$(date +"%a %b %d %Y")
+CHANGELOG_LINE="* $RPM_DATE $NAME_VAL <$DEBEMAIL_VAL> - %{version}-$NEW_RPM_RELEASE"
+
+echo $CHANGELOG_LINE >> $SPEC_FILE
+
+while IFS= read -r line; do
+    [[ -z "$line" ]] && echo "LINE EMPTY"&& continue  # Skip empty lines
+    echo "- $line" >> $SPEC_FILE
+done < RELEASE_NOTES
+
 
 # Prompt user to edit spec file
 sensible-editor "$SPEC_FILE"
@@ -84,16 +113,6 @@ sensible-editor "$SPEC_FILE"
 
 echo "Adding new Debian changelog entry for version $UPSTREAM_VERSION."
 DEB_VERSION="$UPSTREAM_VERSION-0debian1~unstable1"
-
-if [ -f DEBEMAIL ];then
-    DEBEMAIL_VAL=$(cat DEBEMAIL)
-fi
-
-DEBEMAIL_VAL=$(dialog --inputbox "Enter your email:" 8 50 "$DEBEMAIL_VAL" 3>&1 1>&2 2>&3)
-
-if [ ! -z "$DEBEMAIL_VAL" ]; then
-    echo $DEBEMAIL_VAL > DEBEMAIL
-fi
 
 export DEBEMAIL=$DEBEMAIL_VAL
 
@@ -107,7 +126,6 @@ done < RELEASE_NOTES
 # Prompt user to edit Debian changelog
 sensible-editor "$DEBIAN_CHANGELOG"
 
-
 echo "Bump Version for Alpine"
 sed -i "s|pkgver=".*"|pkgver="${UPSTREAM_VERSION}"|" ${SOURCEPATH}/alpinebuild/APKBUILD-template
 sensible-editor "${SOURCEPATH}/alpinebuild/APKBUILD-template"
@@ -115,3 +133,4 @@ sensible-editor "${SOURCEPATH}/alpinebuild/APKBUILD-template"
 echo "Version updated successfully: $UPSTREAM_VERSION"
 git commit -m "[Autotool] Bump version and fix into nessesary files" ./$CHANGELOG ./$DEBIAN_CHANGELOG ./$SPEC_FILE ./Changelog.md ./VERSION ./RELEASE_NOTES ${SOURCEPATH}/alpinebuild/APKBUILD-template
 
+unset DEBEMAIL
