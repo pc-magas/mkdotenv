@@ -7,7 +7,7 @@ mkdotenv (0.2.0-0debian1~unstable1) unstable; urgency=medium
     into a temporary one.
   * 6. [BUGFIX] Out of bounds argument parsing
 
- -- Dimitrios Desyllas <pcmagas@disroot.org>  Tue, 25 Mar 2025 12:42:41 +0200
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Tue, 25 Mar 2025 12:55:02 +0200
 
 mkdotenv (0.1.7-0debian1~unstable1) unstable; urgency=medium
 
