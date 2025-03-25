@@ -95,9 +95,6 @@ func sliceArgument(argument string) (string, string) {
 }
 
 func getValue(value string,i int,offset int,arguments []string)(error,string){
-	if(slices.Contains(FLAG_ARGUMENTS[:],value)){
-		return errors.New("Value contains argumwent value"),value
-	}
 
 	if(value == ""){
 		index:= i+offset+1
@@ -105,10 +102,13 @@ func getValue(value string,i int,offset int,arguments []string)(error,string){
 			return errors.New("Index out of bounds"),value
 		}
 		// Arguments are parsed with an offset we get the next item + offset
-		return nil,arguments[index]
+		value=arguments[index]
 
 	}
 
+	if(slices.Contains(FLAG_ARGUMENTS[:],value)){
+		return errors.New("Value contains argumwent value"),value
+	}
 
 	return nil,value
 }
