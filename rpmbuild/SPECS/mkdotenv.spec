@@ -37,3 +37,11 @@ install -m 0644 man/mkdotenv.1 %{buildroot}/usr/share/man/man1/mkdotenv.1
 %changelog
 * Sun Feb 16 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
 - Initial RPM package
+
+alpinebuild bin Changelog.md contrib-docs debian Dockerfile EMAIL fedora keyid LICENCE Makefile man mkdotenv NAME notes.txt ppa README.md RELEASE_NOTES rpmbuild TAR_FILES tools VERSION 2025-03-25 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+\t- 1. Split codebase into multiple files.
+\t- 2. Use a seperate version file and define built version upon compile.
+\t- 4. [BUGFIX] If input file is same as output file copy input file into a temporary one.
+\t- 5. Improved Documentation
+\t- 6. [BUGFIX] Out of bounds argument parsing
+\t- 7. [BUGFIX] Values should not be an Argument
