@@ -1,5 +1,30 @@
 #!/usr/bin/env bash
 
+prompt_and_save() {
+    local file=$1
+    local message=$2
+    local value=""
+
+    # Check if file exists and read value
+    if [ -f "$file" ]; then
+        value=$(cat "$file")
+    fi
+
+    # Prompt user with dialog
+    value=$(dialog --inputbox "$message" 8 50 "$value" 3>&1 1>&2 2>&3)
+
+    # Save the value if not empty
+    if [ ! -z "$value" ]; then
+        echo "$value" > "$file"
+    fi
+
+    clear
+
+    # Return the value
+    echo "$value"
+}
+
+
 test -n "$BASH_VERSION" || exec /bin/bash $0 "$@"
 
 if ! command -v dialog &> /dev/null; then
@@ -25,36 +50,14 @@ SOURCEPATH=${SCRIPTPATH}/../
 
 cd ${SOURCEPATH}
 
-CHANGELOG="Changelog.md"
 DEBIAN_CHANGELOG="debian/changelog"
 SPEC_FILE="rpmbuild/SPECS/mkdotenv.spec"
 DATE=$(date +%Y-%m-%d)
 
-if [ -f EMAIL ];then
-    DEBEMAIL_VAL=$(cat EMAIL)
-fi
-
-DEBEMAIL_VAL=$(dialog --inputbox "Enter your email:" 8 50 "$DEBEMAIL_VAL" 3>&1 1>&2 2>&3)
-
-if [ ! -z "$DEBEMAIL_VAL" ]; then
-    echo $DEBEMAIL_VAL > EMAIL
-fi
-
+DEBEMAIL_VAL=$(prompt_and_save "EMAIL" "Enter your email:")
+NAME_VAL=$(prompt_and_save "NAME" "Enter your name:")
+UPSTREAM_VERSION=$(prompt_and_save "VERSION" "Bump the version (or keep it the same)")
 clear
-
-if [ -f NAME ];then
-    NAME_VAL=$(cat NAME)
-fi
-
-NAME_VAL=$(dialog --inputbox "Enter your name:" 8 50 "$NAME_VAL" 3>&1 1>&2 2>&3)
-
-if [ ! -z "$NAME_VAL" ]; then
-    echo $NAME_VAL > NAME
-fi
-clear
-
-sensible-editor VERSION
-UPSTREAM_VERSION=$(cat VERSION)
 
 sensible-editor RELEASE_NOTES
 RELEASE_NOTES=$(cat RELEASE_NOTES)
