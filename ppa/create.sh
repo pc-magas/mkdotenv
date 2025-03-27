@@ -3,11 +3,12 @@
 # PAth config
 
 SCRIPTPATH=$(dirname "$0") 
-VERSION=$(cat ${VERSION})
+VERSION=$(cat ${SCRIPTPATH}/../VERSION)
 SRC_FOLDER=${SCRIPTPATH}/mkdotenv_${VERSION}
 TAR_PATH=${SCRIPTPATH}/../../mkdotenv_${VERSION}.orig.tar.gz
 CHANGES_FILE=${SCRIPTPATH}/../../mkdotenv_*_source.changes
 
+echo "VERSION: ${VERSION}"
 
 # PPA distro config
 LINUX_DIST="ubuntu"

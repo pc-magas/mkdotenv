@@ -252,7 +252,7 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  true
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv,mkdotenv*.rpm ,mkdotenv*.tar.gz, APKFILE
           bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
