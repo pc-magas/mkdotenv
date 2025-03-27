@@ -22,6 +22,12 @@ cp ${SCRIPTPATH}/../Makefile ${SRC_FOLDER}
 cp ${SCRIPTPATH}/../LICENCE ${SRC_FOLDER}
 tar --exclude=debian --exclude=alpinebuild -czf ${TAR_PATH} ${SRC_FOLDER}
 
+echo "Generated tar name ${TAR_PATH}"
+
+if [ ! -f ${TAR_PATH} ]; then
+	echo "Tarball does not exist"
+fi
+
 for distro in "${DISTROS[@]}"; do
     echo "Create source package for: "${distro}
 
