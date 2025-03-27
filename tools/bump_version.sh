@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+test -n "$BASH_VERSION" || exec /bin/bash $0 "$@"
+if ! command -v dialog &> /dev/null; then
+    echo "Error: 'dialog' is not installed. Install it with: sudo apt install dialog"
+    exit 1
+fi
+
 prompt_and_save() {
     local file=$1
     local message=$2
@@ -18,28 +24,13 @@ prompt_and_save() {
         echo "$value" > "$file"
     fi
 
-    clear
-
     # Return the value
     echo "$value"
 }
 
-
-test -n "$BASH_VERSION" || exec /bin/bash $0 "$@"
-
-if ! command -v dialog &> /dev/null; then
-    echo "Error: 'dialog' is not installed. Install it with: sudo apt install dialog"
-    exit 1
-fi
-
-# Use dialog to show an ncurses-style prompt
 dialog --title "Version Bump Confirmation" --yesno "Do you want to bump the version and update changelogs?" 7 50
-
-# Capture the exit status of dialog (0 = Yes, 1 = No)
 response=$?
-
-clear  # Clear the screen after dialog closes
-
+clear
 if [[ $response -ne 0 ]]; then
     echo "Aborting version bump process."
     exit 0
@@ -53,6 +44,7 @@ cd ${SOURCEPATH}
 DEBIAN_CHANGELOG="debian/changelog"
 SPEC_FILE="rpmbuild/SPECS/mkdotenv.spec"
 DATE=$(date +%Y-%m-%d)
+CHANGELOG="Changelog.md"
 
 DEBEMAIL_VAL=$(prompt_and_save "EMAIL" "Enter your email:")
 NAME_VAL=$(prompt_and_save "NAME" "Enter your name:")
@@ -79,12 +71,19 @@ DEB_VERSION="$UPSTREAM_VERSION-0debian1~unstable1"
 
 export DEBEMAIL=$DEBEMAIL_VAL
 
-dch -M --distribution unstable --newversion $DEB_VERSION -m ""
+if ! head ${DEBIAN_CHANGELOG} | grep -q "${DEB_VERSION}"; then 
+    dch -M --distribution unstable --newversion $DEB_VERSION -m ""
+else
+    echo "Avoiding to create a new version, appending messages only"
+fi
+
 while IFS= read -r line; do
     [[ -z "$line" ]] && echo "LINE EMPTY"&& continue  # Skip empty lines
     echo $line;
-    dch -a "$line"
+    dch -M -a "$line"
 done < RELEASE_NOTES
+
+unset DEBEMAIL
 
 # Prompt user to edit Debian changelog
 sensible-editor "$DEBIAN_CHANGELOG"
@@ -96,4 +95,3 @@ sensible-editor "${SOURCEPATH}/alpinebuild/APKBUILD-template"
 echo "Version updated successfully: $UPSTREAM_VERSION"
 git commit -m "[Autotool] Bump version and fix into nessesary files" ./$CHANGELOG ./$DEBIAN_CHANGELOG ./$SPEC_FILE ./Changelog.md ./VERSION ./RELEASE_NOTES ${SOURCEPATH}/alpinebuild/APKBUILD-template
 
-unset DEBEMAIL
