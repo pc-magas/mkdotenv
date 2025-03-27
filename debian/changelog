@@ -11,37 +11,7 @@ mkdotenv (0.2.0-0debian1~unstable1) unstable; urgency=medium
   * 6. [BUGFIX] Out of bounds argument parsing
   * 7. [BUGFIX] Values should not be an Argument
 
- -- Dimitrios Desyllas <pcmagas@disroot.org>  Tue, 25 Mar 2025 22:55:43 +0200
-
-mkdotenv (0.2.0-0debian1~unstable1) unstable; urgency=medium
-
-
-  [ pcmagas ]
-  * 1. Split codebase into multiple files.
-  * 2. Use a seperate version file and define built version upon
-    compile.
-  * 4. [BUGFIX] If input file is same as output file copy input file
-    into a temporary one.
-  * 5. Improved Documentation
-  * 6. [BUGFIX] Out of bounds argument parsing
-  * 7. [BUGFIX] Values should not be an Argument
-
- -- Dimitrios Desyllas <pcmagas@disroot.org>  Tue, 25 Mar 2025 22:53:46 +0200
-
-mkdotenv (0.2.0-0debian1~unstable1) unstable; urgency=medium
-
-
-  [ pcmagas ]
-  * 1. Split codebase into multiple files.
-  * 2. Use a seperate version file and define built version upon
-    compile.
-  * 4. [BUGFIX] If input file is same as output file copy input file
-    into a temporary one.
-  * 5. Improved Documentation
-  * 6. [BUGFIX] Out of bounds argument parsing
-  * 7. [BUGFIX] Values should not be an Argument
-
- -- Dimitrios Desyllas <pcmagas@disroot.org>  Tue, 25 Mar 2025 13:12:53 +0200
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Thu, 27 Mar 2025 20:05:25 +0200
 
 mkdotenv (0.1.7-0debian1~unstable1) unstable; urgency=medium
 
