@@ -1,7 +1,6 @@
 mkdotenv (0.2.0-0debian1~unstable1) unstable; urgency=medium
 
-
-  [ pcmagas ]
+  [ Dimitrios Desyllas ]
   * 1. Split codebase into multiple files.
   * 2. Use a seperate version file and define built version upon
     compile.
