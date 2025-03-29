@@ -10,27 +10,37 @@ import(
 
 var FLAG_ARGUMENTS=[8]string{"--env-file","--input-file","--output-file","-v","--version","-h","--h","--help"}
 
+type Arguments struct {
+	dotenv_filename,variable_name,variable_value,output_file string
+	dislay_version,parse_complete bool
+}
 
-func GetParameters(osArguments []string,errorHandle func(msg string))(string,string,string,string){
+func GetParameters(osArguments []string)(error,Arguments){
 
-	if(len(osArguments) < 3){
-		errorHandle("Not enough arguments provided")
-    }
-
-    var dotenv_filename string = ".env"
-    var variable_name string = osArguments[1]
-	var variable_value string = osArguments[2]
-	var output_file string = ""
 	var err error=nil
 
-	if(strings.HasPrefix(variable_name,"-")){
-		errorHandle("Variable Name should not start with - or --")
-		return dotenv_filename,output_file,variable_name,variable_value
+	arguments:= Arguments{
+		dotenv_filename:".env",
+		variable_name:osArguments[1],
+		variable_value:osArguments[2],
+		dislay_version:false,
+		parse_complete:false}
+
+
+	if(len(osArguments) < 3){
+		err = errors.New("Not enough arguments provided") 
+		return err,arguments
+    }
+
+
+	if(strings.HasPrefix(arguments.variable_name,"-")){
+		err = errors.New("Variable Name should not start with - or --")
+		return err,arguments
 	}
 
-	if(slices.Contains(FLAG_ARGUMENTS[:],variable_value)){
-		errorHandle("\nVariable value should not contain any of the values:\n"+strings.Join(FLAG_ARGUMENTS[:],"\n"))
-		return dotenv_filename,output_file,variable_name,variable_value
+	if(slices.Contains(FLAG_ARGUMENTS[:],arguments.variable_value)){
+		err = errors.New("\nVariable value should not contain any of the values:\n"+strings.Join(FLAG_ARGUMENTS[:],"\n"))
+		return err,arguments
 	}
 
 	for i, arg := range osArguments[3:] {
@@ -42,19 +52,20 @@ func GetParameters(osArguments []string,errorHandle func(msg string))(string,str
 		 	case "--input-file":
 				fallthrough;
 			case "--env-file":
-				err,dotenv_filename = getValue(value,i,3,osArguments)
+				err,arguments.dotenv_filename = getValue(value,i,3,osArguments)
 				
 			case "--output-file":
-				err,output_file = getValue(value,i,3,osArguments)
+				err,arguments.output_file = getValue(value,i,3,osArguments)
 		}
 
 		if(err!=nil){
-			errorHandle("Unable to find the argumewnt value")
-			return dotenv_filename,output_file,variable_name,variable_value
+			// errorHandle("Unable to find the argumewnt value")
+			return err,arguments
 		}
 	}
-	
-	return dotenv_filename,output_file,variable_name,variable_value
+
+	arguments.parse_complete=true
+	return err,arguments
 }
 
 func PrintVersionOrHelp(){

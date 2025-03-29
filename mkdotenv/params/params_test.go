@@ -17,28 +17,28 @@ func TestValidParams(t *testing.T){
 		{"exec","123","XXXX","--input-file=xxxx","--output-file=zzzz"},
 	}
 
-	emptyCallback:=func(msg string){
-		t.Errorf("ErrorCollack Should not be called")
-	}
-
 	for _, args := range arguments {
 
-		dotenv_filename,output_file,variable_name,variable_value := GetParameters(args,emptyCallback)
+		err,arguments := GetParameters(args)
 		
-		if dotenv_filename != expected_dotenv_filename {
-			t.Errorf("Expected dotenv_filename to be '%s', but got '%s'", expected_dotenv_filename, dotenv_filename)
+		if arguments.dotenv_filename != expected_dotenv_filename {
+			t.Errorf("Expected dotenv_filename to be '%s', but got '%s'", expected_dotenv_filename, arguments.dotenv_filename)
 		}
 
-		if output_file != expected_output_filename {
-			t.Errorf("Expected output_filename to be '%s', but got '%s'", expected_output_filename, output_file)
+		if arguments.output_file != expected_output_filename {
+			t.Errorf("Expected output_filename to be '%s', but got '%s'", expected_output_filename, arguments.output_file)
 		}
 
-		if variable_name != expected_variable_name {
-			t.Errorf("Expected variable_name to be '%s', but got '%s'", expected_variable_name, variable_name)
+		if arguments.variable_name != expected_variable_name {
+			t.Errorf("Expected variable_name to be '%s', but got '%s'", expected_variable_name, arguments.variable_name)
 		}
 
-		if variable_value != expected_variable_value {
-			t.Errorf("Expected variable_value to be '%s', but got '%s'", expected_variable_value, variable_value)
+		if arguments.variable_value != expected_variable_value {
+			t.Errorf("Expected variable_value to be '%s', but got '%s'", expected_variable_value, arguments.variable_value)
+		}
+
+		if err != nil {
+			t.Errorf("Error should be nil")
 		}
 	}
 }
