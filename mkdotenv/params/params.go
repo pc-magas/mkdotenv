@@ -8,64 +8,58 @@ import(
 	"errors"
 )
 
-var FLAG_ARGUMENTS=[8]string{"--env-file","--input-file","--output-file","-v","--version","-h","--h","--help"}
+var FLAG_ARGUMENTS = []string{"--env-file", "--input-file", "--output-file", "-v", "--version", "-h", "--h", "--help"}
 
 type Arguments struct {
-	dotenv_filename,variable_name,variable_value,output_file string
-	dislay_version,parse_complete bool
+	DotenvFilename  string
+	VariableName    string
+	VariableValue   string
+	OutputFile      string
+	DisplayVersion  bool
+	ParseComplete   bool
 }
 
-func GetParameters(osArguments []string)(error,Arguments){
-
-	var err error=nil
-
-	arguments:= Arguments{
-		dotenv_filename:".env",
-		variable_name:osArguments[1],
-		variable_value:osArguments[2],
-		dislay_version:false,
-		parse_complete:false}
-
-
-	if(len(osArguments) < 3){
-		err = errors.New("Not enough arguments provided") 
-		return err,arguments
-    }
-
-
-	if(strings.HasPrefix(arguments.variable_name,"-")){
-		err = errors.New("Variable Name should not start with - or --")
-		return err,arguments
+func GetParameters(osArguments []string) (Arguments, error) {
+	if len(osArguments) < 3 {
+		return Arguments{}, errors.New("not enough arguments provided")
 	}
 
-	if(slices.Contains(FLAG_ARGUMENTS[:],arguments.variable_value)){
-		err = errors.New("\nVariable value should not contain any of the values:\n"+strings.Join(FLAG_ARGUMENTS[:],"\n"))
-		return err,arguments
+	args := Arguments{
+		DotenvFilename: ".env",
+		VariableName:   osArguments[1],
+		VariableValue:  osArguments[2],
+		ParseComplete:  false,
 	}
 
-	for i, arg := range osArguments[3:] {
+	if strings.HasPrefix(args.VariableName, "-") {
+		return Arguments{}, errors.New("variable name should not start with - or --")
+	}
 
-		value:= ""
-		arg,value = sliceArgument(arg)
+	if slices.Contains(FLAG_ARGUMENTS, args.VariableValue) {
+		return Arguments{}, errors.New("variable value should not contain reserved flag values")
+	}
+
+	for i := 3; i < len(osArguments); i++ {
+		arg, value := parseArgument(osArguments[i])
 
 		switch arg {
-		 	case "--input-file":
-				fallthrough;
-			case "--env-file":
-				err,arguments.dotenv_filename = getValue(value,i,3,osArguments)
-				
-			case "--output-file":
-				err,arguments.output_file = getValue(value,i,3,osArguments)
-		}
-
-		if(err!=nil){
-			// errorHandle("Unable to find the argumewnt value")
-			return err,arguments
+		case "--input-file", "--env-file":
+			var err error
+			args.DotenvFilename, err = getArgumentValue(value, i, osArguments)
+			if err != nil {
+				return Arguments{}, err
+			}
+		case "--output-file":
+			var err error
+			args.OutputFile, err = getArgumentValue(value, i, osArguments)
+			if err != nil {
+				return Arguments{}, err
+			}
 		}
 	}
 
-	arguments.parse_complete=true
-	return err,arguments
+	args.ParseComplete = true
+	return args, nil
 }
 
 func PrintVersionOrHelp(){

@@ -55,17 +55,10 @@ func TestMissingParams(t *testing.T){
 
 	for _, args := range arguments {
 
-		callbackCalled := false // Flag to check if callback was called
+		err,_ := GetParameters(args,)
 
-		emptyCallback := func(msg string) {
-			callbackCalled = true // Set flag when callback is called
-		}
-
-		_, _, _, _ = GetParameters(args, emptyCallback)
-
-		// Ensure callback was called, indicating invalid parameters
-		if !callbackCalled {
-			t.Errorf("Expected emptyCallback to be called for args: %v", args)
+		if err == nil {
+			t.Errorf("Error should not be nil")
 		}
 	}
 
@@ -79,17 +72,10 @@ func TestMissingInputFile(t *testing.T){
 
 	for _, args := range arguments {
 
-		callbackCalled := false // Flag to check if callback was called
+		err,_:= GetParameters(args)
 
-		emptyCallback := func(msg string) {
-			callbackCalled = true // Set flag when callback is called
-		}
-
-		_, _, _, _ = GetParameters(args, emptyCallback)
-
-		// Ensure callback was called, indicating invalid parameters
-		if !callbackCalled {
-			t.Errorf("Expected emptyCallback to be called for args: %v", args)
+		if err == nil {
+			t.Errorf("Error should not be nil")
 		}
 	}
 }

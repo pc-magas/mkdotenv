@@ -36,15 +36,19 @@ func main() {
 
 	params.PrintVersionOrHelp()
 
-	dotenv_filename,output_file,variable_name,variable_value := params.GetParameters(os.Args,msg.ExitError)
+	err,paramStruct := params.GetParameters(os.Args)
 
-	filenameToRead := dotenv_filename
-	filenameCopy:=dotenv_filename+"."+strconv.FormatInt(time.Now().UnixMilli(),10)
-	sameFileToReadAndWrite:=dotenv_filename == output_file 
+	if(err != nil){
+		msg.ExitError(err.Error())
+	}
+
+	filenameToRead := paramStruct.DotenvFilename
+	filenameCopy:=paramStruct.DotenvFilename+"."+strconv.FormatInt(time.Now().UnixMilli(),10)
+	sameFileToReadAndWrite:=paramStruct.DotenvFilename == paramStruct.OutputFile 
 
 	// If inputfile is same as Outputfile copy the input file to a temporary one
 	if(sameFileToReadAndWrite){
-		files.CopyFile(dotenv_filename,filenameCopy)
+		files.CopyFile(paramStruct.DotenvFilename,filenameCopy)
 		filenameToRead=filenameCopy
 	}
 
@@ -52,18 +56,18 @@ func main() {
 	file:=files.GetFileToRead(filenameToRead)
 	defer file.Close()
 
-	writer,outfile := files.CreateWriter(output_file)
+	writer,outfile := files.CreateWriter(paramStruct.output_file)
 	if(outfile!=nil){
 		defer outfile.Close()
 	}
 	defer writer.Flush()
 
-	_,err := files.AppendValueToDotenv(file,writer,variable_name,variable_value)
+	_,err := files.AppendValueToDotenv(file,writer,paramStruct.VariableName,paramStruct.VariableValue)
 
     if(err!=nil){
         fmt.Fprintln(os.Stderr, "Error:", err)
 		if(sameFileToReadAndWrite){
-			files.CopyFile(filenameCopy,dotenv_filename)
+			files.CopyFile(filenameCopy,paramStruct.DotenvFilename)
 		}
         os.Exit(1)
     }
