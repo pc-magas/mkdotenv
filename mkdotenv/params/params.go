@@ -11,12 +11,8 @@ import(
 var FLAG_ARGUMENTS = []string{"--env-file", "--input-file", "--output-file", "-v", "--version", "-h", "--h", "--help"}
 
 type Arguments struct {
-	DotenvFilename  string
-	VariableName    string
-	VariableValue   string
-	OutputFile      string
-	DisplayVersion  bool
-	ParseComplete   bool
+	DotenvFilename,VariableName,VariableValue,OutputFile string
+	DisplayVersion,ParseComplete  bool
 }
 
 func GetParameters(osArguments []string) (Arguments, error) {
@@ -31,6 +27,8 @@ func GetParameters(osArguments []string) (Arguments, error) {
 		ParseComplete:  false,
 	}
 
+	var err error=nil
+
 	if strings.HasPrefix(args.VariableName, "-") {
 		return Arguments{}, errors.New("variable name should not start with - or --")
 	}
@@ -40,18 +38,17 @@ func GetParameters(osArguments []string) (Arguments, error) {
 	}
 
 	for i := 3; i < len(osArguments); i++ {
-		arg, value := parseArgument(osArguments[i])
+		arg, value := sliceArgument(osArguments[i])
 
 		switch arg {
 		case "--input-file", "--env-file":
-			var err error
-			args.DotenvFilename, err = getArgumentValue(value, i, osArguments)
+			
+			err, args.DotenvFilename = getValue(value, i,3, osArguments)
 			if err != nil {
 				return Arguments{}, err
 			}
 		case "--output-file":
-			var err error
-			args.OutputFile, err = getArgumentValue(value, i, osArguments)
+			err, args.OutputFile = getValue(value, i,3, osArguments)
 			if err != nil {
 				return Arguments{}, err
 			}
