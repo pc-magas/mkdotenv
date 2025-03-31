@@ -36,10 +36,10 @@ func main() {
 
 	params.PrintVersionOrHelp()
 
-	err,paramStruct := params.GetParameters(os.Args)
+	paramErr,paramStruct := params.GetParameters(os.Args)
 
-	if(err != nil){
-		msg.ExitError(err.Error())
+	if(paramErr != nil){
+		msg.ExitError(paramErr.Error())
 	}
 
 	filenameToRead := paramStruct.DotenvFilename
@@ -56,7 +56,7 @@ func main() {
 	file:=files.GetFileToRead(filenameToRead)
 	defer file.Close()
 
-	writer,outfile := files.CreateWriter(paramStruct.output_file)
+	writer,outfile := files.CreateWriter(paramStruct.OutputFile)
 	if(outfile!=nil){
 		defer outfile.Close()
 	}

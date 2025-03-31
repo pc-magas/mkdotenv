@@ -19,26 +19,26 @@ func TestValidParams(t *testing.T){
 
 	for _, args := range arguments {
 
-		err,arguments := GetParameters(args)
+		err,argumentStruct := GetParameters(args)
 		
-		if arguments.DotenvFilename != expected_dotenv_filename {
-			t.Errorf("Expected dotenv_filename to be '%s', but got '%s'", expected_dotenv_filename, arguments.dotenv_filename)
+		if argumentStruct.DotenvFilename != expected_dotenv_filename {
+			t.Errorf("Expected DotenvFilename to be '%s', but got '%s'", expected_dotenv_filename, argumentStruct.DotenvFilename)
 		}
 
-		if arguments.OutputFile != expected_output_filename {
-			t.Errorf("Expected output_filename to be '%s', but got '%s'", expected_output_filename, arguments.output_file)
+		if argumentStruct.OutputFile != expected_output_filename {
+			t.Errorf("Expected output_filename to be '%s', but got '%s'", expected_output_filename, argumentStruct.OutputFile)
 		}
 
-		if arguments.VariableName != expected_variable_name {
-			t.Errorf("Expected variable_name to be '%s', but got '%s'", expected_variable_name, arguments.variable_name)
+		if argumentStruct.VariableName != expected_variable_name {
+			t.Errorf("Expected variable_name to be '%s', but got '%s'", expected_variable_name, argumentStruct.VariableName)
 		}
 
-		if arguments.VariableValue != expected_variable_value {
-			t.Errorf("Expected variable_value to be '%s', but got '%s'", expected_variable_value, arguments.variable_value)
+		if argumentStruct.VariableValue != expected_variable_value {
+			t.Errorf("Expected variable_value to be '%s', but got '%s'", expected_variable_value, argumentStruct.VariableValue)
 		}
 
-		if(arguments.ParseComplete == false){
-			t.Errorf("argument parsins is expected to be complete")
+		if(argumentStruct.ParseComplete == false){
+			t.Errorf("argument parsing is expected to be complete")
 		}
 
 		if err != nil {

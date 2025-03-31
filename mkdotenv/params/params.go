@@ -15,9 +15,9 @@ type Arguments struct {
 	DisplayVersion,ParseComplete  bool
 }
 
-func GetParameters(osArguments []string) (Arguments, error) {
+func GetParameters(osArguments []string) (error,Arguments) {
 	if len(osArguments) < 3 {
-		return Arguments{}, errors.New("not enough arguments provided")
+		return errors.New("not enough arguments provided"),Arguments{}
 	}
 
 	args := Arguments{
@@ -30,11 +30,11 @@ func GetParameters(osArguments []string) (Arguments, error) {
 	var err error=nil
 
 	if strings.HasPrefix(args.VariableName, "-") {
-		return Arguments{}, errors.New("variable name should not start with - or --")
+		return errors.New("variable name should not start with - or --"),Arguments{}
 	}
 
 	if slices.Contains(FLAG_ARGUMENTS, args.VariableValue) {
-		return Arguments{}, errors.New("variable value should not contain reserved flag values")
+		return errors.New("variable value should not contain reserved flag values"),Arguments{}
 	}
 
 	for i := 3; i < len(osArguments); i++ {
@@ -45,18 +45,18 @@ func GetParameters(osArguments []string) (Arguments, error) {
 			
 			err, args.DotenvFilename = getValue(value, i,3, osArguments)
 			if err != nil {
-				return Arguments{}, err
+				return err,Arguments{}
 			}
 		case "--output-file":
 			err, args.OutputFile = getValue(value, i,3, osArguments)
 			if err != nil {
-				return Arguments{}, err
+				return err,Arguments{}
 			}
 		}
 	}
 
 	args.ParseComplete = true
-	return args, nil
+	return nil,args
 }
 
 func PrintVersionOrHelp(){
