@@ -32,11 +32,11 @@ func GetParameters(osArguments []string) (error,Arguments) {
 	}
 
 	if strings.HasPrefix(args.VariableName, "-") {
-		return errors.New("variable name should not start with - or --"),Arguments{}
+		return errors.New("variable name should not start with - or --"),args
 	}
 
 	if slices.Contains(FLAG_ARGUMENTS, args.VariableValue) {
-		return errors.New("variable value should not contain reserved flag values"),Arguments{}
+		return errors.New("variable value should not contain reserved flag values"),args
 	}
 
 	var err error=nil
@@ -62,15 +62,18 @@ func GetParameters(osArguments []string) (error,Arguments) {
 		envFileSet=f.Name=="env-file"
 	})
 
+
+	fmt.Println("InputFileSet: ",inputFileSet,"envFileSet: ",envFileSet)
+	fmt.Printf("outputFile: %s\ndotEnvfile:%s\n",outputFile,dotEnvFile)
+
 	if(inputFileSet && envFileSet){
-		return errors.New("Only One of `env-file` and `input-file` should be provided"),Arguments{}
+		return errors.New("Only One of `env-file` and `input-file` should be provided"),args
 	}
 
 	if(err!=nil){
-		return err,Arguments{}
+		return err,args
 	}
 
-	fmt.Printf("outputFile: %s\ndotEnvfile:%s\n",outputFile,dotEnvFile)
 
 	if(inputFile!=""){
 		args.DotenvFilename=inputFile

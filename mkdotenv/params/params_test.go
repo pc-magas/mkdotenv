@@ -119,18 +119,3 @@ func TestMissingInputFileAndOutputFile(t *testing.T){
 
 // }
 
-// func TestMissingInputFile(t *testing.T){
-// 	arguments:=[][]string {
-// 		{"exec","123","XXXX","--input-file=","--output-file","zzzz"},
-// 		{"exec","123","XXXX","--input-file","--output-file","zzzz"},
-// 	}
-
-// 	for _, args := range arguments {
-
-// 		err,_:= GetParameters(args)
-
-// 		if err == nil {
-// 			t.Errorf("Error should not be nil")
-// 		}
-// 	}
-// }
