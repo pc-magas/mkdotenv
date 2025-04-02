@@ -6,16 +6,19 @@ import(
 	"slices"
 	"mkdotenv/msg"
 	"errors"
+	"flag"
+	"fmt"
 )
 
 var FLAG_ARGUMENTS = []string{"--env-file", "--input-file", "--output-file", "-v", "--version", "-h", "--h", "--help"}
 
 type Arguments struct {
 	DotenvFilename,VariableName,VariableValue,OutputFile string
-	DisplayVersion,ParseComplete  bool
+	ParseComplete  bool
 }
 
 func GetParameters(osArguments []string) (error,Arguments) {
+	
 	if len(osArguments) < 3 {
 		return errors.New("not enough arguments provided"),Arguments{}
 	}
@@ -24,10 +27,9 @@ func GetParameters(osArguments []string) (error,Arguments) {
 		DotenvFilename: ".env",
 		VariableName:   osArguments[1],
 		VariableValue:  osArguments[2],
+		OutputFile: "",
 		ParseComplete:  false,
 	}
-
-	var err error=nil
 
 	if strings.HasPrefix(args.VariableName, "-") {
 		return errors.New("variable name should not start with - or --"),Arguments{}
@@ -37,23 +39,46 @@ func GetParameters(osArguments []string) (error,Arguments) {
 		return errors.New("variable value should not contain reserved flag values"),Arguments{}
 	}
 
-	for i := 3; i < len(osArguments); i++ {
-		arg, value := sliceArgument(osArguments[i])
+	var err error=nil
+	flagSet := flag.NewFlagSet("params", flag.ContinueOnError)
 
-		switch arg {
-		case "--input-file", "--env-file":
-			
-			err, args.DotenvFilename = getValue(value, i,3, osArguments)
-			if err != nil {
-				return err,Arguments{}
-			}
-		case "--output-file":
-			err, args.OutputFile = getValue(value, i,3, osArguments)
-			if err != nil {
-				return err,Arguments{}
-			}
-		}
+
+	var outputFile,inputFile,dotEnvFile string
+	var inputFileSet bool=false
+	var envFileSet bool=false
+
+	flagSet.StringVar(&dotEnvFile,"env-file","",".env File to read upon")
+	flagSet.StringVar(&inputFile,"input-file","",".env File to read upon")
+	flagSet.StringVar(&outputFile,"output-file","",".env File to read upon")
+
+	err=flagSet.Parse(osArguments[3:])
+	
+	if err != nil {
+        return err, Arguments{}
+    }
+
+	flagSet.Visit(func(f *flag.Flag){
+		inputFileSet=f.Name=="input-file"
+		envFileSet=f.Name=="env-file"
+	})
+
+	if(inputFileSet && envFileSet){
+		return errors.New("Only One of `env-file` and `input-file` should be provided"),Arguments{}
 	}
+
+	if(err!=nil){
+		return err,Arguments{}
+	}
+
+	fmt.Printf("outputFile: %s\ndotEnvfile:%s\n",outputFile,dotEnvFile)
+
+	if(inputFile!=""){
+		args.DotenvFilename=inputFile
+	} else if(dotEnvFile!=""){
+		args.DotenvFilename=dotEnvFile
+	}
+
+	args.OutputFile=outputFile
 
 	args.ParseComplete = true
 	return nil,args
@@ -80,38 +105,3 @@ func PrintVersionOrHelp(){
 			msg.ExitError("Not enough arguments provided")
 	}
 }
-
-
-func sliceArgument(argument string) (string, string) {
-	arguments := strings.Split(argument, "=")
-
-	if len(arguments) > 1 {
-		value := strings.TrimSpace(arguments[1])
-		if value == "" || value == " " {
-			return arguments[0], ""
-		}
-		return arguments[0], value
-	}
-
-	return arguments[0], ""
-}
-
-func getValue(value string,i int,offset int,arguments []string)(error,string){
-
-	if(value == ""){
-		index:= i+offset+1
-		if(index >= len(arguments) ){
-			return errors.New("Index out of bounds"),value
-		}
-		// Arguments are parsed with an offset we get the next item + offset
-		value=arguments[index]
-
-	}
-
-	if(slices.Contains(FLAG_ARGUMENTS[:],value)){
-		return errors.New("Value contains argumwent value"),value
-	}
-
-	return nil,value
-}
-
