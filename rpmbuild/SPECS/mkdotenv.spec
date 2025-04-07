@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.2.0
+Version:        0.2.1
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -45,3 +45,6 @@ install -m 0644 man/mkdotenv.1 %{buildroot}/usr/share/man/man1/mkdotenv.1
 - 5. Improved Documentation
 - 6. [BUGFIX] Out of bounds argument parsing
 - 7. [BUGFIX] Values should not be an Argument
+
+* Δευ Απρ 07 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+- 1. Improve Argument parsing

@@ -1,3 +1,7 @@
+# Version 0.2.1 2025-04-07
+
+1. Improve Argument parsing
+
 # Version 0.2.0 2025-03-27
 
 1. Split codebase into multiple files.
