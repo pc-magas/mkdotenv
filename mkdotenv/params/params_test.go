@@ -1,7 +1,6 @@
 package params
 
 import "testing"
-import "fmt"
 
 func TestValidParams(t *testing.T){
 
@@ -112,10 +111,8 @@ func TestMissingParams(t *testing.T){
 
 		t.Run(tc.args[1], func(t *testing.T) { 
 
-			err,values := GetParameters(tc.args)
+			err,_ := GetParameters(tc.args)
 			
-			fmt.Println(values)
-
 			if err == nil {
 				t.Errorf("Error should not be nil")
 			}

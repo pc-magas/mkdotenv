@@ -72,32 +72,15 @@ func GetParameters(osArguments []string) (error,Arguments) {
 		return err, args
 	}
 
-
-	fmt.Println("InputFileSet: ",inputFileSet,"envFileSet: ",envFileSet)
-	fmt.Printf("inputFile: %s\ndotEnvfile:%s\n",inputFile,dotEnvFile)
-
 	if(inputFileSet && envFileSet){
 		return errors.New("Only One of `--env-file` and `--input-file` should be provided"),args
-	}
-
-	inputFile=strings.ReplaceAll(inputFile," ","");
-	dotEnvFile=strings.ReplaceAll(dotEnvFile," ","");
-
-
-	fmt.Println("CHECK: ",inputFile=="",dotEnvFile=="")
-
-	if((inputFileSet || envFileSet) && (inputFile=="" && dotEnvFile=="")){
+	}else if((inputFileSet || envFileSet) && (inputFile=="" && dotEnvFile=="")){
 		return errors.New("If one of `--input-file` or `--env-file` provided it should contain a valid .env path"),args
 	}
 
 	if(outputFileSet && outputFile == ""){
 		return errors.New("Param `--output-file` should contain a value if provided."),args
 	}
-
-	if(err!=nil){
-		return err,args
-	}
-
 
 	if(inputFile!=""){
 		args.DotenvFilename=inputFile
