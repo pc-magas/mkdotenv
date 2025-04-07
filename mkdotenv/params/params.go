@@ -43,31 +43,55 @@ func GetParameters(osArguments []string) (error,Arguments) {
 	flagSet := flag.NewFlagSet("params", flag.ContinueOnError)
 
 
-	var outputFile,inputFile,dotEnvFile string
-	var inputFileSet bool=false
-	var envFileSet bool=false
+	var outputFile,inputFile,dotEnvFile string = "","",""
+	var inputFileSet,envFileSet,outputFileSet bool=false,false,false
 
 	flagSet.StringVar(&dotEnvFile,"env-file","",".env File to read upon")
 	flagSet.StringVar(&inputFile,"input-file","",".env File to read upon")
 	flagSet.StringVar(&outputFile,"output-file","",".env File to read upon")
 
 	err=flagSet.Parse(osArguments[3:])
-	
+		
+
 	if err != nil {
-        return err, Arguments{}
+        return err, args
     }
 
 	flagSet.Visit(func(f *flag.Flag){
-		inputFileSet=f.Name=="input-file"
-		envFileSet=f.Name=="env-file"
+		inputFileSet=inputFileSet||f.Name=="input-file"
+		envFileSet=envFileSet||f.Name=="env-file"
+		outputFileSet=outputFileSet||f.Name=="output-file"
+
+		if(slices.Contains(FLAG_ARGUMENTS,f.Value.String())){
+			err=fmt.Errorf("Flag %s should not contain a param value",f.Name)
+		}
+
 	})
+
+	if(err!=nil){
+		return err, args
+	}
 
 
 	fmt.Println("InputFileSet: ",inputFileSet,"envFileSet: ",envFileSet)
-	fmt.Printf("outputFile: %s\ndotEnvfile:%s\n",outputFile,dotEnvFile)
+	fmt.Printf("inputFile: %s\ndotEnvfile:%s\n",inputFile,dotEnvFile)
 
 	if(inputFileSet && envFileSet){
-		return errors.New("Only One of `env-file` and `input-file` should be provided"),args
+		return errors.New("Only One of `--env-file` and `--input-file` should be provided"),args
+	}
+
+	inputFile=strings.ReplaceAll(inputFile," ","");
+	dotEnvFile=strings.ReplaceAll(dotEnvFile," ","");
+
+
+	fmt.Println("CHECK: ",inputFile=="",dotEnvFile=="")
+
+	if((inputFileSet || envFileSet) && (inputFile=="" && dotEnvFile=="")){
+		return errors.New("If one of `--input-file` or `--env-file` provided it should contain a valid .env path"),args
+	}
+
+	if(outputFileSet && outputFile == ""){
+		return errors.New("Param `--output-file` should contain a value if provided."),args
 	}
 
 	if(err!=nil){

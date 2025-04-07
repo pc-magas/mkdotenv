@@ -1,6 +1,7 @@
 package params
 
 import "testing"
+import "fmt"
 
 func TestValidParams(t *testing.T){
 
@@ -98,24 +99,28 @@ func TestMissingInputFileAndOutputFile(t *testing.T){
 
 }
 
-// func TestMissingParams(t *testing.T){
+func TestMissingParams(t *testing.T){
 	
-// 	arguments:=[][]string{
-// 		{"exec","123","XXXX","--input-file","--output-file"},
-// 		{"exec","123","XXXX","--input-file","xxxx","--output-file="},
-// 		{"exec","123","XXXX","--input-file=","--output-file="},
-// 	}
+	testCases := []struct {
+		args []string
+	}{
+		{[]string{"exec","123","XXXX","--input-file","--output-file"}},
+		{[]string{"exec","123","XXXX","--input-file=","--output-file="}},
+	}
 
-	
+	for _, tc := range testCases {
 
-// 	for _, args := range arguments {
+		t.Run(tc.args[1], func(t *testing.T) { 
 
-// 		err,_ := GetParameters(args,)
+			err,values := GetParameters(tc.args)
+			
+			fmt.Println(values)
 
-// 		if err == nil {
-// 			t.Errorf("Error should not be nil")
-// 		}
-// 	}
+			if err == nil {
+				t.Errorf("Error should not be nil")
+			}
+		})
+	}
 
-// }
+}
 
