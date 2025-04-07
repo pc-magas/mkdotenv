@@ -40,15 +40,14 @@ func GetParameters(osArguments []string) (error,Arguments) {
 	}
 
 	var err error=nil
+	var inputFileSet,outputFileSet bool=false,false
+	
 	flagSet := flag.NewFlagSet("params", flag.ContinueOnError)
 
+	flagSet.String("env-file","",".env File to read upon")
+	flagSet.String("input-file","",".env File to read upon")
+	flagSet.String("output-file","",".env File to read upon")
 
-	var outputFile,inputFile,dotEnvFile string = "","",""
-	var inputFileSet,envFileSet,outputFileSet bool=false,false,false
-
-	flagSet.StringVar(&dotEnvFile,"env-file","",".env File to read upon")
-	flagSet.StringVar(&inputFile,"input-file","",".env File to read upon")
-	flagSet.StringVar(&outputFile,"output-file","",".env File to read upon")
 
 	err=flagSet.Parse(osArguments[3:])
 		
@@ -58,12 +57,49 @@ func GetParameters(osArguments []string) (error,Arguments) {
     }
 
 	flagSet.Visit(func(f *flag.Flag){
-		inputFileSet=inputFileSet||f.Name=="input-file"
-		envFileSet=envFileSet||f.Name=="env-file"
-		outputFileSet=outputFileSet||f.Name=="output-file"
 
 		if(slices.Contains(FLAG_ARGUMENTS,f.Value.String())){
 			err=fmt.Errorf("Flag %s should not contain a param value",f.Name)
+			return
+		}
+
+		if(err !=nil){
+			return
+		}
+
+		value:=f.Value.String()
+
+		if(value == ""){
+			err=fmt.Errorf("Value should not be empty for param %s",f.Name)
+			return
+		}
+
+		switch (f.Name){
+
+			case "input-file","env-file":
+
+				if(inputFileSet){
+					err=fmt.Errorf("Only One of `--env-file` and `--input-file` should be provided")
+					return
+				}
+				
+				if(value == ""){
+					err=fmt.Errorf("Only One of `--env-file` and `--input-file` should be provided")
+					return
+				}
+
+				args.DotenvFilename = value
+				inputFileSet=true
+
+			case "output-file":
+
+				if(outputFileSet){
+					err=fmt.Errorf("Output File has Already Been provided")
+					return
+				}
+
+				args.OutputFile=value
+				outputFileSet=true
 		}
 
 	})
@@ -71,24 +107,6 @@ func GetParameters(osArguments []string) (error,Arguments) {
 	if(err!=nil){
 		return err, args
 	}
-
-	if(inputFileSet && envFileSet){
-		return errors.New("Only One of `--env-file` and `--input-file` should be provided"),args
-	}else if((inputFileSet || envFileSet) && (inputFile=="" && dotEnvFile=="")){
-		return errors.New("If one of `--input-file` or `--env-file` provided it should contain a valid .env path"),args
-	}
-
-	if(outputFileSet && outputFile == ""){
-		return errors.New("Param `--output-file` should contain a value if provided."),args
-	}
-
-	if(inputFile!=""){
-		args.DotenvFilename=inputFile
-	} else if(dotEnvFile!=""){
-		args.DotenvFilename=dotEnvFile
-	}
-
-	args.OutputFile=outputFile
 
 	args.ParseComplete = true
 	return nil,args
