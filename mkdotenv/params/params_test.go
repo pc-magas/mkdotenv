@@ -20,8 +20,6 @@ func TestValidParams(t *testing.T){
 		{[]string{"exec", "123", "XXXX", "--input-file=xxxx", "--output-file=zzzz"}},
 	}
 
-
-
 	for _, tc := range testCases {
 
 		t.Run(tc.args[1], func(t *testing.T) { // Creates subtests
@@ -52,7 +50,6 @@ func TestValidParams(t *testing.T){
 			if(argumentStruct.ParseComplete == false){
 				t.Errorf("argument parsin is expected to be complete")
 			}
-
 		})
 	}
 }
@@ -120,4 +117,28 @@ func TestMissingParams(t *testing.T){
 	}
 
 }
+func TestDuplicateArguments(t *testing.T){
+	testCases := []struct {
+		args []string
+	}{
+		{[]string{"exec","123","XXXX","--input-file=XXXX","--env-file","EEEE","--output-file=SSS","--output-file","SSS"}},
+		{[]string{"exec","123","XXXX","--input-file=XXXX","--env-file=EEEE","--output-file=SSS","--output-file","SSS"}},
+		{[]string{"exec","123","XXXX","--input-file=XXXX","--env-file","EEEE","--output-file","SSS","--output-file","SSS"}},
+		{[]string{"exec","123","XXXX","--input-file=XXXX","--env-file","EEEE","--output-file","SSS","--output-file","SSS","--output-file=SSS"}},
+		{[]string{"exec","123","XXXX","--input-file=XXXX","--env-file","EEEE","--output-file","SSS"}},
+		{[]string{"exec","123","XXXX","--input-file=XXXX","--input-file","XXXX","--env-file=QQQQ","--env-file","EEEE","--output-file","SSS"}},
+	}
 
+	for _, tc := range testCases {
+
+		t.Run(tc.args[1], func(t *testing.T) { 
+
+			err,_ := GetParameters(tc.args)
+			
+			if err == nil {
+				t.Errorf("Error should not be nil")
+			}
+		})
+	}
+
+}
