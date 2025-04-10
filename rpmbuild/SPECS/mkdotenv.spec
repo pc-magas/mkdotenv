@@ -38,7 +38,7 @@ install -m 0644 man/mkdotenv.1 %{buildroot}/usr/share/man/man1/mkdotenv.1
 * Sun Feb 16 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
 - Initial RPM package
 
-* Πεμ Μαρ 27 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+* Thu Mar 27 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
 - 1. Split codebase into multiple files.
 - 2. Use a seperate version file and define built version upon compile.
 - 4. [BUGFIX] If input file is same as output file copy input file into a temporary one.
@@ -46,5 +46,5 @@ install -m 0644 man/mkdotenv.1 %{buildroot}/usr/share/man/man1/mkdotenv.1
 - 6. [BUGFIX] Out of bounds argument parsing
 - 7. [BUGFIX] Values should not be an Argument
 
-* Δευ Απρ 07 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+* Mon Apr 07 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
 - 1. Improve Argument parsing
