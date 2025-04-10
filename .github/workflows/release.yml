@@ -145,7 +145,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mkdotenv-bin
-          path: ./bin/mkdotenv , ./bin/mkdotenv.exe
+          path: |
+            ./bin/mkdotenv
+            ./bin/mkdotenv.exe
           if-no-files-found: error
 
   
