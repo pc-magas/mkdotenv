@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-
+ORIG_LANG=$(echo $LANG)
+export LANG=C
 SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 SOURCEPATH=${SCRIPTPATH}/../ 
 
@@ -52,3 +53,5 @@ while IFS= read -r line; do
 done < "${RELEASE_NOTES_FILE}"
 
 sensible-editor "$SPEC_FILE"
+
+export LANG=$ORIG_LANG
