@@ -138,11 +138,14 @@ jobs:
       - name: build
         run: make bin
 
+      - name: build_windows
+        run: make bin OS=windows
+
       - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
         with:
           name: mkdotenv-bin
-          path: ./bin/mkdotenv
+          path: ./bin/mkdotenv , ./bin/mkdotenv.exe
           if-no-files-found: error
 
   
@@ -207,17 +210,6 @@ jobs:
           name: mkdotenv-rpm
           path: rpmbuild/RPMS/x86_64/mkdotenv*.rpm  
 
-  build_exe:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    needs: tag_git
-    steps:
-
-      - uses: actions/checkout@v4
-        with:
-         fetch-depth: 0
-
   release:
     runs-on: ubuntu-latest
     permissions:
@@ -262,8 +254,8 @@ jobs:
         with:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
-          prerelease:  true
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
+          prerelease: ${{ needs.tag_git.outputs.is_pre == 'true' }}
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
           bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
@@ -273,6 +265,6 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  false
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
           bodyFile: RELEASE_NOTES
       
