@@ -242,6 +242,10 @@ jobs:
           name: mkdotenv-bin
           path: ./bin
 
+      - name: Check Bin
+        run:
+          ls -l ./bin
+
       - name: Download DEB artifact
         uses: actions/download-artifact@v4
         with:
@@ -262,13 +266,13 @@ jobs:
           artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
           bodyFile: RELEASE_NOTES
 
-      - name: Create a GitHub release
-        if:  github.ref == 'refs/heads/master'
-        uses: ncipollo/release-action@v1
-        with:
-          tag: "v${{needs.tag_git.outputs.tag_version}}"
-          allowUpdates: true
-          prerelease:  false
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
-          bodyFile: RELEASE_NOTES
+      # - name: Create a GitHub release
+      #   if:  github.ref == 'refs/heads/master'
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     tag: "v${{needs.tag_git.outputs.tag_version}}"
+      #     allowUpdates: true
+      #     prerelease:  false
+      #     artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
+      #     bodyFile: RELEASE_NOTES
       
