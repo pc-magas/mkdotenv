@@ -6,7 +6,7 @@
 make OS=windows
 ```
 
-This would result a file named `mkdotenv_^VERSION^.exe` (replace `^VERSION^` with the version that exists upon `VERSION` file). 
+This would result a file named `./bin/mkdotenv.exe` (replace `^VERSION^` with the version that exists upon `VERSION` file). 
 
 # Testing windows execution upon Linux
 

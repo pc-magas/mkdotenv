@@ -207,6 +207,17 @@ jobs:
           name: mkdotenv-rpm
           path: rpmbuild/RPMS/x86_64/mkdotenv*.rpm  
 
+  build_exe:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: tag_git
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+         fetch-depth: 0
+
   release:
     runs-on: ubuntu-latest
     permissions:

@@ -15,11 +15,12 @@ ifeq ($(OS),windows)
 endif
 
 BIN_NAME = mkdotenv_$(VERSION)$(EXT)
+PKG_NAME = mkdotenv$(EXT)
 
 .PHONY: all compile
 
 # Default target
-all: compile
+all: bin
 
 make_bin_folder:
 	mkdir -p bin
@@ -48,7 +49,7 @@ install:
 
 # Uninstall the programme
 uninstall:
-	rm -f /usr/bin/$(PKG_NAME)
+	rm -f /usr/bin/$(PKG_NAME) 
 	rm -f /usr/share/man/man1/mkdotenv.1 
 
 # Clean up build files

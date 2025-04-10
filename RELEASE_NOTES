@@ -1,1 +1,2 @@
-1. Improve Argument parsing
+Release for windows
+make runs `bin` target by default
