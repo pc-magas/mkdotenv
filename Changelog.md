@@ -1,3 +1,9 @@
+# Version 0.2.2 2025-04-10
+
+Release for windows
+make runs `bin` target by default
+Fix lang upon rpm changelog
+
 # Version 0.2.1 2025-04-07
 
 1. Improve Argument parsing

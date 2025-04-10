@@ -1,3 +1,11 @@
+mkdotenv (0.2.2-0debian1~unstable1) unstable; urgency=medium
+
+  * Release for windows
+  * make runs `bin` target by default
+  * Fix lang upon rpm changelog
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Thu, 10 Apr 2025 22:08:04 +0300
+
 mkdotenv (0.2.1-0debian1~unstable1) unstable; urgency=medium
 
   * 1. Improve Argument parsing

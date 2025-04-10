@@ -1,2 +1,3 @@
 Release for windows
 make runs `bin` target by default
+Fix lang upon rpm changelog
