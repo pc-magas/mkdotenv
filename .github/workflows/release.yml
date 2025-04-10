@@ -13,7 +13,6 @@ jobs:
       contents: write
     outputs:
       tag_version: ${{ steps.set_tag_version.outputs.tag_version }}
-      is_pre: ${{steps.is_pre.outputs.tag_version}}
     steps:
 
       - uses: actions/checkout@v4
@@ -28,13 +27,10 @@ jobs:
       - name: Set tag version
         id: set_tag_version
         run: |
-
           if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
             echo "tag_version=${{ steps.version.outputs.version }}-pre" >> "$GITHUB_OUTPUT"
-            echo "is_pre=true" >> "$GITHUB_OUTPUT"
           else
             echo "tag_version=${{ steps.version.outputs.version }}" >> "$GITHUB_OUTPUT"
-            echo "is_pre=false" >> "$GITHUB_OUTPUT"
           fi
       
       - uses: actions/setup-go@v5
@@ -253,22 +249,21 @@ jobs:
           name: mkdotenv-rpm
 
       - name: Create a GitHub pre release
-        if:   github.ref == 'refs/heads/dev'
         uses: ncipollo/release-action@v1
         with:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
-          prerelease: ${{ needs.tag_git.outputs.is_pre == 'true' }}
+          prerelease: false
           artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
           bodyFile: RELEASE_NOTES
 
-      # - name: Create a GitHub release
-      #   if:  github.ref == 'refs/heads/master'
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     tag: "v${{needs.tag_git.outputs.tag_version}}"
-      #     allowUpdates: true
-      #     prerelease:  false
-      #     artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
-      #     bodyFile: RELEASE_NOTES
+      - name: Create a GitHub release
+        if:  github.ref == 'refs/heads/master'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "v${{needs.tag_git.outputs.tag_version}}"
+          allowUpdates: true
+          prerelease:  false
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
+          bodyFile: RELEASE_NOTES
       
