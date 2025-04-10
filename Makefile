@@ -3,8 +3,18 @@ PKG_NAME = mkdotenv
 BUILD = 1
 VERSION := $(shell cat VERSION)
 ARCH = amd64
-BIN_NAME = mkdotenv_$(VERSION)
+OS = "linux"
 GO := go
+
+EXT :=
+CGO := 1
+
+ifeq ($(OS),windows)
+    EXT := .exe
+	CGO := 0
+endif
+
+BIN_NAME = mkdotenv_$(VERSION)$(EXT)
 
 .PHONY: all compile
 
@@ -19,7 +29,7 @@ make_bin_folder:
 compile:
 	cd ./mkdotenv &&\
 	echo $(VERSION) &&\
-	GOOS=linux GOARCH=$(ARCH) $(GO) build -ldflags "-X 'mkdotenv/msg.version=$(VERSION)'" -o ../$(BIN_NAME) mkdotenv.go &&\
+	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) $(GO) build -ldflags "-X 'mkdotenv/msg.version=$(VERSION)'" -o ../$(BIN_NAME) mkdotenv.go &&\
 	cd ../
 
 # Raw binary build
