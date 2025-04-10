@@ -74,10 +74,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
-      - name: build_image
-        if: github.ref == 'refs/heads/dev'
-        run: make docker
 
       - name: release_image
         if: github.ref == 'refs/heads/master'
