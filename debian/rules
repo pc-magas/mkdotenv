@@ -10,7 +10,7 @@ clean:
 	dh clean
 
 build:
-	$(MAKE) GO=$(GO)
+	$(MAKE) compile GO=$(GO)
 	
 binary:
 	mkdir -p debian/mkdotenv/usr/share/lintian/overrides
