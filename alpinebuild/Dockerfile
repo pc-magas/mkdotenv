@@ -12,13 +12,12 @@ RUN apk update && apk add --no-cache \
     fakeroot \
     curl \
     sudo \
-    make && \
+    make\
+    shadow && \
     adduser -D packager &&\
     echo "packager ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers &&\
     chown -R packager:packager /var/cache/distfiles &&\
     addgroup packager abuild
-
-# COPY --chown=root:root --chmod=0755 ./entrypoint.sh /usr/bin/entrypoint
 
 RUN echo "#!/usr/bin/env bash" > /usr/bin/entrypoint &&\
     echo "chown -R packager:packager /home/packager/*" >> /usr/bin/entrypoint &&\

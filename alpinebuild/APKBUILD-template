@@ -15,22 +15,27 @@ source="$pkgname-$pkgver.tar.gz"
 options="!check" # No tests
 
 prepare() {
-    tar -xzf "$srcdir/${pkgname}-${pkgver}.tar.gz" -C "$srcdir"
+    echo "PREPARE"
     echo $srcdir
     ls -l
     cd "$srcdir/mkdotenv"
 }
 
 build() {
+    echo "BUILD"
     ls -l &&\
     pwd &&\
-    go build -ldflags "-X 'mkdotenv/msg.version=${pkgver}'" -o ../${pkgname}-$pkgver mkdotenv.go &&\
-    cd ../ &&\
+    echo "COMPILE" &&\
+    go build -ldflags "-X 'mkdotenv/msg.version=${pkgver}'" -o $srcdir/${pkgname}-$pkgver mkdotenv.go &&\
+    cd $srcdir &&\
+    pwd
     ls -l
 }
 
 package() {
-    install -Dm755 ${pkgname}-$pkgver "$pkgdir/usr/bin/mkdotenv"
+    echo "INSTALL"
+    pwd
+    install -Dm755 ${srcdir}/${pkgname}-$pkgver "$pkgdir/usr/bin/mkdotenv"
 }
 
 sha512sums="
