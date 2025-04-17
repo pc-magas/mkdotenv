@@ -15,26 +15,16 @@ source="$pkgname-$pkgver.tar.gz"
 options="!check" # No tests
 
 prepare() {
-    echo "PREPARE"
-    echo $srcdir
-    ls -l
     cd "$srcdir/mkdotenv"
 }
 
 build() {
     echo "BUILD"
-    ls -l &&\
-    pwd &&\
-    echo "COMPILE" &&\
-    go build -ldflags "-X 'mkdotenv/msg.version=${pkgver}'" -o $srcdir/${pkgname}-$pkgver mkdotenv.go &&\
-    cd $srcdir &&\
-    pwd
-    ls -l
+    go build -ldflags "-X 'mkdotenv/msg.version=${pkgver}'" -o $srcdir/${pkgname}-$pkgver mkdotenv.go
 }
 
 package() {
     echo "INSTALL"
-    pwd
     install -Dm755 ${srcdir}/${pkgname}-$pkgver "$pkgdir/usr/bin/mkdotenv"
 }
 

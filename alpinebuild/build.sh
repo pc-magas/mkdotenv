@@ -13,6 +13,14 @@ keyfile=$(grep '^PACKAGER_PRIVKEY=' ~/.abuild/abuild.conf | cut -d= -f2 | tr -d 
 
 echo $keyfile
 
+if ["$keyfile" == ""]; then
+   abuild -a
+   keyfile=$(grep '^PACKAGER_PRIVKEY=' ~/.abuild/abuild.conf | cut -d= -f2 | tr -d '"')
+fi
+
+echo "KEYFILE ${keyfile}"
+
+sudo cp ~/.abuild/*.rsa.pub /etc/apk/keys/
 
 echo "Cleanup"
 abuild clear
