@@ -11,3 +11,4 @@ packages
 apkbuild-overlay/*
 APKFILE
 TAR_FILES
+puybkey.*

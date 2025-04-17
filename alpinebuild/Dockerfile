@@ -1,7 +1,8 @@
 FROM alpine
 
 ENV UID=1000\
-GID=1000
+GID=1000\
+KEYNAME="pubkey.asc"
 
 RUN apk update && apk add --no-cache \
     alpine-sdk \
