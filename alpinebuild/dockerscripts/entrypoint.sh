@@ -8,9 +8,9 @@ echo "Create ~/.abuild folder"
 mkdir -p /home/packager/.abuild
 touch /home/packager/.abuild/abuild.conf
 
-echo "Import external key"
-
 if [ "${EXTERNAL_KEY}" == "true" ]; then
+    
+    echo "Import external key"
 
     if [ -f $KEYNAME ]; then
         PUB_KEYFILE = $PUBKEY 
