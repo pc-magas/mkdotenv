@@ -13,7 +13,7 @@ keyfile=$(grep '^PACKAGER_PRIVKEY=' /home/$USER/.abuild/abuild.conf | cut -d= -f
 echo $keyfile
 
 if ["$keyfile" == ""]; then
-   abuild -a
+   abuild-keygen -a
    keyfile=$(grep '^PACKAGER_PRIVKEY=' ~/.abuild/abuild.conf | cut -d= -f2 | tr -d '"')
 fi
 
