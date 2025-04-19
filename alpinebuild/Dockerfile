@@ -2,7 +2,9 @@ FROM alpine
 
 ENV UID=1000\
 GID=1000\
-KEYNAME="pubkey.asc"
+EXTERNAL_KEY=false\
+PUBKEYNAME="pubkey.asc"\
+PRIVKEYNAME="pubkey"
 
 RUN apk update && apk add --no-cache \
     alpine-sdk \
@@ -18,18 +20,20 @@ RUN apk update && apk add --no-cache \
     adduser -D packager &&\
     echo "packager ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers &&\
     chown -R packager:packager /var/cache/distfiles &&\
-    addgroup packager abuild
+    addgroup packager abuild &&\
+    mkdir -p /usr/src/apkbuild &&\
+    mkdir -p /usr/share/keys
 
-RUN echo "#!/usr/bin/env bash" > /usr/bin/entrypoint &&\
-    echo "chown -R packager:packager /home/packager/*" >> /usr/bin/entrypoint &&\
-    echo "su packager -c \"\$*\"" >> /usr/bin/entrypoint &&\
-    chown root:root /usr/bin/entrypoint &&\
-    chmod 0775 /usr/bin/entrypoint
+COPY --chown=root:root --chmod=0755 ./dockerscripts/build.sh  /usr/bin/build
+
+VOLUME /etc/apk/keys/
+VOLUME /usr/src/apkbuild 
+VOLUME /usr/share/keys
 
 USER packager
 WORKDIR /home/packager
-VOLUME /home/packager
 
 USER root
+COPY --chown=root:root --chmod=0755 ./dockerscripts/entrypoint.sh  /usr/bin/entrypoint
 
 ENTRYPOINT ["/usr/bin/entrypoint"]

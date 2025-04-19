@@ -2,14 +2,13 @@
 
 set -eu
 
-mkdir -p  /home/packager/packages/
-
+mkdir -p  /home/$USER/packages/
 
 # Append it only once
-grep -qxF 'PACKAGER_REPODEST=/home/packager/packages' ~/.abuild/abuild.conf || \
-echo 'PACKAGER_REPODEST=/home/packager/packages' >> ~/.abuild/abuild.conf
+grep -qxF "PACKAGER_REPODEST=/home/$USER/packages" ~/.abuild/abuild.conf || \
+echo "PACKAGER_REPODEST=/home/$USER/packages" >> ~/.abuild/abuild.conf
 
-keyfile=$(grep '^PACKAGER_PRIVKEY=' ~/.abuild/abuild.conf | cut -d= -f2 | tr -d '"')
+keyfile=$(grep '^PACKAGER_PRIVKEY=' /home/$USER/.abuild/abuild.conf | cut -d= -f2 | tr -d '"')
 
 echo $keyfile
 

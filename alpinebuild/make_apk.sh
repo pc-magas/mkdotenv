@@ -7,6 +7,8 @@ echo ${VERSION}
 # Path that APKBUILD is Overriden 
 OVERLAY=${SCRIPT_DIR}/apkbuild-overlay
 
+mkdir -p ${OVERLAY}
+
 # TARBALL name and path  
 TARGZ_NAME=mkdotenv-${VERSION}.tar.gz
 TARGZ=${OVERLAY}/${TARGZ_NAME}
@@ -27,4 +29,4 @@ tar -tzf ${TARGZ}
 sed -i '/^source="\$pkgname-\$pkgver.tar.gz::https:\/\/github.com\/pc-magas\/mkdotenv\/archive\/refs\/tags\/v\$pkgver.tar.gz"/d' ${APKBUILD_OVERLAY}
 
 docker build -f ${SCRIPT_DIR}/Dockerfile -t pcmagas/alpinebuild ${SCRIPT_DIR}
-docker run  -v ${OVERLAY}:/home/packager -ti pcmagas/alpinebuild bash ./build.sh
+docker run  -v ${OVERLAY}:/usr/src/apkbuild -ti pcmagas/alpinebuild bash
