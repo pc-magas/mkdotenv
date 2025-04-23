@@ -7,9 +7,12 @@ src/v0.1.0.tar.gz
 .abuild
 *.tar.gz
 *.zip
+
 packages
-apkbuild-overlay/*
 APKFILE
 TAR_FILES
 public
 config
+
+volumes
+release

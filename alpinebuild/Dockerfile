@@ -21,19 +21,21 @@ RUN apk update && apk add --no-cache \
     echo "packager ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers &&\
     chown -R packager:packager /var/cache/distfiles &&\
     addgroup packager abuild &&\
-    mkdir -p /usr/src/apkbuild &&\
-    mkdir -p /usr/share/keys
+    mkdir -p /usr/src/apkbuild
 
-COPY --chown=root:root --chmod=0755 ./dockerscripts/build.sh  /usr/bin/build
+COPY --chown=root:root --chmod=0755 ./dockerscripts/* /usr/bin/
 
 VOLUME /etc/apk/keys/
 VOLUME /usr/src/apkbuild 
-VOLUME /usr/share/keys
 
 USER packager
 WORKDIR /home/packager
+RUN mkdir -p /home/packager/.abuild &&\
+    mkdir -p /home/packager/release
+
+VOLUME /home/packager/.abuild
+VOLUME /home/packager/release
 
 USER root
-COPY --chown=root:root --chmod=0755 ./dockerscripts/entrypoint.sh  /usr/bin/entrypoint
 
 ENTRYPOINT ["/usr/bin/entrypoint"]

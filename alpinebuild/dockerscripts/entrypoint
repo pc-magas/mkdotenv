@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+echo "COPY nessesary files"
+cp -r /usr/src/apkbuild/* /home/packager/
+
+echo "Create ~/.abuild folder"
+
+mkdir -p /home/packager/.abuild
+touch /home/packager/.abuild/abuild.conf
+
+echo "FIX Permissions on /home/packager"
+chown -R packager:packager /home/packager/.abuild
+chown -R packager:packager /home/packager/*
+
+echo "FIX Permissions on /etc/apk/keys/"
+chown -R root:root /etc/apk/keys/
+chmod 755 /etc/apk/keys/ 
+chmod 644 /etc/apk/keys/*
+
+su packager -c "$*"
