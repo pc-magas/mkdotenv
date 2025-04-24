@@ -108,7 +108,7 @@ jobs:
             ./alpinebuild/APKFILE
           if-no-files-found: error
 
-  release_apk:
+  alpine_apk:
     runs-on: ubuntu-latest
     needs: tag_git
     
@@ -247,11 +247,15 @@ jobs:
         with:
          fetch-depth: 0
 
-
       - name: Download Alpine Source code artifact
         uses: actions/download-artifact@v4
         with:
           name: mkdotenv-source-tar
+
+      - name: Download Alpine apk artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mkdotenv-apk
 
       - name: Download binary artifact
         uses: actions/download-artifact@v4
@@ -279,7 +283,7 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease: false
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk
           bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
@@ -289,6 +293,6 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  false
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk
           bodyFile: RELEASE_NOTES
       
