@@ -108,6 +108,31 @@ jobs:
             ./alpinebuild/APKFILE
           if-no-files-found: error
 
+  release_apk:
+    runs-on: ubuntu-latest
+    needs: tag_git
+    
+    permissions:
+      contents: write
+    
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   
+
+      - name: make_apk
+        run: |
+          cd ./alpinebuild/ 
+          bash release_apkfile.sh
+
+      - name: Upload apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: mkdotenv-apk
+          path: |
+            ./alpinebuild/release/home/x86_64/mkdotenv*-r0.apk
+          if-no-files-found: error
 
   build_bin:
     runs-on: ubuntu-latest

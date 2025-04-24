@@ -3,7 +3,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=$(cat ${SCRIPT_DIR}/../VERSION)
 APKFILE=mkdotenv-${VERSION}-r0.apk
-APKFILE_FULL=${SCRIPT_DIR}/apkbuild-overlay/home/x86_64/${APKFILE}
+APKFILE_FULL=${SCRIPT_DIR}/release/home/x86_64/${APKFILE}
 
 if [ -z ${APKFILE_FULL} ]; then
     bash ${SCRIPT_DIR}/make_apk.sh

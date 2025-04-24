@@ -20,7 +20,7 @@ MkDotenv is a lightweight and efficient tool for managing your `.env` files. Whe
 
 Upon Linux Mint and ubuntu you can run:
 
-```
+```shell
 sudo apt-get install make golang-1.23*
 ```
 
@@ -39,7 +39,8 @@ git clone https://github.com/pc-magas/mkdotenv.git
 make
 ```
 
-In case you use the `golang-1.23` package sdhipped with ubuntu and linux mint, and unable to run `go` command line into the shell you can also run this command:
+### Note
+In case you use the `golang-1.23` package shipped with ubuntu and linux mint, and unable to run `go` command line into the shell you can also run this command:
 
 ```shell
 make GO=/usr/lib/go-1.23/bin/go
@@ -70,13 +71,13 @@ rm -f /usr/local/share/man/man1/mkdotenv.1
 ```
 
 
-## From Statically Built Binaries
+## From Statically Built Executable Binaries
 
 ### Install
 
 In short you must do
 
-```
+```shell
 export VERSION=v0.1.0
 wget https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv
 
@@ -117,11 +118,9 @@ mkdotenv --version
 rm -rf /bin/mkdotenv
 ```
 
-## From debian package
+## In Ubuntu & Linux Mint
 
-### Via PPA
-
-Is running ubuntu or Linux mint ytou can use out ppa repository:
+If running ubuntu or Linux mint ytou can use out ppa repository:
 
 ```
 sudo add-apt-repository ppa:pcmagas/mkdotenv
@@ -129,9 +128,11 @@ sudo apt-get update
 sudo apt-get install mkdotenv
 ```
 
-### Via debian file
+## From debian package
 
-```
+Works in Debian, Mint and Ubuntu (or any other Debian-compartiblwe distros)
+
+```shell
 export VERSION=^found_version^
 wget https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv_${VERSION}_amd64.deb
 sudo dpkg -i mkdotenv_${VERSION}_amd64.deb
@@ -142,13 +143,32 @@ At code above replace `^found_version^` with the version shown at [Detect Latest
 
 ## From rpm package
 
-```
+Tested on Fedora
+
+```shell
 export VERSION=^found_version^
 wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}/mkdotenv-${VERSION}-1.fc41.x86_64.rpm
 sudo rpm -i mkdotenv_${VERSION}_amd64.deb
 ```
 
 At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
+
+
+## In Alpine Linux
+
+```shell
+export VERSION=^found_version^
+wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}/mkdotenv-${VERSION}-r0.apk
+```
+
+Then as root user run:
+
+```shell
+apk add --allow-untrusted mkdotenv-${VERSION}-r0.apk
+```
+
+At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
+
 
 # In windows
 

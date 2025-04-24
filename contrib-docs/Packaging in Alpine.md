@@ -1,5 +1,15 @@
 # Packaging In Alpine
 
+## Build workflow
+
+Run these commands in order tot est whether apok is built sucessfully and able to run:
+
+```shell
+cd ./alpinebuild
+bash make_apk.sh
+bash test_apk.sh
+```
+
 ## Directory and scripts for CI/CD building
 
 At `alpinebuild` directory scripts and all nessesary files reside for alpine package generation. There the most basic script is the `make_apk.sh` one.
