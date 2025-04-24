@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -eu
+
+mkdir -p  /home/$USER/packages/
+
+# Append it only once
+grep -qxF "PACKAGER_REPODEST=/home/$USER/packages" ~/.abuild/abuild.conf || \
+echo "PACKAGER_REPODEST=/home/$USER/packages" >> ~/.abuild/abuild.conf
+
+keyfile=$(grep '^PACKAGER_PRIVKEY=' /home/$USER/.abuild/abuild.conf | cut -d= -f2 | tr -d '"')
+
+echo "KEYFILE ${keyfile}"
+
+if [ -z "$keyfile" ]; then
+   abuild-keygen -ani
+   keyfile=$(grep '^PACKAGER_PRIVKEY=' ~/.abuild/abuild.conf | cut -d= -f2 | tr -d '"')
+else 
+   echo "File defined upon PACKAGER_REPODEST in ~/.abuild/abuild.conf"
+fi
+
+sleep 5
+
+echo "Cleanup"
+abuild clear
+abuild clean
+echo "Fix Checksum"
+abuild checksum
+echo "Installing Dependencies"
+abuild deps
+echo "Final Build"
+sleep 5
+abuild -r -K -P "/home/$USER/release"

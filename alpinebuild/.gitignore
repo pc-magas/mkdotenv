@@ -16,3 +16,4 @@ config
 
 volumes
 release
+!dockerscripts/*
