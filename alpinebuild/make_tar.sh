@@ -10,6 +10,7 @@ rm -rf ${SOURCE_FOLDER}
 mkdir -p ${SOURCE_FOLDER}
 
 mkdir ${SOURCE_FOLDER}/mkdotenv
+
 cp -r ${SCRIPT_DIR}/../mkdotenv/* ${SOURCE_FOLDER}/mkdotenv
 cp -r ${SCRIPT_DIR}/../man ${SOURCE_FOLDER}/man
 cp ${SCRIPT_DIR}/../Makefile ${SOURCE_FOLDER}/Makefile
@@ -19,9 +20,12 @@ cp ${SCRIPT_DIR}/../LICENCE ${SOURCE_FOLDER}/LICENCE
   cd ${SCRIPT_DIR} && tar -czf ${TARGZ_NAME} -C $(basename ${SOURCE_FOLDER}) .
 )
 
+
 date > TAR_FILES
 echo ${TARGZ_NAME} >> TAR_FILES
 ls -l ${SCRIPT_DIR}/${TARGZ_NAME} >> TAR_FILES
 tar -tzf ${SCRIPT_DIR}/${TARGZ_NAME} >> TAR_FILES
 
 echo ${TARGZ_NAME}
+
+rm -rf ${SOURCE_FOLDER}
