@@ -123,9 +123,9 @@ jobs:
 
       - name: make_apk
         run: |
-          cd ./alpinebuild/ 
-          bash release_apkfile.sh
-          ls -l ./alpinebuild/
+          cd ./alpinebuild &&\
+          bash make_apk.sh &&\
+          ls -l ./alpinebuild
 
       - name: Upload apk
         uses: actions/upload-artifact@v4
