@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.2.2
+Version:        0.2.3
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -53,3 +53,6 @@ install -m 0644 man/mkdotenv.1 %{buildroot}/usr/share/man/man1/mkdotenv.1
 - Release for windows
 - make runs `bin` target by default
 - Fix lang upon rpm changelog
+
+* Thu Apr 24 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+- Release for Alpine

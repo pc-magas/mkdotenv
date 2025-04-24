@@ -1,3 +1,9 @@
+mkdotenv (0.2.3-0debian1~unstable1) unstable; urgency=medium
+
+  * Release for Alpine
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Thu, 24 Apr 2025 22:41:02 +0300
+
 mkdotenv (0.2.2-0debian1~unstable1) unstable; urgency=medium
 
   * Release for windows
