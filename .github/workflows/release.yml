@@ -125,7 +125,7 @@ jobs:
         run: |
           cd ./alpinebuild &&\
           bash make_apk.sh &&\
-          ls -l ./alpinebuild
+          ls -l ./release/home/x86_64
 
       - name: Upload apk
         uses: actions/upload-artifact@v4
