@@ -37,4 +37,9 @@ sed -i '/^source="\$pkgname-\$pkgver.tar.gz::https:\/\/github.com\/pc-magas\/mkd
 
 docker build -f ${SCRIPT_DIR}/Dockerfile -t pcmagas/alpinebuild ${SCRIPT_DIR}
 
-docker run -v ${OVERLAY}:/usr/src/apkbuild -v ${ABUILD_VOLUME}:/home/packager/.abuild -v ${VOLUME_DIR}/keys:/etc/apk/keys -v ${RELEASE_DIR}:/home/packager/release -ti pcmagas/alpinebuild
+docker run \
+    -v ${OVERLAY}:/usr/src/apkbuild  \
+    -v ${ABUILD_VOLUME}:/home/packager/.abuild \
+    -v ${VOLUME_DIR}/keys:/etc/apk/keys \
+    -v ${RELEASE_DIR}:/home/packager/release \
+    pcmagas/alpinebuild
