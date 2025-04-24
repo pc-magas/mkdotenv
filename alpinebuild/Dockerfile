@@ -39,3 +39,4 @@ VOLUME /home/packager/release
 USER root
 
 ENTRYPOINT ["/usr/bin/entrypoint"]
+CMD [ "build" ]
