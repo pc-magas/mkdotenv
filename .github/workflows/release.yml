@@ -281,10 +281,11 @@ jobs:
 
       - name: Create a GitHub pre release
         uses: ncipollo/release-action@v1
+        if:  github.ref == 'refs/heads/master'
         with:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
-          prerelease: false
+          prerelease: true
           artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk
           bodyFile: RELEASE_NOTES
 
