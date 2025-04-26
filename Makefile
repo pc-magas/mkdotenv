@@ -25,12 +25,11 @@ all: bin
 make_bin_folder:
 	mkdir -p bin
 
-
 # Compile Go binary
 compile:
 	cd ./mkdotenv &&\
 	echo $(VERSION) &&\
-	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) $(GO) build -ldflags "-X 'mkdotenv/msg.version=$(VERSION)'" -o ../$(BIN_NAME) mkdotenv.go &&\
+	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) $(GO) build -ldflags "-X 'github.com/pc-magas/mkdotenv/msg.version=$(VERSION)'" -o ../$(BIN_NAME) mkdotenv.go &&\
 	cd ../
 
 # Raw binary build

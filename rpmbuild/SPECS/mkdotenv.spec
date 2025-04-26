@@ -8,7 +8,7 @@ License:        GPL-3
 URL:            https://github.com/pc-magas/mkdotenv
 Source0:        %{name}-%{version}.tar.gz
 
-BuildRequires:  go
+BuildRequires:  go, make
 
 %description
 MkDotenv is a lightweight and efficient tool for managing your `.env` files. 
@@ -18,11 +18,7 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 %setup -q
 
 %build
-	ls -l 
-	cd ./mkdotenv &&\
-	rm -rf mkdotenv &&\
-    go build -o ./mkdotenv -ldflags "-X mkdotenv/msg.version=%{version}" ./mkdotenv.go && \
-	cd ..
+    make
 
 %install
 mkdir -p %{buildroot}/usr/bin

@@ -22,9 +22,9 @@ import (
     "fmt"
 	"time"
 	"strconv"
-	"mkdotenv/params"
-	"mkdotenv/msg"
-	"mkdotenv/files"
+	"github.com/pc-magas/mkdotenv/params"
+	"github.com/pc-magas/mkdotenv/msg"
+	"github.com/pc-magas/mkdotenv/files"
 )
 
 func main() {

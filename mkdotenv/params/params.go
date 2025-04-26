@@ -4,7 +4,7 @@ import(
 	"os"
 	"strings"
 	"slices"
-	"mkdotenv/msg"
+	"github.com/pc-magas/mkdotenv/msg"
 	"errors"
 	"flag"
 	"fmt"
