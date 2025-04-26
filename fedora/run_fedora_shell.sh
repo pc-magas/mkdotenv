@@ -8,6 +8,6 @@ VERSION=$(cat ${SOURCEPATH}/VERSION)
 
 docker run \
     -e UID=$(id -u) -e GID=$(id -g)\
-    -v "$(pwd)/rpmbuild/RPMS/x86_64/:/root/rpmbuild/RPMS/x86_64" \
+    -v "${SOURCEPATH}/rpmbuild/RPMS/x86_64:/root/rpmbuild/RPMS/x86_64" \
     -ti -u root \
     fedora:41 bash

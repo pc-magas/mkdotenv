@@ -1,7 +1,7 @@
 # Package metadata
 PKG_NAME = mkdotenv
 BUILD = 1
-VERSION := $(shell cat VERSION)
+VERSION ?= $(shell [ -f VERSION ] && cat VERSION || echo dev)
 ARCH = amd64
 OS = "linux"
 GO := go
