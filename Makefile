@@ -16,6 +16,7 @@ endif
 
 BIN_NAME = mkdotenv_$(VERSION)$(EXT)
 PKG_NAME = mkdotenv$(EXT)
+COMPILED_BIN_PATH ?= ../$(BIN_NAME)
 
 .PHONY: all compile
 
@@ -29,7 +30,7 @@ make_bin_folder:
 compile:
 	cd ./mkdotenv &&\
 	echo $(VERSION) &&\
-	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) $(GO) build -ldflags "-X 'github.com/pc-magas/mkdotenv/msg.version=$(VERSION)'" -o ../$(BIN_NAME) mkdotenv.go &&\
+	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) $(GO) build -ldflags "-X 'github.com/pc-magas/mkdotenv/msg.version=$(VERSION)'" -o $(COMPILED_BIN_PATH) mkdotenv.go &&\
 	cd ../
 
 # Raw binary build
