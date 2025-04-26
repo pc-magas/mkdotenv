@@ -18,7 +18,7 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 %setup -q
 
 %build
-    make
+    make VERSION="%{version}"
 
 %install
 mkdir -p %{buildroot}/usr/bin
