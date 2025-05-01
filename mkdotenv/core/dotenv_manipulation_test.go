@@ -66,3 +66,40 @@ MYVAR=MYVAL
 	}
 }
 
+
+func TestAppendValueToDotenvReplacesNewValueToFile(t *testing.T) {
+
+	variable := "MYVAR"
+	value := "MYVAL"
+
+	dotenv:=`
+VAR1=val
+VAR2="val2"
+MYVAR=OLDVAL
+`
+
+	expectedOutput:=`
+VAR1=val
+VAR2="val2"
+MYVAR=MYVAL
+`
+
+	var reader io.Reader = strings.NewReader(dotenv)
+
+	var outputBuffer bytes.Buffer
+	writer := bufio.NewWriter(&outputBuffer)
+
+	_, err := AppendValueToDotenv(reader, writer, variable, value)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	writer.Flush()
+
+	actualOutput := outputBuffer.String()
+	if actualOutput != expectedOutput {
+		t.Errorf("expected output to be %q, but got %q", expectedOutput, actualOutput)
+	}
+}
+
+
