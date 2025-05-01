@@ -102,4 +102,65 @@ MYVAR=MYVAL
 	}
 }
 
+func TestAppendValueToDotenvThrowsErrorUponInvalidVariableName(t *testing.T) {
 
+	variable := "MY(V)AR"
+	value := "MYVAL"
+
+	dotenv:=`
+VAR1=val
+VAR2="val2"
+MYVAR=OLDVAL
+`
+	var reader io.Reader = strings.NewReader(dotenv)
+	
+	var outputBuffer bytes.Buffer
+	writer := bufio.NewWriter(&outputBuffer)
+
+	_, err := AppendValueToDotenv(reader, writer, variable, value)
+	if err == nil {
+		t.Fatalf("expected no error, got nil")
+	}
+}
+
+func TestAppendValueToDotenvThrowsErrorUponVariableNameBeingSpaces(t *testing.T) {
+
+	variable := "    "
+	value := "MYVAL"
+
+	dotenv:=`
+VAR1=val
+VAR2="val2"
+MYVAR=OLDVAL
+`
+	var reader io.Reader = strings.NewReader(dotenv)
+	
+	var outputBuffer bytes.Buffer
+	writer := bufio.NewWriter(&outputBuffer)
+
+	_, err := AppendValueToDotenv(reader, writer, variable, value)
+	if err == nil {
+		t.Fatalf("expected no error, got nil")
+	}
+}
+
+func TestAppendValueToDotenvThrowsErrorUponVariableNameBeingEmtpyString(t *testing.T) {
+
+	variable := "    "
+	value := "MYVAL"
+
+	dotenv:=`
+VAR1=val
+VAR2="val2"
+MYVAR=OLDVAL
+`
+	var reader io.Reader = strings.NewReader(dotenv)
+	
+	var outputBuffer bytes.Buffer
+	writer := bufio.NewWriter(&outputBuffer)
+
+	_, err := AppendValueToDotenv(reader, writer, variable, value)
+	if err == nil {
+		t.Fatalf("expected no error, got nil")
+	}
+}

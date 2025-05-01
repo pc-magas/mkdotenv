@@ -9,6 +9,20 @@ import (
 	"io"
 )
 
+func validateVarName(variable_name string) (error){
+
+	if(variable_name == ""){
+		return errors.New("Variable Name should not be an empty string")
+	}
+
+	re, _ := regexp.Compile(`^[A-Za-z\d+]+$`)
+	if(!re.MatchString(variable_name)){
+		return errors.New("Variable name is Invalid string")
+	}
+
+	return nil
+}
+
 func AppendValueToDotenv(input io.Reader,output *bufio.Writer,variable_name string,variable_value string) (bool,error) {
 	
 	var newline string = fmt.Sprintf("%s=%s", variable_name, variable_value)
@@ -24,16 +38,16 @@ func AppendValueToDotenv(input io.Reader,output *bufio.Writer,variable_name stri
 	var variableFound bool = false
 
 	variable_name=strings.TrimSpace(variable_name)
-
-	if(variable_name == ""){
-		return false,errors.New("Variable name is empty")
+	validationError:=validateVarName(variable_name)
+	if validationError!=nil{
+		return false, validationError
 	}
+
 
 	re, err := regexp.Compile(`^#?\s*`+variable_name+`\s*=.*`)
 	if err != nil {
 		return false,err
 	}
-
 	
 	for scanner.Scan() {
 		line:=scanner.Text()
