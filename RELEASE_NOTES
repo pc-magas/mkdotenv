@@ -3,3 +3,4 @@
 3. Ability to specify a version externally in Makefile.
 4. Unit test value appending logic
 5. Validate variable name
+6. Moving pcmagas/alpinebuild (used upon alpine image releases) docker image into a seperate repository.
