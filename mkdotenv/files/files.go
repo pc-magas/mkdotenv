@@ -11,18 +11,17 @@ import (
 )
 
 
-func AppendValueToDotenv(file *os.File,output *bufio.Writer,variable_name string,variable_value string) (bool,error) {
+func AppendValueToDotenv(input *io.Reader,output *bufio.Writer,variable_name string,variable_value string) (bool,error) {
 	
-
 	var newline string = fmt.Sprintf("%s=%s", variable_name, variable_value)
 
 	// If no .env exists then output the variable.
-	if (file == nil){
+	if (input == nil){
 		output.WriteString(newline+"\n")
 		return true,nil
 	}
 
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(*input)
 
 	var variableFound bool = false
 

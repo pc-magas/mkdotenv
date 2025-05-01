@@ -25,6 +25,7 @@ import (
 	"github.com/pc-magas/mkdotenv/params"
 	"github.com/pc-magas/mkdotenv/msg"
 	"github.com/pc-magas/mkdotenv/files"
+	"github.com/pc-magas/mkdotenv/core"
 )
 
 func main() {
@@ -55,6 +56,7 @@ func main() {
 
 	file:=files.GetFileToRead(filenameToRead)
 	defer file.Close()
+	
 
 	writer,outfile := files.CreateWriter(paramStruct.OutputFile)
 	if(outfile!=nil){
@@ -62,7 +64,7 @@ func main() {
 	}
 	defer writer.Flush()
 
-	_,err := files.AppendValueToDotenv(file,writer,paramStruct.VariableName,paramStruct.VariableValue)
+	_,err := core.AppendValueToDotenv(&file,writer,paramStruct.VariableName,paramStruct.VariableValue)
 
     if(err!=nil){
         fmt.Fprintln(os.Stderr, "Error:", err)
