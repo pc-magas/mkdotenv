@@ -12,8 +12,6 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/archive/re
 source="$pkgname-$pkgver.tar.gz"
 
 options="!check" # No tests
-
-options="!check" # No tests
 builddir="$srcdir"/mkdotenv
 
 build() {
