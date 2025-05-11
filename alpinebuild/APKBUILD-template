@@ -13,14 +13,15 @@ source="$pkgname-$pkgver.tar.gz"
 
 options="!check" # No tests
 
+options="!check" # No tests
+builddir="$srcdir"/mkdotenv
+
 build() {
-    echo "BUILD"
-    make compile  VERSION="${pkgver}" COMPILED_BIN_PATH=$srcdir/${pkgname}-$pkgver
+	go build -ldflags "-X 'mkdotenv/msg.version=$pkgver'" -o mkdotenv mkdotenv.go
 }
 
 package() {
-    echo "INSTALL"
-    install -Dm755 ${srcdir}/${pkgname}-$pkgver "$pkgdir/usr/bin/mkdotenv"
+	install -Dm755 mkdotenv -t "$pkgdir"/usr/bin/
 }
 
 sha512sums="
