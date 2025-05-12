@@ -9,4 +9,4 @@ USER builder
 WORKDIR /home/builder
 
 # Entrypoint for custom build scripts
-ENTRYPOINT ["/bin/bash"]
+CMD ["/bin/bash"]
