@@ -157,7 +157,7 @@ jobs:
         run: make COMPILED_BIN_PATH="/tmp/mkdotenv"
 
       - name: build_windows
-        run: make bin OS=windows
+        run: make bin OS=windows COMPILED_BIN_PATH="/tmp/mkdotenv.exe"
 
       - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
