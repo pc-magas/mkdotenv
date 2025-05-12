@@ -21,10 +21,7 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
     make VERSION="%{version}"
 
 %install
-mkdir -p %{buildroot}/usr/bin
-mkdir -p %{buildroot}/usr/share/man/man1
-install -m 0755 mkdotenv/mkdotenv %{buildroot}/usr/bin/mkdotenv
-install -m 0644 man/mkdotenv.1 %{buildroot}/usr/share/man/man1/mkdotenv.1
+    make install DESTDIR="%{buildroot}"
 
 %files
 /usr/bin/mkdotenv
