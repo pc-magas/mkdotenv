@@ -18,10 +18,10 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 %setup -q
 
 %build
-    make VERSION="%{version}"
+    make VERSION="%{version}" COMPILED_BIN_PATH="%{buildroot}/%{name}-%{version}"
 
 %install
-    make install DESTDIR="%{buildroot}"  VERSION="%{version}"
+    make install COMPILED_BIN_PATH="%{buildroot}/%{name}-%{version}" DESTDIR="%{buildroot}" VERSION="%{version}"
 
 %files
 /usr/bin/mkdotenv

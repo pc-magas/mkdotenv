@@ -35,13 +35,14 @@ compile:
 
 # Raw binary build
 bin: compile make_bin_folder
-	mv $(BIN_NAME) ./bin/$(PKG_NAME)
+	mv $(COMPILED_BIN_PATH) ./bin/$(PKG_NAME)
 
 
 # Install the programme
-install:
+install: bin
+
 	mkdir -p $(DESTDIR)/usr/bin	
-	cp $(BIN_NAME) "$(DESTDIR)/usr/bin/$(PKG_NAME)"
+	cp ./bin/mkdotenv "$(DESTDIR)/usr/bin/$(PKG_NAME)"
 	chmod 755 "$(DESTDIR)/usr/bin/$(PKG_NAME)"
 
 	mkdir -p $(DESTDIR)/usr/share/man/man1
