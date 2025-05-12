@@ -12,14 +12,13 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/archive/re
 source="$pkgname-$pkgver.tar.gz"
 
 options="!check" # No tests
-builddir="$srcdir"/mkdotenv
 
 build() {
-	go build -ldflags "-X 'mkdotenv/msg.version=$pkgver'" -o mkdotenv mkdotenv.go
+    make compile  VERSION="${pkgver}" COMPILED_BIN_PATH=$srcdir/${pkgname}-$pkgver
 }
 
 package() {
-	install -Dm755 mkdotenv -t "$pkgdir"/usr/bin/
+    install -Dm755 ${srcdir}/${pkgname}-$pkgver "$pkgdir/usr/bin/mkdotenv"
 }
 
 sha512sums="
