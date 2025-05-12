@@ -43,6 +43,7 @@ install:
 	mkdir -p $(DESTDIR)/usr/bin	
 	cp $(BIN_NAME) "$(DESTDIR)/usr/bin/$(PKG_NAME)"
 	chmod 755 "$(DESTDIR)/usr/bin/$(PKG_NAME)"
+
 	mkdir -p $(DESTDIR)/usr/share/man/man1
 	cp man/$(PKG_NAME).1 $(DESTDIR)/usr/share/man/man1/$(PKG_NAME).1
 	chmod 644 $(DESTDIR)/usr/share/man/man1/$(PKG_NAME).1
