@@ -1,3 +1,13 @@
+# Version 0.3.0 2025-05-12
+
+1. Use common naming convention for golang module using repoesitory's name
+2. Upon rpm builds use Makefile
+3. Ability to specify a version externally in Makefile.
+4. Unit test value appending logic
+5. Validate variable name
+6. Moving pcmagas/alpinebuild (used upon alpine image releases) docker image into a seperate repository.
+7. Release for AUR and arch linux
+
 # Version 0.2.3 2025-04-24
 
 Release for Alpine

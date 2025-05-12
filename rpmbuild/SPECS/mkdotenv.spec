@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.2.3
+Version:        0.3.0
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -52,3 +52,12 @@ install -m 0644 man/mkdotenv.1 %{buildroot}/usr/share/man/man1/mkdotenv.1
 
 * Thu Apr 24 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
 - Release for Alpine
+
+* Mon May 12 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+- 1. Use common naming convention for golang module using repoesitory's name
+- 2. Upon rpm builds use Makefile
+- 3. Ability to specify a version externally in Makefile.
+- 4. Unit test value appending logic
+- 5. Validate variable name
+- 6. Moving pcmagas/alpinebuild (used upon alpine image releases) docker image into a seperate repository.
+- 7. Release for AUR and arch linux
