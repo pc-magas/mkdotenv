@@ -37,14 +37,12 @@ compile:
 bin: compile make_bin_folder
 	mv $(COMPILED_BIN_PATH) ./bin/$(BIN_NAME)
 
-
 install_bin:
 	mkdir -p $(DESTDIR)/usr/bin
-	install 755 ./bin/$(BIN_NAME) "$(DESTDIR)/usr/bin/$(PKG_NAME)"
+	install -D -m 755 ./bin/$(BIN_NAME) "$(DESTDIR)/usr/bin/$(PKG_NAME)"
 
 # Install the programme
 install: bin install_bin
-
 	mkdir -p $(DESTDIR)/usr/share/man/man1
 	cp man/$(PKG_NAME).1 $(DESTDIR)/usr/share/man/man1/$(PKG_NAME).1
 	chmod 644 $(DESTDIR)/usr/share/man/man1/$(PKG_NAME).1
