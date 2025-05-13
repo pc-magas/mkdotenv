@@ -29,7 +29,6 @@ ORIG_TAR=$(bash ${SCRIPT_DIR}/make_tar.sh)
 cp ${ORIG_TAR} ${TARGZ}
 
 cp ${SCRIPT_DIR}/APKBUILD-template ${APKBUILD_OVERLAY}
-cp ${SCRIPT_DIR}/build.sh ${OVERLAY}/
 
 tar -tzf ${TARGZ}
 
