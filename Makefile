@@ -14,9 +14,8 @@ ifeq ($(OS),windows)
 	CGO := 0
 endif
 
-BIN_NAME = mkdotenv_$(VERSION)$(EXT)
-PKG_NAME = mkdotenv$(EXT)
-COMPILED_BIN_PATH ?= ../$(BIN_NAME)
+BIN_NAME=$(PKG_NAME)$(EXT)
+COMPILED_BIN_PATH = /tmp/$(BIN_NAME)
 
 .PHONY: all compile
 
@@ -28,6 +27,7 @@ make_bin_folder:
 
 # Compile Go binary
 compile:
+	ls -l 
 	cd ./mkdotenv &&\
 	echo $(VERSION) &&\
 	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) $(GO) build -ldflags "-X 'github.com/pc-magas/mkdotenv/msg.version=$(VERSION)'" -o $(COMPILED_BIN_PATH) mkdotenv.go &&\
@@ -35,14 +35,14 @@ compile:
 
 # Raw binary build
 bin: compile make_bin_folder
-	mv $(COMPILED_BIN_PATH) ./bin/$(PKG_NAME)
+	mv $(COMPILED_BIN_PATH) ./bin/$(BIN_NAME)
 
 
 # Install the programme
 install: bin
 
 	mkdir -p $(DESTDIR)/usr/bin	
-	cp ./bin/mkdotenv "$(DESTDIR)/usr/bin/$(PKG_NAME)"
+	cp ./bin/$(BIN_NAME) "$(DESTDIR)/usr/bin/$(PKG_NAME)"
 	chmod 755 "$(DESTDIR)/usr/bin/$(PKG_NAME)"
 
 	mkdir -p $(DESTDIR)/usr/share/man/man1
@@ -56,7 +56,7 @@ uninstall:
 
 # Clean up build files
 clean:
-	rm -rf $(BIN_NAME)
+	rm -rf $(COMPILED_BIN_PATH)
 	rm -rf *.deb
 	rm -rf mkdotenv_$(VERSION)
 
