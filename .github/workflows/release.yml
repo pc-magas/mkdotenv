@@ -181,10 +181,9 @@ jobs:
           fetch-depth: 0
       
       - name: Built Local arch package
-        run: bash ./aur/testbuild_local.sh
-      
-      - name: Generate PKGBUILD and .SRCINFO
-        run: bash ./aur/make_pkgbuild_aur.sh
+        run: |
+          bash ./aur/testbuild_local.sh &&\
+          bash ./aur/make_pkgbuild_aur.sh
       
       - name: Upload Arch artifact
         uses: actions/upload-artifact@v4
