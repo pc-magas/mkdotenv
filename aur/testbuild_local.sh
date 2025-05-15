@@ -22,7 +22,7 @@ ls -l ${VOLUME_DIR}
 
 LANG=C sed "s/source=.*/source=(\"${TARGZ_NAME}\")/" ${SCRIPT_DIR}/PKGBUILD > ${PKGBUILD_LOCAL}
 
-docker build -f ${SCRIPT_DIR}/Dockerfile -t pcmagas/arch-pkg-builder .
+docker build -f ${SCRIPT_DIR}/Dockerfile -t pcmagas/arch-pkg-builder ${SCRIPT_DIR}
 
 docker run --rm -v "${VOLUME_DIR}":/build -w /build pcmagas/arch-pkg-builder build_n_run
 
