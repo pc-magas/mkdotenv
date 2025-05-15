@@ -168,6 +168,33 @@ jobs:
             ./bin/mkdotenv.exe
           if-no-files-found: error
 
+  build_arch:
+    runs-on: ubuntu-latest
+    needs: tag_git
+    
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Built Local arch package
+        run: bash ./aur/testbuild_local.sh
+      
+      - name: Generate PKGBUILD and .SRCINFO
+        run: ./aur/make_pkgbuild_aur.sh
+      
+      - name: Upload Arch artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mkdotenv-arch
+          path: |
+            ./staging/PKGBUILD
+            ./staging/.SRCINFO
+            ./volumes/mkdotenv-*-1-x86-64.pkg.tar.zst
+          if-no-files-found: error
   
   build_deb:
     runs-on: ubuntu-latest
@@ -207,7 +234,8 @@ jobs:
           if-no-files-found: error
           name: mkdotenv-deb
           path: mkdotenv*.deb  
-  
+
+
   build_rpm:
     runs-on: ubuntu-latest
     permissions:
@@ -243,6 +271,8 @@ jobs:
       - build_rpm
       - alpine_source
       - alpine_apk
+      - build_arch
+    
     steps:
 
       - uses: actions/checkout@v4
@@ -265,6 +295,11 @@ jobs:
           name: mkdotenv-bin
           path: ./bin
 
+      - name: Download binary artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mkdotenv-arch
+
       - name: Check Bin
         run:
           ls -l ./bin
@@ -286,7 +321,7 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease: true
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk,PKGBUILD, .SRCINFO, mkdotenv-*-1-x86-64.pkg.tar.zst
           bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
