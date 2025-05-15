@@ -184,7 +184,7 @@ jobs:
         run: bash ./aur/testbuild_local.sh
       
       - name: Generate PKGBUILD and .SRCINFO
-        run: ./aur/make_pkgbuild_aur.sh
+        run: bash ./aur/make_pkgbuild_aur.sh
       
       - name: Upload Arch artifact
         uses: actions/upload-artifact@v4
