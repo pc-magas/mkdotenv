@@ -26,5 +26,8 @@ LANG=C sed "s/source=.*/source=(\"${TARGZ_NAME}\")/" ${SCRIPT_DIR}/PKGBUILD > ${
 
 docker build -t pcmagas/arch-pkg-builder .
 
-docker run --rm -v "${VOLUME_DIR}":/build -w /build pcmagas/arch-pkg-builder makepkg -si --noconfirm
-docker run --rm -i -v "${VOLUME_DIR}":/build -w /build pcmagas/arch-pkg-builder makepkg --printsrcinfo > .SRCINFO
+docker run --rm -v "${VOLUME_DIR}":/build -w /build pcmagas/arch-pkg-builder build_n_run
+
+cp ${PKGBUILD_LOCAL} ${SCRIPT_DIR}/PKGBUILD
+
+
