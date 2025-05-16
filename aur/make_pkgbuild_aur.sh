@@ -12,5 +12,5 @@ PKGBUILD_STAGING=${VOLUME_DIR}/PKGBUILD
 SOURCEVAL="\$pkgname-\$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/releases/download/v\$pkgver/mkdotenv-\$pkgver.tar.gz"
 LANG=C sed "s|source=.*|source=(\"${SOURCEVAL}\")|" ${SCRIPT_DIR}/PKGBUILD > ${PKGBUILD_STAGING}
 
-docker run --rm -i -v "${VOLUME_DIR}":/home/builder pcmagas/arch-pkg-builder makepkg --printsrcinfo > ${VOLUME_DIR}/.SRCINFO
+docker run --rm -i -v "${VOLUME_DIR}":/home/builder pcmagas/arch-pkg-builder run_fixperm makepkg --printsrcinfo > ${VOLUME_DIR}/.SRCINFO
 

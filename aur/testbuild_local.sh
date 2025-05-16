@@ -26,5 +26,3 @@ echo "BUILD PKG"
 docker run --rm -v "${VOLUME_DIR}":/home/builder pcmagas/arch-pkg-builder build_n_run mkdotenv -h
 
 cp ${PKGBUILD_LOCAL} ${SCRIPT_DIR}/PKGBUILD
-
-
