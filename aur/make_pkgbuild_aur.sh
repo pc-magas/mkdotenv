@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "MAKE PKGBUILD and .SRCINFO for aur"
+
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=$(cat ${SCRIPT_DIR}/../VERSION)
 
