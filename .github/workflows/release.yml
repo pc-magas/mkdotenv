@@ -189,8 +189,7 @@ jobs:
         with:
           name: mkdotenv-arch
           path: |
-            ./staging/PKGBUILD
-            ./volumes/mkdotenv-*-1-x86-64.pkg.tar.zst
+            ./aur/volumes/mkdotenv-*-1-x86-64.pkg.tar.zst
           if-no-files-found: error
   
   build_deb:
@@ -318,7 +317,7 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease: true
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk, PKGBUILD, mkdotenv-*-1-x86-64.pkg.tar.zst
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk, mkdotenv-*-1-x86-64.pkg.tar.zst
           bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
@@ -328,6 +327,6 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  false
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk, PKGBUILD, mkdotenv-*-1-x86-64.pkg.tar.zst
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk, mkdotenv-*-1-x86-64.pkg.tar.zst
           bodyFile: RELEASE_NOTES
       
