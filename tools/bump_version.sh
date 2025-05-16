@@ -98,5 +98,5 @@ sensible-editor "${SOURCEPATH}/aur/PKGBUILD"
 
 
 echo "Version updated successfully: $UPSTREAM_VERSION"
-git commit -m "[Autotool] Bump version and fix into nessesary files" ./$CHANGELOG ./$DEBIAN_CHANGELOG ./$SPEC_FILE ./Changelog.md ./VERSION ./RELEASE_NOTES ${SOURCEPATH}/alpinebuild/APKBUILD-template
+git commit -m "[Autotool] Bump version and fix into nessesary files" ./$CHANGELOG ./$DEBIAN_CHANGELOG ./$SPEC_FILE ./Changelog.md ./VERSION ./RELEASE_NOTES ${SOURCEPATH}/alpinebuild/APKBUILD-template ${SOURCEPATH}/aur/PKGBUILD
 
