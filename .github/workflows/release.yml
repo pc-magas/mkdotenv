@@ -282,6 +282,7 @@ jobs:
 
       - name: Create a GitHub pre release
         uses: ncipollo/release-action@v1
+        if:  github.ref == 'refs/heads/dev'
         with:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
