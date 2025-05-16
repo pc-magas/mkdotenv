@@ -70,7 +70,6 @@ rm -f /usr/bin/mkdotenv
 rm -f /usr/local/share/man/man1/mkdotenv.1 
 ```
 
-
 ## From Statically Built Executable Binaries
 
 ### Install
@@ -118,7 +117,7 @@ mkdotenv --version
 rm -rf /bin/mkdotenv
 ```
 
-## In Ubuntu & Linux Mint
+## On Ubuntu & Linux Mint
 
 If running ubuntu or Linux mint ytou can use out ppa repository:
 
@@ -168,6 +167,14 @@ apk add --allow-untrusted mkdotenv-${VERSION}-r0.apk
 ```
 
 At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
+
+# In arch Linux
+
+Mkdotenv is shipped via [AUR](https://aur.archlinux.org/packages/mkdotenv), use `yay` to install:
+
+```
+yay mkdotenv
+```
 
 
 # In windows
