@@ -182,6 +182,7 @@ jobs:
       
       - name: Built Local arch package
         run: |
+          whoami
           bash ./aur/testbuild_local.sh &&\
           bash ./aur/make_pkgbuild_aur.sh
       
