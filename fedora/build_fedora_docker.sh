@@ -27,13 +27,12 @@ FINAL_TAR_DEST=${SOURCEPATH}rpmbuild/SOURCES/${TAR_NAME}
 rm -rf ${FINAL_TAR_DEST}
 tar -czf ${FINAL_TAR_DEST} ${SRC_FOLDER}
 
-docker build -f ${SCRIPTPATH}/dockerfiles/DockerfileFedora -t pcmagas/gopkgbuild:fedora-41 ${SCRIPTPATH}
 docker run \
     -e UID=$(id -u) -e GID=$(id -g)\
     -v "${SOURCEPATH}/rpmbuild/SOURCES:/home/pkgbuild/rpmbuild/SOURCES" \
     -v "${SOURCEPATH}/rpmbuild/SPECS:/home/pkgbuild/rpmbuild/SPECS" \
     -v "${SOURCEPATH}/rpmbuild/RPMS/x86_64:/home/pkgbuild/rpmbuild/RPMS/x86_64" \
-    pcmagas/gopkgbuild:fedora-41 rpmbuild -bb /home/pkgbuild/rpmbuild/SPECS/mkdotenv.spec
+    pcmagas/fedora-rpmpkg rpmbuild -bb /home/pkgbuild/rpmbuild/SPECS/mkdotenv.spec
 
 echo "Cleanup"
 rm -rf ${SRC_FOLDER}
