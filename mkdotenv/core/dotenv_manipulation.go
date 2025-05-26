@@ -15,7 +15,7 @@ func validateVarName(variable_name string) (error){
 		return errors.New("Variable Name should not be an empty string")
 	}
 	fmt.Println(variable_name)
-	re, _ := regexp.Compile(`^[A-Za-z\d+]+$`)
+	re, _ := regexp.Compile(`^[A-Za-z\d+_]+$`)
 	if(!re.MatchString(variable_name)){
 		return errors.New("Variable name is Invalid string")
 	}
@@ -25,6 +25,12 @@ func validateVarName(variable_name string) (error){
 
 func AppendValueToDotenv(input io.Reader,output *bufio.Writer,variable_name string,variable_value string) (bool,error) {
 	
+	variable_name=strings.TrimSpace(variable_name)
+	validationError:=validateVarName(variable_name)
+	if validationError!=nil{
+		return false, validationError
+	}
+
 	var newline string = fmt.Sprintf("%s=%s", variable_name, variable_value)
 
 	// If no .env exists then output the variable.
@@ -36,12 +42,6 @@ func AppendValueToDotenv(input io.Reader,output *bufio.Writer,variable_name stri
 	scanner := bufio.NewScanner(input)
 
 	var variableFound bool = false
-
-	variable_name=strings.TrimSpace(variable_name)
-	validationError:=validateVarName(variable_name)
-	if validationError!=nil{
-		return false, validationError
-	}
 
 	re, err := regexp.Compile(`^#?\s*`+variable_name+`\s*=.*`)
 	if err != nil {

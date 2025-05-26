@@ -56,6 +56,30 @@ func TestAppendValueToDotenvCreatesANewEnvFileAndVarContainsUnderscore(t *testin
 	}
 }
 
+
+func TestAppendValueToDotenvDoesNotCreateAnEnvFileDueToWrongParamName(t *testing.T) {
+	// Test input and expected output
+	variable := "+++==+++"
+	value := "MYVAL"
+	nonExpectedOutput := fmt.Sprintf("%s=%s\n", variable, value)
+	var input io.Reader = nil
+
+	var outputBuffer bytes.Buffer
+	writer := bufio.NewWriter(&outputBuffer)
+
+	_, err := AppendValueToDotenv(input, writer, variable, value)
+	if err == nil {
+		t.Fatalf("expected error, got nil")
+	}
+
+	writer.Flush()
+
+	actualOutput := outputBuffer.String()
+	if actualOutput == nonExpectedOutput {
+		t.Errorf("expected output not to be %q, but got %q instead", nonExpectedOutput, actualOutput)
+	}
+}
+
 func TestAppendValueToDotenvAppendsNewValueToFile(t *testing.T) {
 
 	variable := "MYVAR"
