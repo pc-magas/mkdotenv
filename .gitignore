@@ -48,5 +48,3 @@ NAME
 
 *.swp
 
-labrat/*
-!labrat/go.mod
