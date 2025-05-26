@@ -1,3 +1,10 @@
+mkdotenv (0.3.1-0debian1~unstable1) unstable; urgency=medium
+
+  * 1. [BUGFIX] Check Variable name
+  * 2. Use External Docker image for rpm builds.
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Mon, 26 May 2025 22:45:26 +0300
+
 mkdotenv (0.3.0-0debian1~unstable1) unstable; urgency=medium
 
   * 1. Use common naming convention for golang module using

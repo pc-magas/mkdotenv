@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.3.0
+Version:        0.3.1
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -58,3 +58,7 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 - 5. Validate variable name
 - 6. Moving pcmagas/alpinebuild (used upon alpine image releases) docker image into a seperate repository.
 - 7. Release for AUR and arch linux
+
+* Mon May 26 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+- 1. [BUGFIX] Check Variable name
+- 2. Use External Docker image for rpm builds.

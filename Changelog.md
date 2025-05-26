@@ -1,3 +1,8 @@
+# Version 0.3.1 2025-05-26
+
+1. [BUGFIX] Check Variable name
+2. Use External Docker image for rpm builds.
+
 # Version 0.3.0 2025-05-12
 
 1. Use common naming convention for golang module using repoesitory's name
