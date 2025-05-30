@@ -33,6 +33,15 @@ compile:
 	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) $(GO) build -ldflags "-X 'github.com/pc-magas/mkdotenv/msg.version=$(VERSION)'" -o $(COMPILED_BIN_PATH) mkdotenv.go &&\
 	cd ../
 
+test_run:
+	cd ./mkdotenv &&\
+	go run mkdotenv.go
+
+test:
+	cd ./mkdotenv &&\
+    go test ./... &&\
+    cd ../
+
 # Raw binary build
 bin: compile make_bin_folder
 	mv $(COMPILED_BIN_PATH) ./bin/$(BIN_NAME)

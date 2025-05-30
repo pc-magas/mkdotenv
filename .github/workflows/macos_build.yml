@@ -1,0 +1,29 @@
+name: test build macos
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: 'Branch to run the workflow from'
+        required: true
+        default: 'dev'
+
+jobs:
+  mac_build:
+    runs-on: macos
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Run tests
+        run: |
+          make test
+      
+      - name: run
+        run: |
+          make test_run
+
+
+     
