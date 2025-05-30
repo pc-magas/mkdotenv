@@ -330,7 +330,16 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease: true
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/macos/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk, ./aur/PKGBUILD
+          artifacts: |
+            mkdotenv*.deb, 
+            ./bin/mkdotenv, 
+            ./bin/mkdotenv-mac, 
+            ./bin/mkdotenv.exe, 
+            mkdotenv*.rpm, 
+            mkdotenv*.tar.gz, 
+            APKFILE, 
+            mkdotenv*-r0.apk, 
+            ./aur/PKGBUILD
           bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
