@@ -304,6 +304,10 @@ jobs:
           name: mkdotenv-macos
           path: ./bin/macos
 
+      - name: rename Macos artifact
+        run: 
+          cp ./bin/macos/mkdotenv ./bin/mkdotenv-mac
+
       - name: Check Bin
         run:
           ls -l ./bin &&
@@ -336,6 +340,15 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  false
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/macos/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk, ./aur/PKGBUILD
+          artifacts: |
+            mkdotenv*.deb, 
+            ./bin/mkdotenv, 
+            ./bin/mkdotenv-mac, 
+            ./bin/mkdotenv.exe, 
+            mkdotenv*.rpm, 
+            mkdotenv*.tar.gz, 
+            APKFILE, 
+            mkdotenv*-r0.apk, 
+            ./aur/PKGBUILD
           bodyFile: RELEASE_NOTES
       
