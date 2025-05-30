@@ -22,7 +22,6 @@ import (
     "fmt"
 	"time"
 	"strconv"
-	"runtime"
 	"github.com/pc-magas/mkdotenv/params"
 	"github.com/pc-magas/mkdotenv/msg"
 	"github.com/pc-magas/mkdotenv/files"
@@ -30,9 +29,6 @@ import (
 )
 
 func main() {
-
-	fmt.Println(runtime.GOOS)
-    fmt.Println(runtime.GOARCH)
 
 	if (len(os.Args) == 1 ){
 		msg.PrintHelp()

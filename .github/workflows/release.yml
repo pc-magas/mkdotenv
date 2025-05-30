@@ -167,6 +167,34 @@ jobs:
             ./bin/mkdotenv
             ./bin/mkdotenv.exe
           if-no-files-found: error
+  
+  build_mac:
+    runs-on: macos-latest
+    needs: tag_git
+    
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '>=1.17.0'
+          check-latest: true
+
+      - name: build_mac
+        run: make bin OS=darwin ARCH=arm64 COMPILED_BIN_PATH="/tmp/mkdotenv"
+
+      - name: Upload Binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mkdotenv-macos
+          path: |
+            ./bin/mkdotenv
+          if-no-files-found: error
 
   build_deb:
     runs-on: ubuntu-latest
@@ -239,11 +267,12 @@ jobs:
     needs: 
       - tag_git
       - build_bin
+      - build_mac
       - build_deb
       - build_rpm
       - alpine_source
       - alpine_apk
-    
+
     steps:
 
       - uses: actions/checkout@v4
@@ -266,6 +295,16 @@ jobs:
           name: mkdotenv-bin
           path: ./bin
 
+      # mkdotenv-macos
+
+      - run: mkdir -p ./bin/macos
+
+      - name: Download binary artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mkdotenv-macos
+          path: ./bin/macos
+
       - name: Check Bin
         run:
           ls -l ./bin
@@ -287,7 +326,7 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease: true
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk, ./aur/PKGBUILD
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/macos/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk, ./aur/PKGBUILD
           bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
@@ -297,6 +336,6 @@ jobs:
           tag: "v${{needs.tag_git.outputs.tag_version}}"
           allowUpdates: true
           prerelease:  false
-          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk, ./aur/PKGBUILD
+          artifacts: mkdotenv*.deb, ./bin/mkdotenv, ./bin/macos/mkdotenv, ./bin/mkdotenv.exe, mkdotenv*.rpm, mkdotenv*.tar.gz, APKFILE, mkdotenv*-r0.apk, ./aur/PKGBUILD
           bodyFile: RELEASE_NOTES
       
