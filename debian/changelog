@@ -1,3 +1,9 @@
+mkdotenv (0.3.2-0debian1~unstable1) unstable; urgency=medium
+
+  * Release for MACOS
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Sat, 31 May 2025 00:56:33 +0300
+
 mkdotenv (0.3.1-0debian1~unstable1) unstable; urgency=medium
 
   * 1. [BUGFIX] Check Variable name

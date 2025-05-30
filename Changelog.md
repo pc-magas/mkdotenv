@@ -1,3 +1,7 @@
+# Version 0.3.2 2025-05-31
+
+Release for MACOS
+
 # Version 0.3.1 2025-05-26
 
 1. [BUGFIX] Check Variable name

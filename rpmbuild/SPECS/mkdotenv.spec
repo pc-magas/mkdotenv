@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.3.1
+Version:        0.3.2
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -62,3 +62,6 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 * Mon May 26 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
 - 1. [BUGFIX] Check Variable name
 - 2. Use External Docker image for rpm builds.
+
+* Sat May 31 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+- Release for MACOS
