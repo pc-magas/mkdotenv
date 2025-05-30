@@ -295,11 +295,10 @@ jobs:
           name: mkdotenv-bin
           path: ./bin
 
-      # mkdotenv-macos
+      - name: create macos Dir
+        run: mkdir -p ./bin/macos
 
-      - run: mkdir -p ./bin/macos
-
-      - name: Download binary artifact
+      - name: Download macos artifact
         uses: actions/download-artifact@v4
         with:
           name: mkdotenv-macos
@@ -308,6 +307,7 @@ jobs:
       - name: Check Bin
         run:
           ls -l ./bin
+          ls -l ./bin/macos
 
       - name: Download DEB artifact
         uses: actions/download-artifact@v4
