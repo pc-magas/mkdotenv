@@ -306,7 +306,7 @@ jobs:
 
       - name: Check Bin
         run:
-          ls -l ./bin
+          ls -l ./bin &&
           ls -l ./bin/macos
 
       - name: Download DEB artifact
