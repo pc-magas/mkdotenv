@@ -6,7 +6,7 @@ class Mkdotenv < Formula
   
   url "https://github.com/pc-magas/mkdotenv/releases/download/v#{version}/mkdotenv-macos.zip"
   
-  sha256 "REPLACE_WITH_REAL_SHA256"
+  sha256 "f4d9dadc8ee02cfcfde251d375dbf12b42d5bdb00792b29c07ca5af92b2649d3"
   
   license "GPL-v3"
 
