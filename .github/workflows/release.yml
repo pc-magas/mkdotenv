@@ -186,9 +186,7 @@ jobs:
           check-latest: true
 
       - name: build_mac
-        run: | 
-          make bin OS=darwin ARCH=arm64 COMPILED_BIN_PATH="/tmp/mkdotenv"
-          zip mkdotenv-macos.zip mkdotenv
+        run: bash ./macos/build.sh 
 
       - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
