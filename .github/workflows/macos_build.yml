@@ -2,7 +2,8 @@ name: build_macos
 
 on:
   push:
-    - dev
+    branches:
+      - dev
   workflow_dispatch:
   
 jobs:
