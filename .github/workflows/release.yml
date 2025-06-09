@@ -164,7 +164,7 @@ jobs:
         with:
           name: mkdotenv-bin
           path: |
-            ./bin/mkdotenv-linux-amd64,
+            ./bin/mkdotenv-linux-amd64
             ./bin/mkdotenv-windows-amd64.exe
           if-no-files-found: error
   
@@ -193,7 +193,7 @@ jobs:
         with:
           name: mkdotenv-macos
           path: |
-            ./bin/mkdotenv-darwin-arm64,
+            ./bin/mkdotenv-darwin-arm64
             ./mkdotenv-macos.zip
           if-no-files-found: error
 
@@ -324,14 +324,14 @@ jobs:
           allowUpdates: true
           prerelease: true
           artifacts: |
-            ./bin/mkdotenv-linux-amd64,
+            ./bin/mkdotenv-linux-amd64
             ./bin/mkdotenv-windows-amd64.exe 
-            ./bin/mkdotenv-darwin-arm64, 
-            mkdotenv*.deb, 
-            mkdotenv*.rpm, 
-            mkdotenv*.tar.gz, 
-            APKFILE, 
-            mkdotenv*-r0.apk, 
+            ./bin/mkdotenv-darwin-arm64 
+            mkdotenv*.deb 
+            mkdotenv*.rpm 
+            mkdotenv*.tar.gz 
+            APKFILE 
+            mkdotenv*-r0.apk 
             ./aur/PKGBUILD
           bodyFile: RELEASE_NOTES
 
@@ -343,14 +343,15 @@ jobs:
           allowUpdates: true
           prerelease:  false
           artifacts: |
-            ./bin/mkdotenv-linux-amd64,
+            ./bin/mkdotenv-linux-amd64
             ./bin/mkdotenv-windows-amd64.exe 
-            ./bin/mkdotenv-darwin-arm64, 
-            mkdotenv*.deb, 
-            mkdotenv*.rpm, 
-            mkdotenv*.tar.gz, 
-            APKFILE, 
-            mkdotenv*-r0.apk, 
+            ./bin/mkdotenv-darwin-arm64
+            ./mkdotenv-macos.zip
+            mkdotenv*.deb 
+            mkdotenv*.rpm 
+            mkdotenv*.tar.gz 
+            APKFILE 
+            mkdotenv*-r0.apk 
             ./aur/PKGBUILD
           bodyFile: RELEASE_NOTES
       
