@@ -296,14 +296,14 @@ jobs:
           name: mkdotenv-bin
           path: ./bin
 
-      - name: create macos Dir
-        run: mkdir -p ./bin/macos
-
       - name: Download macos artifact
         uses: actions/download-artifact@v4
         with:
           name: mkdotenv-macos
-          path: ./bin/macos
+          path: ./bin
+
+      - name: "List Bin"
+        run: ls -l ./bin
 
       - name: Download DEB artifact
         uses: actions/download-artifact@v4
