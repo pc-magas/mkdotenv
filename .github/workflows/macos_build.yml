@@ -28,5 +28,8 @@ jobs:
         run: |
           make test_run
 
+      - name: run
+        run: |
+          bash macos/build.sh
 
      

@@ -14,7 +14,7 @@ ifeq ($(OS),windows)
 	CGO := 0
 endif
 
-BIN_NAME=$(PKG_NAME)$(EXT)
+BIN_NAME ?= $(PKG_NAME)-$(OS)-$(ARCH)$(EXT)
 COMPILED_BIN_PATH ?= /tmp/$(BIN_NAME)
 
 .PHONY: all compile

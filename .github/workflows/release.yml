@@ -186,14 +186,17 @@ jobs:
           check-latest: true
 
       - name: build_mac
-        run: make bin OS=darwin ARCH=arm64 COMPILED_BIN_PATH="/tmp/mkdotenv"
+        run: | 
+          make bin OS=darwin ARCH=arm64 COMPILED_BIN_PATH="/tmp/mkdotenv"
+          zip mkdotenv-macos.zip mkdotenv
 
       - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
         with:
           name: mkdotenv-macos
           path: |
-            ./bin/mkdotenv
+            ./bin/mkdotenv,
+            ./mkdotenv-macos.zip
           if-no-files-found: error
 
   build_deb:
