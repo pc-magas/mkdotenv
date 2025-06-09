@@ -307,7 +307,7 @@ jobs:
           path: ./bin
 
       - name: "List Bin"
-        run: ls -l ./bin
+        run: ls -l ./bin/bin
 
       - name: Download DEB artifact
         uses: actions/download-artifact@v4
