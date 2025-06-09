@@ -17,10 +17,11 @@ zip -j -o ${ZIP_PATH} ${SCRIPTPATH}/bin/mkdotenv
 
 SHA256=$(shasum -a 256 ${ZIP_PATH} | awk '{ print $1 }')
 
-if [[ -f "${FORMULA_PATH}" ]]; then
-  sed -i -E "s|sha256 \".*\"|sha256 \"${SHA256}\"|" "${FORMULA_PATH}"
-  echo "Updated SHA256 in ${FORMULA_PATH}"
-else
-  echo "Error: Formula file not found at ${FORMULA_PATH}"
-  exit 1
-fi
+sed -i -E "s|sha256 \".*\"|sha256 \"${SHA256}\"|" "${FORMULA_PATH}"
+echo "Updated SHA256 in ${FORMULA_PATH}"
+
+
+FORMULA_TEST_PATH="${SCRIPTPATH}/bin/mkdotenv.rb"
+cp ${FORMULA_PATH} ${FORMULA_TEST_PATH}
+
+sed -i "s|url.*|url \"${ZIP_PATH}\" " ${FORMULA_TEST_PATH}
