@@ -329,7 +329,7 @@ jobs:
           artifacts: |
             ./bin/mkdotenv-linux-amd64,
             ./bin/mkdotenv-windows-amd64.exe,
-            ./bin/mkdotenv-darwin-arm64,
+            ./bin/bin/mkdotenv-darwin-arm64,
             mkdotenv*.deb,
             mkdotenv*.rpm,
             mkdotenv*.tar.gz, 
@@ -348,7 +348,7 @@ jobs:
           artifacts: |
             ./bin/mkdotenv-linux-amd64,
             ./bin/mkdotenv-windows-amd64.exe,
-            ./bin/mkdotenv-darwin-arm64,
+            ./bin/bin/mkdotenv-darwin-arm64,
             ./mkdotenv-macos.zip,
             mkdotenv*.deb,
             mkdotenv*.rpm, 
