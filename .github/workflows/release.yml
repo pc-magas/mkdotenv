@@ -164,7 +164,7 @@ jobs:
         with:
           name: mkdotenv-bin
           path: |
-            ./bin/mkdotenv-linux-amd64
+            ./bin/mkdotenv-linux-amd64,
             ./bin/mkdotenv-windows-amd64.exe
           if-no-files-found: error
   
