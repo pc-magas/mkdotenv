@@ -77,9 +77,8 @@ rm -f /usr/local/share/man/man1/mkdotenv.1
 In short you must do
 
 ```shell
-export VERSION=v0.1.0
-wget https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv
-
+export VERSION=v0.3.2
+wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-linux-amd64 
 sudo cp mkdotenv /bin/mkdotenv
 sudo chmod 755 /bin/mkdotenv
 
@@ -182,10 +181,13 @@ yay mkdotenv
 Windows builds are binaries without an installer. Just download the exe from releases page ( https://github.com/pc-magas/mkdotenv/releases ) and run it through cmd/powershell:
 
 ```
-mkdotenv.exe
+mkdotenv-windows-amd64.exe 
 ```
 
-The arguments are the same as the linux version.
+You can doanload it l
+
+The arguments are the same as the linux version. Y
+
 
 # Usage
 

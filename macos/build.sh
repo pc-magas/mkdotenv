@@ -3,15 +3,17 @@
 SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 FORMULA_PATH="${SCRIPTPATH}/mkdotenv.rb"
 
-rm -rf ./mkdotenv-macos.zip
+ZIP_PATH="${SCRIPTPATH}/mkdotenv-macos.zip"
+
+rm -rf ${ZIP_PATH}
 make bin OS=darwin ARCH=arm64 COMPILED_BIN_PATH="/tmp/mkdotenv"
 
 mkdir  -p ${SCRIPTPATH}/bin
 
 cp ./bin/mkdotenv-darwin-arm64  ${SCRIPTPATH}/bin/mkdotenv
-zip -j -o mkdotenv-macos.zip ${SCRIPTPATH}/bin/mkdotenv
+zip -j -o ${ZIP_PATH} ${SCRIPTPATH}/bin/mkdotenv
 
-SHA256=$(shasum -a 256 mkdotenv-macos.zip | awk '{ print $1 }')
+SHA256=$(shasum -a 256 ${ZIP_PATH} | awk '{ print $1 }')
 
 if [[ -f "${FORMULA_PATH}" ]]; then
   sed -i -E "s|sha256 \".*\"|sha256 \"${SHA256}\"|" "${FORMULA_PATH}"

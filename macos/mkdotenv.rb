@@ -4,9 +4,11 @@ class Mkdotenv < Formula
 
   homepage "https://github.com/pc-magas/mkdotenv"
   
-  url "https://github.com/pc-magas/mkdotenv/releases/download/v#{version}/mkdotenv-macos.zip"
+  # url "https://github.com/pc-magas/mkdotenv/releases/download/v#{version}/mkdotenv-macos.zip"
   
-  sha256 "f4d9dadc8ee02cfcfde251d375dbf12b42d5bdb00792b29c07ca5af92b2649d3"
+  url "file:///Volumes/SystemRoot/home/pcmagas/Kwdikas/go/mkdotenv/mkdotenv_app/macos/mkdotenv-macos.zip"
+
+  sha256 "34ec00b2738c326f817a2560d07d32c61fc5e5dd927334f5c235786c4e5c60f4"
   
   license "GPL-v3"
 
