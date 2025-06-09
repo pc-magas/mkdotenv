@@ -186,7 +186,10 @@ jobs:
           check-latest: true
 
       - name: build_mac
-        run: bash ./macos/build.sh 
+        run: bash ./macos/build.sh
+
+      - name: list_macos_bin
+        run: ls -l ./bin
 
       - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
@@ -324,14 +327,14 @@ jobs:
           allowUpdates: true
           prerelease: true
           artifacts: |
-            ./bin/mkdotenv-linux-amd64
-            ./bin/mkdotenv-windows-amd64.exe 
-            ./bin/mkdotenv-darwin-arm64 
-            mkdotenv*.deb 
-            mkdotenv*.rpm 
-            mkdotenv*.tar.gz 
-            APKFILE 
-            mkdotenv*-r0.apk 
+            ./bin/mkdotenv-linux-amd64,
+            ./bin/mkdotenv-windows-amd64.exe,
+            ./bin/mkdotenv-darwin-arm64,
+            mkdotenv*.deb,
+            mkdotenv*.rpm,
+            mkdotenv*.tar.gz, 
+            APKFILE,
+            mkdotenv*-r0.apk,
             ./aur/PKGBUILD
           bodyFile: RELEASE_NOTES
 
@@ -343,15 +346,15 @@ jobs:
           allowUpdates: true
           prerelease:  false
           artifacts: |
-            ./bin/mkdotenv-linux-amd64
-            ./bin/mkdotenv-windows-amd64.exe 
-            ./bin/mkdotenv-darwin-arm64
-            ./mkdotenv-macos.zip
-            mkdotenv*.deb 
-            mkdotenv*.rpm 
-            mkdotenv*.tar.gz 
-            APKFILE 
-            mkdotenv*-r0.apk 
+            ./bin/mkdotenv-linux-amd64,
+            ./bin/mkdotenv-windows-amd64.exe,
+            ./bin/mkdotenv-darwin-arm64,
+            ./mkdotenv-macos.zip,
+            mkdotenv*.deb,
+            mkdotenv*.rpm, 
+            mkdotenv*.tar.gz,
+            APKFILE,
+            mkdotenv*-r0.apk,
             ./aur/PKGBUILD
           bodyFile: RELEASE_NOTES
       
