@@ -20,5 +20,10 @@ jobs:
       - name: run
         run: |
           bash macos/build.sh
+      
+      - name: test_homebrew
+        run: |
+          brew install --formula ./macos/mkdotenv.rb
+
 
      

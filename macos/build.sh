@@ -5,6 +5,8 @@ FORMULA_PATH="${SCRIPTPATH}/mkdotenv.rb"
 
 ZIP_PATH="${SCRIPTPATH}/mkdotenv-macos.zip"
 
+echo ${ZIP_PATH}
+
 rm -rf ${ZIP_PATH}
 make bin OS=darwin ARCH=arm64 COMPILED_BIN_PATH="/tmp/mkdotenv"
 
