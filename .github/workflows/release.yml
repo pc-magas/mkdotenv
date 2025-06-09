@@ -154,7 +154,7 @@ jobs:
           check-latest: true
 
       - name: build
-        run: make COMPILED_BIN_PATH="/tmp/mkdotenv"
+        run: make bin COMPILED_BIN_PATH="/tmp/mkdotenv"
 
       - name: build_windows
         run: make bin OS=windows COMPILED_BIN_PATH="/tmp/mkdotenv.exe"
@@ -265,7 +265,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    needs: 
+    needs:
+
       - tag_git
       - build_bin
       - build_mac
