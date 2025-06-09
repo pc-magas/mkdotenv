@@ -96,7 +96,21 @@ echo "Bump version for Arch"
 sed -i "s|pkgver=".*"|pkgver="${UPSTREAM_VERSION}"|" ${SOURCEPATH}/aur/PKGBUILD
 sensible-editor "${SOURCEPATH}/aur/PKGBUILD"
 
+echo "Bump version for MacOs"
+sed -i "s|version .*|version \"${UPSTREAM_VERSION}\"|" ${SOURCEPATH}/macos/mkdotenv.rb
+sensible-editor "${SOURCEPATH}/macos/mkdotenv.rb"
+
 
 echo "Version updated successfully: $UPSTREAM_VERSION"
-git commit -m "[Autotool] Bump version and fix into nessesary files" ./$CHANGELOG ./$DEBIAN_CHANGELOG ./$SPEC_FILE ./Changelog.md ./VERSION ./RELEASE_NOTES ${SOURCEPATH}/alpinebuild/APKBUILD-template ${SOURCEPATH}/aur/PKGBUILD
 
+git add ./$CHANGELOG 
+git add ./$DEBIAN_CHANGELOG
+git add ./$SPEC_FILE
+git add ./Changelog.md 
+git add ./VERSION
+git add ./RELEASE_NOTES
+git add ${SOURCEPATH}/alpinebuild/APKBUILD-template 
+git add ${SOURCEPATH}/aur/PKGBUILD
+git add ${SOURCEPATH}/macos/mkdotenv.rb
+
+git commit -m "[Autotool] Bump version and fix into nessesary files"
