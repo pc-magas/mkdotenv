@@ -26,4 +26,4 @@ cp ${FORMULA_PATH} ${FORMULA_TEST_PATH}
 
 ls -l  ${FORMULA_TEST_PATH}
 
-sed -i "s|url.*|url \"${ZIP_PATH}\"|" ${FORMULA_TEST_PATH}
+sed -i -E "s|url.*|url \"${ZIP_PATH}\"|" ${FORMULA_TEST_PATH}
