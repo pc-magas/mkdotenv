@@ -24,4 +24,6 @@ echo "Updated SHA256 in ${FORMULA_PATH}"
 FORMULA_TEST_PATH="${SCRIPTPATH}/bin/mkdotenv.rb"
 cp ${FORMULA_PATH} ${FORMULA_TEST_PATH}
 
+ls -l  ${FORMULA_TEST_PATH}
+
 sed -i "s|url.*|url \"${ZIP_PATH}\"|" ${FORMULA_TEST_PATH}
