@@ -3,7 +3,7 @@ PKG_NAME = mkdotenv
 BUILD = 1
 VERSION ?= $(shell [ -f VERSION ] && cat VERSION || echo dev)
 ARCH = amd64
-OS = "linux"
+OS = linux
 GO := go
 
 EXT :=

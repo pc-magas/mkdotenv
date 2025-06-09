@@ -164,8 +164,8 @@ jobs:
         with:
           name: mkdotenv-bin
           path: |
-            ./bin/mkdotenv
-            ./bin/mkdotenv.exe
+            ./bin/mkdotenv-linux-amd64
+            ./bin/mkdotenv-windows-amd64.exe
           if-no-files-found: error
   
   build_mac:
@@ -193,7 +193,7 @@ jobs:
         with:
           name: mkdotenv-macos
           path: |
-            ./bin/mkdotenv,
+            ./bin/mkdotenv-darwin-arm64,
             ./mkdotenv-macos.zip
           if-no-files-found: error
 
@@ -305,15 +305,6 @@ jobs:
           name: mkdotenv-macos
           path: ./bin/macos
 
-      - name: rename Macos artifact
-        run: 
-          cp ./bin/macos/mkdotenv ./bin/mkdotenv-mac
-
-      - name: Check Bin
-        run:
-          ls -l ./bin &&
-          ls -l ./bin/macos
-
       - name: Download DEB artifact
         uses: actions/download-artifact@v4
         with:
@@ -332,10 +323,10 @@ jobs:
           allowUpdates: true
           prerelease: true
           artifacts: |
+            ./bin/mkdotenv-linux-amd64,
+            ./bin/mkdotenv-windows-amd64.exe 
+            ./bin/mkdotenv-darwin-arm64, 
             mkdotenv*.deb, 
-            ./bin/mkdotenv, 
-            ./bin/mkdotenv-mac, 
-            ./bin/mkdotenv.exe, 
             mkdotenv*.rpm, 
             mkdotenv*.tar.gz, 
             APKFILE, 
@@ -351,10 +342,10 @@ jobs:
           allowUpdates: true
           prerelease:  false
           artifacts: |
+            ./bin/mkdotenv-linux-amd64,
+            ./bin/mkdotenv-windows-amd64.exe 
+            ./bin/mkdotenv-darwin-arm64, 
             mkdotenv*.deb, 
-            ./bin/mkdotenv, 
-            ./bin/mkdotenv-mac, 
-            ./bin/mkdotenv.exe, 
             mkdotenv*.rpm, 
             mkdotenv*.tar.gz, 
             APKFILE, 
