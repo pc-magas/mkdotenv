@@ -30,6 +30,6 @@ jobs:
 
       - name: test_install
         run: |
-          mkdotend --help
+          mkdotenv --help
 
      
