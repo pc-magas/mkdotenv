@@ -2,9 +2,31 @@
 PKG_NAME = mkdotenv
 BUILD = 1
 VERSION ?= $(shell [ -f VERSION ] && cat VERSION || echo dev)
-ARCH = amd64
-OS = linux
 GO := go
+
+ARCH ?= 
+OS ?= 
+
+UNAME_S := $(shell uname -s)
+UNAME_M := $(shell uname -m)
+
+# Map to GOOS
+ifeq ($(UNAME_S),Darwin)
+    OS := darwin
+else ifeq ($(UNAME_S),Linux)
+    OS := linux
+else ifeq ($(OS),)
+    OS := unknown
+endif
+
+# Map to GOARCH
+ifeq ($(UNAME_M),x86_64)
+    ARCH := amd64
+else ifeq ($(UNAME_M),arm64)
+    ARCH := arm64
+else ifeq ($(ARCH),)
+    ARCH := unknown
+endif
 
 EXT :=
 CGO := 1
@@ -17,17 +39,17 @@ endif
 BIN_NAME ?= $(PKG_NAME)-$(OS)-$(ARCH)$(EXT)
 COMPILED_BIN_PATH ?= /tmp/$(BIN_NAME)
 
-.PHONY: all compile
+.PHONY: compile
 
 # Default target
 all: bin
+	@echo "Building on OS=$(OS), ARCH=$(ARCH)"
 
 make_bin_folder:
 	mkdir -p bin
 
 # Compile Go binary
 compile:
-	ls -l 
 	cd ./mkdotenv &&\
 	echo $(VERSION) &&\
 	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) $(GO) build -ldflags "-X 'github.com/pc-magas/mkdotenv/msg.version=$(VERSION)'" -o $(COMPILED_BIN_PATH) mkdotenv.go &&\
