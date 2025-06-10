@@ -39,7 +39,7 @@ endif
 BIN_NAME ?= $(PKG_NAME)-$(OS)-$(ARCH)$(EXT)
 COMPILED_BIN_PATH ?= /tmp/$(BIN_NAME)
 
-.PHONY: all,compile
+.PHONY: all,compile,install
 
 # Default target
 all: bin
@@ -73,16 +73,17 @@ install_bin:
 	mkdir -p $(DESTDIR)/usr/local/bin
 	install -m 755 ./bin/$(BIN_NAME) "$(DESTDIR)/usr/local/bin/$(PKG_NAME)"
 
+install_man:
+	mkdir -p $(DESTDIR)/usr/local/share/man/man1
+	install -m 644 man/$(PKG_NAME).1 $(DESTDIR)/usr/local/share/man/man1/$(PKG_NAME).1
+
 # Install the programme
-install: bin install_bin
-	mkdir -p $(DESTDIR)/usr/share/man/man1
-	cp man/$(PKG_NAME).1 $(DESTDIR)/usr/share/man/man1/$(PKG_NAME).1
-	chmod 644 $(DESTDIR)/usr/local/share/man/man1/$(PKG_NAME).1
+install: bin install_bin install_man
 
 # Uninstall the programme
 uninstall:
 	rm -f /usr/local/bin/$(PKG_NAME) 
-		rm -f /usr/local/share/man/man1/$(PKG_NAME).1
+	rm -f /usr/local/share/man/man1/$(PKG_NAME).1
 
 # Clean up build files
 clean:
