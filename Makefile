@@ -7,6 +7,9 @@ GO := go
 ARCH ?= 
 OS ?= 
 
+INSTALL_BIN_DIR ?= /usr/local/bin
+INSTALL_MAN_DIR ?= /usr/local/share/man/man1
+
 UNAME_S := $(shell uname -s)
 UNAME_M := $(shell uname -m)
 
@@ -70,20 +73,19 @@ bin: compile make_bin_folder
 	mv $(COMPILED_BIN_PATH) ./bin/$(BIN_NAME)
 
 install_bin:
-	mkdir -p $(DESTDIR)/usr/local/bin
-	install -m 755 ./bin/$(BIN_NAME) "$(DESTDIR)/usr/local/bin/$(PKG_NAME)"
+	mkdir -p $(DESTDIR)$(INSTALL_BIN_DIR)
+	install -m 755 ./bin/$(BIN_NAME) "$(DESTDIR)$(INSTALL_BIN_DIR)/$(PKG_NAME)"
 
 install_man:
-	mkdir -p $(DESTDIR)/usr/local/share/man/man1
-	install -m 644 man/$(PKG_NAME).1 $(DESTDIR)/usr/local/share/man/man1/$(PKG_NAME).1
+	mkdir -p $(DESTDIR)$(INSTALL_MAN_DIR)
+	install -m 644 man/$(PKG_NAME).1 "$(DESTDIR)$(INSTALL_MAN_DIR)/$(PKG_NAME).1"
+
+uninstall:
+	rm -f $(INSTALL_BIN_DIR)/$(PKG_NAME)
+	rm -f $(INSTALL_MAN_DIR)/$(PKG_NAME).1
 
 # Install the programme
 install: bin install_bin install_man
-
-# Uninstall the programme
-uninstall:
-	rm -f /usr/local/bin/$(PKG_NAME) 
-	rm -f /usr/local/share/man/man1/$(PKG_NAME).1
 
 # Clean up build files
 clean:

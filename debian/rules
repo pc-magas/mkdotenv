@@ -10,14 +10,14 @@ clean:
 	dh clean
 
 build:
-	$(MAKE) GO=$(GO)
+	$(MAKE) GO=$(GO) INSTALL_BIN_DIR=/usr/bin INSTALL_MAN_DIR=/usr/share/man/man1
 	
 binary:
 	mkdir -p debian/mkdotenv/usr/share/lintian/overrides
 	mkdir -p debian/mkdotenv/usr/share/doc/mkdotenv
 	chmod -R 755 debian/mkdotenv/usr
 
-	$(MAKE) install DESTDIR=debian/mkdotenv
+	$(MAKE) install DESTDIR=debian/mkdotenv INSTALL_BIN_DIR=/usr/bin INSTALL_MAN_DIR=/usr/share/man/man1
 	chmod -R 755 debian/mkdotenv/usr/bin
 
 	install -D -m644 debian/copyright debian/mkdotenv/usr/share/doc/mkdotenv/copyright

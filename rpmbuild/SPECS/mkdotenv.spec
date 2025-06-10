@@ -18,13 +18,13 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 %setup -q
 
 %build
-    make VERSION="%{version}" 
+    make VERSION="%{version}" INSTALL_BIN_DIR=/usr/bin INSTALL_MAN_DIR=/usr/share/man/man1
 
 %install
     make install DESTDIR="%{buildroot}"
 
 %files
-/usr/bin/mkdotenv
+/mkdotenv
 /usr/share/man/man1/mkdotenv.1.gz
 
 %changelog
