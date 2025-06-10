@@ -20,7 +20,7 @@ MkDotenv is a lightweight and efficient tool for managing your `.env` files. Whe
 
 Upon Linux Mint and ubuntu you can run:
 
-```shell
+```bash
 sudo apt-get install make golang-1.23*
 ```
 
@@ -29,26 +29,33 @@ For other linux distros look upon: https://go.dev/doc/install
 
 ### Step1 Clone repo:
 
-```shell
+```bash
 git clone https://github.com/pc-magas/mkdotenv.git
+```
+
+For a specific version you can also do:
+
+```bash
+export VERSION=v0.3.2
+git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git
 ```
 
 ### Step 2 build source code
 
-```shell
+```bash
 make
 ```
 
 ### Note
 In case you use the `golang-1.23` package shipped with ubuntu and linux mint, and unable to run `go` command line into the shell you can also run this command:
 
-```shell
+```bash
 make GO=/usr/lib/go-1.23/bin/go
 ```
 
 ### Step 3 Install
 
-```shell
+```bash
 sudo make install
 ```
 
@@ -59,15 +66,18 @@ sudo make install
 
 If cloned this repo and built the tool you can do:
 
-```
+```bash
 sudo make uninstall
 ```
 
-Otherwize you can do it manually:
+Otherwise you can do it manually:
 
-```
-rm -f /usr/bin/mkdotenv
-rm -f /usr/local/share/man/man1/mkdotenv.1 
+```bash
+sudo rm -f /usr/bin/mkdotenv
+sudo rm -f /usr/local/share/man/man1/mkdotenv.1 
+
+sudo rm -f /usr/local/bin/mkdotenv
+sudo rm -f /usr/local/share/man/man1/mkdotenv.1 
 ```
 
 ## From Statically Built Executable Binaries
@@ -90,19 +100,21 @@ mkdotenv --version
 In order to see the latest version check the https://github.com/pc-magas/mkdotenv/releases page once you found the desired release instead of:
 
 ```
+# Replace with actual version number, e.g., v0.3.2
 export VERSION=v0.1.0
 ```
 
 Do (replace `^found_version^` with the version you found upon releases page):
 
-```
+```bash
+# Replace with actual version number, e.g., v0.3.2
 export VERSION=^found_version^
 ```
 
 And execute the commands:
 
-```
-wget https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv
+```bash
+wget -O mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-linux-amd64 
 
 sudo cp mkdotenv /bin/mkdotenv
 sudo chmod 755 /bin/mkdotenv
@@ -118,7 +130,7 @@ rm -rf /bin/mkdotenv
 
 ## On Ubuntu & Linux Mint
 
-If running ubuntu or Linux mint ytou can use out ppa repository:
+If running ubuntu or Linux mint you can use our PPA repository:
 
 ```
 sudo add-apt-repository ppa:pcmagas/mkdotenv
@@ -131,6 +143,7 @@ sudo apt-get install mkdotenv
 Works in Debian, Mint and Ubuntu (or any other Debian-compartiblwe distros)
 
 ```shell
+# Replace with actual version number, e.g., v0.3.2
 export VERSION=^found_version^
 wget https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv_${VERSION}_amd64.deb
 sudo dpkg -i mkdotenv_${VERSION}_amd64.deb
@@ -139,11 +152,12 @@ sudo dpkg -i mkdotenv_${VERSION}_amd64.deb
 At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
 
 
-## From rpm package
+## From RPM package
 
 Tested on Fedora
 
 ```shell
+# Replace with actual version number, e.g., v0.3.2
 export VERSION=^found_version^
 wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}/mkdotenv-${VERSION}-1.fc41.x86_64.rpm
 sudo rpm -i mkdotenv_${VERSION}_amd64.deb
@@ -155,6 +169,7 @@ At code above replace `^found_version^` with the version shown at [Detect Latest
 ## In Alpine Linux
 
 ```shell
+# Replace with actual version number, e.g., v0.3.2
 export VERSION=^found_version^
 wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}/mkdotenv-${VERSION}-r0.apk
 ```
@@ -184,27 +199,38 @@ Windows builds are binaries without an installer. Just download the exe from rel
 mkdotenv-windows-amd64.exe 
 ```
 
-The arguments are the same as the linux version.
+The build steps for Linux are the same for macOS. See the [Linux build instructions](#from-source-code) above for details.
 
 
-## In Mac
-
+## In MacOS
 
 ### Build from Source
 
-For masos buildyoucan install go and build from source the sterps are the same as the ones used upon linux:
+For masos build, you can [install go](https://go.dev/doc/install) and build from source.
 
+The steps are the same as the ones used upon linux:
+
+```bash
+git clone https://github.com/pc-magas/mkdotenv.git
+make
+sudo make install
 ```
+
+Look upon linux instructions for more info.
+
+
+## From statically built binaries:
+
+```bash
+# Replace with actual version number, e.g., v0.3.2
 export VERSION=v0.3.2
-wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-linux-amd64 
-sudo cp mkdotenv /bin/mkdotenv
-sudo chmod 755 /bin/mkdotenv
+wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-darwin-amd64
+
+sudo cp mkdotenv /usr/local/bin/mkdotenv
+sudo chmod 755 /usr/local/bin/mkdotenv
 
 mkdotenv --version
 ```
-
-
-
 
 # Usage
 
@@ -341,7 +367,7 @@ RUN --mount=type=bind,from=pcmagas/mkdotenv:latest,source=/usr/bin/mkdotenv,targ
 
 ## Run image into standalone container.
 
-You can also run it as stanalone image as well:
+You can also run it as standalone image as well:
 
 ```shell
 docker run pcmagas/mkdotenv mkdotenv --version
