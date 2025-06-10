@@ -307,7 +307,7 @@ jobs:
           path: ./bin
 
       - name: "List Bin"
-        run: ls -l ./bin/bin
+        run: ls -l ./bin
 
       - name: Download DEB artifact
         uses: actions/download-artifact@v4
@@ -330,9 +330,10 @@ jobs:
             ./bin/mkdotenv-linux-amd64,
             ./bin/mkdotenv-windows-amd64.exe,
             ./bin/bin/mkdotenv-darwin-arm64,
+            ./mkdotenv-macos.zip,
             mkdotenv*.deb,
-            mkdotenv*.rpm,
-            mkdotenv*.tar.gz, 
+            mkdotenv*.rpm, 
+            mkdotenv*.tar.gz,
             APKFILE,
             mkdotenv*-r0.apk,
             ./aur/PKGBUILD
