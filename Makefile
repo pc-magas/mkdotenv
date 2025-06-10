@@ -39,17 +39,18 @@ endif
 BIN_NAME ?= $(PKG_NAME)-$(OS)-$(ARCH)$(EXT)
 COMPILED_BIN_PATH ?= /tmp/$(BIN_NAME)
 
-.PHONY: compile
+.PHONY: all,compile
 
 # Default target
 all: bin
-	@echo "Building on OS=$(OS), ARCH=$(ARCH)"
 
 make_bin_folder:
 	mkdir -p bin
 
 # Compile Go binary
 compile:
+	@echo "Building on OS=$(OS), ARCH=$(ARCH)"
+
 	cd ./mkdotenv &&\
 	echo $(VERSION) &&\
 	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) $(GO) build -ldflags "-X 'github.com/pc-magas/mkdotenv/msg.version=$(VERSION)'" -o $(COMPILED_BIN_PATH) mkdotenv.go &&\
