@@ -167,7 +167,7 @@ apk add --allow-untrusted mkdotenv-${VERSION}-r0.apk
 
 At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
 
-# In arch Linux
+## In arch Linux
 
 Mkdotenv is shipped via [AUR](https://aur.archlinux.org/packages/mkdotenv), use `yay` to install:
 
@@ -176,7 +176,7 @@ yay mkdotenv
 ```
 
 
-# In windows
+## In windows
 
 Windows builds are binaries without an installer. Just download the exe from releases page ( https://github.com/pc-magas/mkdotenv/releases ) and run it through cmd/powershell:
 
@@ -184,9 +184,26 @@ Windows builds are binaries without an installer. Just download the exe from rel
 mkdotenv-windows-amd64.exe 
 ```
 
-You can doanload it l
+The arguments are the same as the linux version.
 
-The arguments are the same as the linux version. Y
+
+## In Mac
+
+
+### Build from Source
+
+For masos buildyoucan install go and build from source the sterps are the same as the ones used upon linux:
+
+```
+export VERSION=v0.3.2
+wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-linux-amd64 
+sudo cp mkdotenv /bin/mkdotenv
+sudo chmod 755 /bin/mkdotenv
+
+mkdotenv --version
+```
+
+
 
 
 # Usage
