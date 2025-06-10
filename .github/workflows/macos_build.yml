@@ -48,4 +48,4 @@ jobs:
       - name: Compile and install
         run: |
           make
-          make install
+          sudo make install
