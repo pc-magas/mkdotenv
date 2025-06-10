@@ -1,4 +1,4 @@
-name: build_macos
+name: test_build_macos
 
 on:
   push:
@@ -49,3 +49,4 @@ jobs:
         run: |
           make
           sudo make install
+

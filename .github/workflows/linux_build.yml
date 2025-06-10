@@ -1,0 +1,29 @@
+name: test_build_linux
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+  
+jobs:
+  test_compile_linux:
+    runs-on: macos-latest
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '>=1.17.0'
+          check-latest: true
+      
+      - name: Compile and install
+        run: |
+          make
+          sudo make install
+      
+      - name: test run
+        run: mkdotenv --version

@@ -70,8 +70,8 @@ bin: compile make_bin_folder
 	mv $(COMPILED_BIN_PATH) ./bin/$(BIN_NAME)
 
 install_bin:
-	mkdir -p $(DESTDIR)/usr/bin
-	install -m 755 ./bin/$(BIN_NAME) "$(DESTDIR)/usr/bin/$(PKG_NAME)"
+	mkdir -p $(DESTDIR)/usr/local/bin
+	install -m 755 ./bin/$(BIN_NAME) "$(DESTDIR)/usr/local/bin/$(PKG_NAME)"
 
 # Install the programme
 install: bin install_bin
@@ -81,7 +81,7 @@ install: bin install_bin
 
 # Uninstall the programme
 uninstall:
-	rm -f /usr/bin/$(PKG_NAME) 
+	rm -f /usr/local/bin/$(PKG_NAME) 
 	rm -f /usr/share/man/man1/mkdotenv.1 
 
 # Clean up build files
