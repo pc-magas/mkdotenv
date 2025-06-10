@@ -77,12 +77,12 @@ install_bin:
 install: bin install_bin
 	mkdir -p $(DESTDIR)/usr/share/man/man1
 	cp man/$(PKG_NAME).1 $(DESTDIR)/usr/share/man/man1/$(PKG_NAME).1
-	chmod 644 $(DESTDIR)/usr/share/man/man1/$(PKG_NAME).1
+	chmod 644 $(DESTDIR)/usr/local/share/man/man1/$(PKG_NAME).1
 
 # Uninstall the programme
 uninstall:
 	rm -f /usr/local/bin/$(PKG_NAME) 
-	rm -f /usr/share/man/man1/mkdotenv.1 
+		rm -f /usr/local/share/man/man1/$(PKG_NAME).1
 
 # Clean up build files
 clean:
