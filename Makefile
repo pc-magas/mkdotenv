@@ -71,7 +71,7 @@ bin: compile make_bin_folder
 
 install_bin:
 	mkdir -p $(DESTDIR)/usr/bin
-	install -D -m 755 ./bin/$(BIN_NAME) "$(DESTDIR)/usr/bin/$(PKG_NAME)"
+	install -m 755 ./bin/$(BIN_NAME) "$(DESTDIR)/usr/bin/$(PKG_NAME)"
 
 # Install the programme
 install: bin install_bin
