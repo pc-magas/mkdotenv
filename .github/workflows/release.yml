@@ -310,7 +310,7 @@ jobs:
         run: ls -l ./bin
 
       - name: "List Bin"
-        run: ls -l ./bin/bim
+        run: ls -l ./bin/bin
       
       - name: "List files"
         run: ls -l ./*.zip
