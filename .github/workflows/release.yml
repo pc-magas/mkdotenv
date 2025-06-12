@@ -304,7 +304,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mkdotenv-macos
-          path: ./bin
+          path: .
 
       - name: "List Bin"
         run: ls -l ./bin
