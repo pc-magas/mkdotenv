@@ -1,0 +1,13 @@
+name: test_build_linux
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    if: github.event.release.prerelease == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Do something on full release
+        run: echo "This is not a prerelease!"
