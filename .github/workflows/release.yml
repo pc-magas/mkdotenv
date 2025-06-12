@@ -193,7 +193,7 @@ jobs:
 
       - name: list_macos_bin
         run: ls -l .
-        
+
       - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
         with:
@@ -335,7 +335,7 @@ jobs:
           artifacts: |
             ./bin/mkdotenv-linux-amd64,
             ./bin/mkdotenv-windows-amd64.exe,
-            ./bin/bin/mkdotenv-darwin-arm64,
+            ./bin/mkdotenv-darwin-arm64,
             ./macos/mkdotenv-macos.zip,
             mkdotenv*.deb,
             mkdotenv*.rpm, 
@@ -355,7 +355,7 @@ jobs:
           artifacts: |
             ./bin/mkdotenv-linux-amd64,
             ./bin/mkdotenv-windows-amd64.exe,
-            ./bin/bin/mkdotenv-darwin-arm64,
+            ./bin/mkdotenv-darwin-arm64,
             ./macos/mkdotenv-macos.zip,
             mkdotenv*.deb,
             mkdotenv*.rpm, 
