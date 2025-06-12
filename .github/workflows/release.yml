@@ -191,6 +191,9 @@ jobs:
       - name: list_macos_bin
         run: ls -l ./bin
 
+      - name: list_macos_bin
+        run: ls -l *.zip
+
       - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
         with:
@@ -310,7 +313,7 @@ jobs:
         run: ls -l ./bin
       
       - name: "List files"
-        run: ls -l ./*.zip
+        run: ls -l .
 
       - name: Download DEB artifact
         uses: actions/download-artifact@v4
