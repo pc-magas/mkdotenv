@@ -39,4 +39,4 @@ docker run \
     -v ${ABUILD_VOLUME}:/home/packager/.abuild \
     -v ${VOLUME_DIR}/keys:/etc/apk/keys \
     -v ${RELEASE_DIR}:/home/packager/release \
-    pcmagas/alpinebuild
+    ghcr.io/pc-magas/alpinebuild

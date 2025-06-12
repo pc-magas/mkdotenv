@@ -61,6 +61,7 @@ sudo make install
 
 (If run as root ommit `sudo`)
 
+Once `make install` is sucessfully run golang can be uninstalled if desired, it is a build-only requirement.
 
 ### Uninstall
 
@@ -140,7 +141,7 @@ sudo apt-get install mkdotenv
 
 ## From debian package
 
-Works in Debian, Mint and Ubuntu (or any other Debian-compartiblwe distros)
+Works in Debian, Mint and Ubuntu (or any other Debian-compartible distros)
 
 ```shell
 # Replace with actual version number, e.g., v0.3.2
@@ -190,7 +191,6 @@ Mkdotenv is shipped via [AUR](https://aur.archlinux.org/packages/mkdotenv), use 
 yay mkdotenv
 ```
 
-
 ## In windows
 
 Windows builds are binaries without an installer. Just download the exe from releases page ( https://github.com/pc-magas/mkdotenv/releases ) and run it through cmd/powershell:
@@ -199,14 +199,14 @@ Windows builds are binaries without an installer. Just download the exe from rel
 mkdotenv-windows-amd64.exe 
 ```
 
-The build steps for Linux are the same for macOS. See the [Linux build instructions](#from-source-code) above for details.
-
-
 ## In MacOS
 
 ### Build from Source
 
 For masos build, you can [install go](https://go.dev/doc/install) and build from source.
+
+Builsing is supported for both intel and M Series mac and requires no extra dependencies excepe go lang
+
 
 The steps are the same as the ones used upon linux:
 
@@ -216,7 +216,7 @@ make
 sudo make install
 ```
 
-Look upon linux instructions for more info.
+Look upon linux instructions for more info. Once `make install` is sucessfully run golang can be uninstalled.
 
 ### From Statically Built Binaries
 
