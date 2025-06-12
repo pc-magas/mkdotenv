@@ -193,10 +193,7 @@ jobs:
 
       - name: list_macos_bin
         run: ls -l .
-
-      - name: list_macos_bin
-        run: ls -l *.zip
-
+        
       - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
         with:
