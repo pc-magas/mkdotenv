@@ -7,11 +7,30 @@ GO := go
 ARCH ?= $(shell uname -m)
 OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 
+
 INSTALL_BIN_DIR ?= /usr/local/bin
 INSTALL_MAN_DIR ?= /usr/local/share/man/man1
 
 UNAME_S := $(shell uname -s)
 UNAME_M := $(shell uname -m)
+
+# Map to GOOS
+ifeq ($(UNAME_S),Darwin)
+    OS := darwin
+else ifeq ($(UNAME_S),Linux)
+    OS := linux
+else ifeq ($(OS),)
+    OS := unknown
+endif
+
+# Map to GOARCH
+ifeq ($(UNAME_M),x86_64)
+    ARCH := amd64
+else ifeq ($(UNAME_M),arm64)
+    ARCH := arm64
+else ifeq ($(ARCH),)
+    ARCH := unknown
+endif
 
 EXT :=
 CGO := 1
