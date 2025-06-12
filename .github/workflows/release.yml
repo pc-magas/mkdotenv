@@ -309,6 +309,12 @@ jobs:
       - name: "List Bin"
         run: ls -l ./bin
 
+      - name: "List Bin"
+        run: ls -l ./bin/bim
+      
+      - name: "List files"
+        run: ls -l ./*.zip
+
       - name: Download DEB artifact
         uses: actions/download-artifact@v4
         with:
