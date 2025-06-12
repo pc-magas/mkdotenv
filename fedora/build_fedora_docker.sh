@@ -32,7 +32,7 @@ docker run \
     -v "${SOURCEPATH}/rpmbuild/SOURCES:/home/pkgbuild/rpmbuild/SOURCES" \
     -v "${SOURCEPATH}/rpmbuild/SPECS:/home/pkgbuild/rpmbuild/SPECS" \
     -v "${SOURCEPATH}/rpmbuild/RPMS/x86_64:/home/pkgbuild/rpmbuild/RPMS/x86_64" \
-    pcmagas/fedora-rpmpkg rpmbuild -bb /home/pkgbuild/rpmbuild/SPECS/mkdotenv.spec
+    ghcr.io/pc-magas/fedora_rpm_build_docker rpmbuild -bb /home/pkgbuild/rpmbuild/SPECS/mkdotenv.spec
 
 echo "Cleanup"
 rm -rf ${SRC_FOLDER}
