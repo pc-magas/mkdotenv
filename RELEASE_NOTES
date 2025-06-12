@@ -1,2 +1,3 @@
 Release for MACOS
 Use ghcr hosted images for fedora and alpine builds
+Native building of app usiong Make both on MacOs and Linux.
