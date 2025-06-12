@@ -218,6 +218,19 @@ sudo make install
 
 Look upon linux instructions for more info.
 
+### From Statically Built Binaries
+
+Statiuc binaries that can be converted into executable for M series MACOs are also shipped as well.
+
+```shell
+export VERSION=v0.3.2
+wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-darwin-arm64 
+sudo cp mkdotenv /usr/local/bin/mkdotenv
+sudo chmod 755 /usr/local/mkdotenv
+
+mkdotenv --version
+```
+
 
 ## From statically built binaries:
 
