@@ -18,7 +18,6 @@ else
   make bin OS=darwin ARCH=arm64 COMPILED_BIN_PATH="/tmp/mkdotenv"
 fi
 
-
 mkdir  -p ${SCRIPTPATH}/bin
 
 cp ./bin/mkdotenv-darwin-arm64  ${SCRIPTPATH}/bin/mkdotenv

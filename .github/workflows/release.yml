@@ -203,7 +203,7 @@ jobs:
           name: mkdotenv-macos
           path: |
             ./bin/mkdotenv-darwin-arm64
-            ./mkdotenv-macos.zip
+            ./macos/mkdotenv-macos.zip
           if-no-files-found: error
 
   build_deb:
@@ -339,7 +339,7 @@ jobs:
             ./bin/mkdotenv-linux-amd64,
             ./bin/mkdotenv-windows-amd64.exe,
             ./bin/bin/mkdotenv-darwin-arm64,
-            mkdotenv-macos.zip,
+            ./macos/mkdotenv-macos.zip,
             mkdotenv*.deb,
             mkdotenv*.rpm, 
             mkdotenv*.tar.gz,
@@ -359,7 +359,7 @@ jobs:
             ./bin/mkdotenv-linux-amd64,
             ./bin/mkdotenv-windows-amd64.exe,
             ./bin/bin/mkdotenv-darwin-arm64,
-            mkdotenv-macos.zip,
+            ./macos/mkdotenv-macos.zip,
             mkdotenv*.deb,
             mkdotenv*.rpm, 
             mkdotenv*.tar.gz,
