@@ -1,6 +1,8 @@
-# Version 0.3.2 2025-05-31
+# Version 0.3.2 2025-06-12
 
 Release for MACOS
+Use ghcr hosted images for fedora and alpine builds
+Native building of app usiong Make both on MacOs and Linux.
 
 # Version 0.3.1 2025-05-26
 

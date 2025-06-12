@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 Name:           mkdotenv
 Version:        0.3.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
 License:        GPL-3
@@ -65,3 +65,8 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 
 * Sat May 31 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
 - Release for MACOS
+
+* Thu Jun 12 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-2
+- Release for MACOS
+- Use ghcr hosted images for fedora and alpine builds
+- Native building of app usiong Make both on MacOs and Linux.
