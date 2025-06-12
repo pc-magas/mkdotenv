@@ -8,7 +8,7 @@ class Mkdotenv < Formula
   
   sha256 "b3e323469c8bf35a9db2dd30fabc32c48f93ad7cb9e654443ee26fdfab8d95a5"
   
-  license "GPL-v3"
+  license "GPL-3.0-or-later"
 
   def install
     bin.install "mkdotenv"
