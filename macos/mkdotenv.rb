@@ -10,8 +10,6 @@ class Mkdotenv < Formula
   
   license "GPL-3.0-or-later"
 
-  # Comment in order to force a commit.
-
   def install
     bin.install "mkdotenv"
   end
