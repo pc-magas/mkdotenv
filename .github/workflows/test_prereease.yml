@@ -12,20 +12,4 @@ jobs:
     steps:
 
       - name: Do something on prelease
-        if: github.event.release.prerelease == false
-        run: echo "This is not a prerelease!"
-
-      - name: Do something on prelease
-        if: github.event.release.prerelease == false
-        run: echo "This is a prerelease!"
-      
-      - name: Set up GitHub CLI
-        run: |
-          sudo apt-get install gh
-
-      - name: List release assets
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Fetching release assets..."
-          gh release view ${{ github.event.release.tag_name }} --json assets -q '.assets[].name'
+        run: echo "Hello"
