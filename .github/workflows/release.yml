@@ -212,6 +212,14 @@ jobs:
             ./bin/mkdotenv-darwin-arm64
             ./macos/mkdotenv-macos.zip
           if-no-files-found: error
+      
+      - name: Upload Formula Atifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mkdotenv-macos-homebrew-formula
+          path: |
+            ./macos/bin/mkdotenv.rb
+          if-no-files-found: error
   
   build_deb:
     runs-on: ubuntu-latest
@@ -382,17 +390,28 @@ jobs:
       contents: write
     needs:
       - release
+      - build_mac
     steps:
 
       - uses: actions/checkout@v4
         with:
          fetch-depth: 0
 
+      - name: Download homebrew formula for macos
+        uses: actions/download-artifact@v4
+        with:
+          name: mkdotenv-macos-homebrew-formula
+          path: .
+
       - name: Append -pre to release
         if:  github.ref == 'refs/heads/dev'
         run: |
-          sed 's|version "\(.*\)"|version "\1-pre"|' ./macos/mkdotenv.rb > ./macos/mkdotenv.mod.rb
-          cp ./macos/mkdotenv.mod.rb ./macos/mkdotenv.rb
+          sed 's|version "\(.*\)"|version "\1-pre"|' ./macos/bin/mkdotenv.rb > ./macos/bin/mkdotenv.mod.rb
+          cp ./macos/bin/mkdotenv.mod.rb ./macos/bin/mkdotenv.rb
+
+      - name: fix remote upon ./macos/bin/mkdotenv.rb
+        run:
+          sed -i -E "s|url.*|url \"https://github.com/pc-magas/mkdotenv/releases/download/v#{version}/mkdotenv-macos.zip\"|" ./macos/bin/mkdotenv.rb
 
       - name: Test Homebrew install
-        run: brew install --formula ./macos/mkdotenv.rb
+        run: brew install --formula ./macos/bin/mkdotenv.rb
