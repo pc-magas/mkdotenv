@@ -99,6 +99,10 @@ jobs:
         run:
           bash ./alpinebuild/release_apkfile.sh
 
+      - name: list file
+        run:
+          ls -l ./alpinebuild/${{ env.make_tar.tar_file }}
+
       - name: Upload Source Tarball
         uses: actions/upload-artifact@v4
         with:
@@ -387,7 +391,7 @@ jobs:
       - name: Append -pre to release
         if:  github.ref == 'refs/heads/dev'
         run:
-          sed -i '' 's/^version "\(.*\)"/version "\1-pre"/' ./macos/mkdotenv.rb
+          sed -i'' 's|version "\(.*\)"|version "\1-pre"|' ./macos/mkdotenv.rb
 
       - name: Test Homebrew install
         run: brew install --formula ./macos/mkdotenv.rb
