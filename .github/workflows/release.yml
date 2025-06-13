@@ -194,6 +194,12 @@ jobs:
       - name: list_macos_bin
         run: ls -l .
 
+      - name: test_homebrew_formula_locally
+        run: brew install --formula ./macos/bin/mkdotenv.rb
+
+      - name: execute mkdotenv
+        run: mkdotenv --help
+
       - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
         with:

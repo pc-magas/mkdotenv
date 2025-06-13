@@ -13,4 +13,4 @@ jobs:
       contents: write
     steps:
       - name: "execute homebrew file"
-        run: brew install --formula ./macos/bin/mkdotenv.rb
+        run: brew install --formula ./macos/mkdotenv.rb
