@@ -401,7 +401,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mkdotenv-macos-homebrew-formula
-          path: .
+          path: ./macos/bin
 
       - name: Append -pre to release
         if:  github.ref == 'refs/heads/dev'
