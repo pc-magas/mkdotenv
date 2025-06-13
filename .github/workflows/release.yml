@@ -433,7 +433,7 @@ jobs:
           mkdir -p ./Formula
           cp ../macos/mkdotenv.rb ./Formula/formula.rb
 
-          git add Formula/mkdotenv.rb
+          git add ./Formula/mkdotenv.rb
           git commit -m "Update formula via GitHub Actions"
           git push origin update-formula-${{ github.run_number }}
 
