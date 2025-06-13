@@ -1,8 +1,8 @@
-name: test_prerelease
+name: test2
 
 on:
   workflow_run:
-    workflows: ["release"]
+    workflows: ["test1"]
     types:
       - completed
 
@@ -11,5 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Do something on prelease
+      - name: Do something
         run: echo "Hello"
