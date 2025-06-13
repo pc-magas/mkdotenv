@@ -208,7 +208,7 @@ jobs:
             ./bin/mkdotenv-darwin-arm64
             ./macos/mkdotenv-macos.zip
           if-no-files-found: error
-
+  
   build_deb:
     runs-on: ubuntu-latest
     permissions:

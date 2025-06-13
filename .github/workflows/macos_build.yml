@@ -4,12 +4,11 @@ on:
   push:
     branches:
       - dev
-  workflow_dispatch:
-  
+        
 jobs:
 
   mac_intel_build:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
 
       - uses: actions/checkout@v4
@@ -28,31 +27,6 @@ jobs:
       
       - name: test_run
         run: mkdotenv --help
-
-  mac_build:
-    runs-on: macos-latest
-    steps:
-
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '>=1.17.0'
-          check-latest: true
-
-      - name: run
-        run: |
-          bash macos/build.sh
-      
-      - name: test_homebrew
-        run: |
-          brew install --formula ./macos/bin/mkdotenv.rb
-
-      - name: test_install
-        run: |
-          mkdotenv --help
 
   test_compile:
     runs-on: macos-latest
