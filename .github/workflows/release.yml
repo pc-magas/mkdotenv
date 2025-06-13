@@ -431,7 +431,7 @@ jobs:
 
           # Copy updated file
           mkdir -p ./Formula
-          cp ../macos/mkdotenv.rb ./Formula/formula.rb
+          cp ../macos/bin/mkdotenv.rb ./Formula/mkdotenv.rb
 
           git add ./Formula/formula.rb
           git commit -m "Update formula via GitHub Actions"

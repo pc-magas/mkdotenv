@@ -201,6 +201,18 @@ mkdotenv-windows-amd64.exe
 
 ## In MacOS
 
+### Using Homebrew
+
+MacOs binaries for M Series are shipped via homebrew.
+For intel based releases compile freom source.
+
+```bash
+brew tap pc-magas/mkdotenv
+brew install pc-magas/mkdotenv/mkdotenv
+mkdotenv --help
+```
+
+
 ### Build from Source
 
 For masos build, you can [install go](https://go.dev/doc/install) and build from source.
@@ -230,6 +242,7 @@ sudo chmod 755 /usr/local/mkdotenv
 
 mkdotenv --version
 ```
+
 
 
 ## From statically built binaries:
