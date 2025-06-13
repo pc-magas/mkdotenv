@@ -415,3 +415,28 @@ jobs:
 
       - name: Test Homebrew install
         run: brew install --formula ./macos/bin/mkdotenv.rb
+      
+      - name: Create Pull Request to target repo
+        env:
+          GH_PAT: ${{ secrets.HOMEBREW_PAT }}
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+          git clone https://x-access-token:${GH_PAT}@github.com/pc-magas/homebrew-mkdotenv.git
+          cd homebrew-mkdotenv
+
+          # Create new branch for PR
+          git checkout -b update-formula-${{ github.run_number }}
+
+          # Copy updated file
+          mkdir -p ./Formula
+          cp ../macos/mkdotenv.rb ./Formula/formula.rb
+
+          git add Formula/mkdotenv.rb
+          git commit -m "Update formula via GitHub Actions"
+          git push origin update-formula-${{ github.run_number }}
+
+          # Create a PR using GitHub CLI
+          gh auth login --with-token <<< "$GH_PAT"
+          gh pr create --title "Update formula" --body "Automated update" --head update-formula-${{ github.run_number }} --base master
