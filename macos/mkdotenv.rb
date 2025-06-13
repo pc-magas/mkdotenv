@@ -14,6 +14,8 @@ class Mkdotenv < Formula
     bin.install "mkdotenv"
   end
 
+  # COmment for new version
+
   test do
     system "#{bin}/mkdotenv", "--help"
   end
