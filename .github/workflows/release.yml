@@ -384,5 +384,10 @@ jobs:
         with:
          fetch-depth: 0
 
+      - name: Append -pre to release
+        if:  github.ref == 'refs/heads/dev'
+        run:
+          sed -i '' 's/^version "\(.*\)"/version "\1-pre"/' ./macos/mkdotenv.rb
+
       - name: Test Homebrew install
         run: brew install --formula ./macos/mkdotenv.rb
