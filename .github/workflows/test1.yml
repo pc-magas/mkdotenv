@@ -1,0 +1,15 @@
+name: test1
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Simulate Build
+        run: echo "Hello"
