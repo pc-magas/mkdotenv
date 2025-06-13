@@ -1,9 +1,10 @@
 name: test_build_linux
 
 on:
-  release:
-    types: [prereleased,edited]
-
+  workflow_run:
+    workflows: ["release"]
+    types:
+      - completed
 jobs:
   build:
     runs-on: ubuntu-latest
