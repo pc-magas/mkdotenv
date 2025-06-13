@@ -1,4 +1,4 @@
-name: test_build_linux
+name: test_prerelease
 
 on:
   workflow_run:
