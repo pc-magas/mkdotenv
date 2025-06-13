@@ -439,4 +439,4 @@ jobs:
 
           # Create a PR using GitHub CLI
           gh auth login --with-token <<< "$GH_PAT"
-          gh pr create --title "Update formula" --body "Automated update" --head update-formula-${{ github.run_number }} --base master
+          gh pr create --title "Update formula [VERSION $(cat VERSION)]" --body "Automated update" --head update-formula-${{ github.run_number }} --base master
