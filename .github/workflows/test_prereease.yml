@@ -2,12 +2,28 @@ name: test_build_linux
 
 on:
   release:
-    types: [published]
+    types: [prereleased,edited]
 
 jobs:
   build:
-    if: github.event.release.prerelease == false
     runs-on: ubuntu-latest
     steps:
-      - name: Do something on full release
+
+      - name: Do something on prelease
+        if: github.event.release.prerelease == false
         run: echo "This is not a prerelease!"
+
+      - name: Do something on prelease
+        if: github.event.release.prerelease == false
+        run: echo "This is a prerelease!"
+      
+      - name: Set up GitHub CLI
+        run: |
+          sudo apt-get install gh
+
+      - name: List release assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Fetching release assets..."
+          gh release view ${{ github.event.release.tag_name }} --json assets -q '.assets[].name'
