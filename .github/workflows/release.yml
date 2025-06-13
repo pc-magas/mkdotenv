@@ -370,4 +370,19 @@ jobs:
             mkdotenv*-r0.apk,
             ./aur/PKGBUILD
           bodyFile: RELEASE_NOTES
-      
+    
+
+  test_homebrew:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    needs:
+      - release
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+         fetch-depth: 0
+
+      - name: Test Homebrew install
+        run: brew install --formula ./macos/mkdotenv.rb
