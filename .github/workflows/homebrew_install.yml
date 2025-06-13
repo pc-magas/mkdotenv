@@ -1,0 +1,16 @@
+name: homebrew_install
+
+on:
+  workflow_run:
+    workflows: ["release"]
+    types:
+      - completed
+
+jobs:
+  homebrew_install:
+    runs-on:  macos-latest
+    permissions:
+      contents: write
+    steps:
+      - name: "execute homebrew file"
+        run: brew install --formula ./macos/bin/mkdotenv.rb
