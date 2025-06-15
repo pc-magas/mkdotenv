@@ -7,7 +7,7 @@ arch=('x86_64')
 url="https://github.com/pc-magas/mkdotenv"
 license=('GPL-3')
 depends=()
-makedepends=('')
+makedepends=()
 source=("mkdotenv-0.3.0.tar.gz")
 sha256sums=('163ccb78a74532919cee18e4ad6c25670f79096c2dc88dc85f9560d61a17b7a4')
 
