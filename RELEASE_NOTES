@@ -1,2 +1,3 @@
 Improved README (fixing typos and improve clarification).
 Arch package does installs oficial golang and does not requires it as dependency.
+Using ./fedora folder for rpm building.
