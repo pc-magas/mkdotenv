@@ -12,37 +12,44 @@
 
 MkDotenv is a lightweight and efficient tool for managing your `.env` files. Whether you're adding, updating, or replacing environment variables, MkDotenv makes it easy and hassle-free.
 
-# Installation
+# Build from source (Supported in Linux & macOS)
 
-## Install In linux 
+Compilation required to have make and golang installed.
+Both Go 1.23 and 1.24 supported.
 
-### Method 1: From source code
+### Step 0: Install golang and make:
 
-#### Step 0: Install golang:
+#### On Ubuntu Linux and Linux mint 
 
-Upon Linux Mint and ubuntu you can run:
+On Linux Mint and Ubuntu, you can run:
 
 ```bash
 sudo apt-get install make golang-1.23*
 ```
 
-For other linux distros look upon: https://go.dev/doc/install
+#### On macOS and other distros
+
+For other linux distros and macOS follow official instructions https://go.dev/doc/install 
 
 
-#### Step1 Clone repo:
+#### Install make upon macOs
+
+You can use either xcode or homebrew. Homebrew method is in https://formulae.brew.sh/formula/make
+
+### Step 1: Clone repo:
 
 ```bash
 git clone https://github.com/pc-magas/mkdotenv.git
 ```
 
-For a specific version you can also do:
+For a specific version (e.g `v0.3.2`) you can also do:
 
 ```bash
 export VERSION=v0.3.2
 git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git
 ```
 
-#### Step 2 build source code
+### Step 2: Compile
 
 ```bash
 make
@@ -55,15 +62,15 @@ In case you use the `golang-1.23` package shipped with ubuntu and linux mint, an
 make GO=/usr/lib/go-1.23/bin/go
 ```
 
-#### Step 3 Install
+### Step 3: Install
 
 ```bash
 sudo make install
 ```
 
-(If run as root ommit `sudo`)
+(If run as root omit `sudo`)
 
-Once `make install` is sucessfully run golang can be uninstalled if desired, it is a build-only requirement.
+Once `make install` is successfully run golang can be uninstalled if desired, it is a build-only requirement.
 
 #### Uninstall
 
@@ -83,11 +90,11 @@ sudo rm -f /usr/local/bin/mkdotenv
 sudo rm -f /usr/local/share/man/man1/mkdotenv.1 
 ```
 
-### Method 2: From Statically Built Executable Binaries
+# Installation
 
-#### Install
+## Install In linux 
 
-In short you must do
+### From Executable Binaries
 
 ```shell
 export VERSION=v0.3.2
@@ -98,11 +105,22 @@ sudo chmod 755 /bin/mkdotenv
 mkdotenv --version
 ```
 
+For environments that do not provide root access use these commands:
+
+```bash
+export VERSION=v0.3.2
+wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-linux-amd64 
+sudo cp mkdotenv ~/.local/bin/mkdotenv
+sudo chmod 755 ~/.local/bin/mkdotenv
+
+mkdotenv --version
+```
+
 #### Detect latest Version
 
 In order to see the latest version check the https://github.com/pc-magas/mkdotenv/releases page once you found the desired release instead of:
 
-```
+```bash
 # Replace with actual version number, e.g., v0.3.2
 export VERSION=v0.1.0
 ```
@@ -143,7 +161,7 @@ sudo apt-get install mkdotenv
 
 ### From debian package
 
-Works in Debian, Mint and Ubuntu (or any other Debian-compartible distros)
+Works in Debian, Mint and Ubuntu (or any other Debian-compatible distros)
 
 ```shell
 # Replace with actual version number, e.g., v0.3.2
@@ -177,6 +195,8 @@ export VERSION=^found_version^
 wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}/mkdotenv-${VERSION}-r0.apk
 ```
 
+> There's a pending release for alpine linux on official repositories.
+
 Then as root user run:
 
 ```shell
@@ -195,17 +215,21 @@ yay mkdotenv
 
 ## Install upon Windows
 
-Windows builds are binaries without an installer. Just download the exe from releases page ( https://github.com/pc-magas/mkdotenv/releases ) and run it through cmd/powershell:
+Windows builds are provided as standalone binaries without an installer.
+
+Just download the `.exe` from releases page ( https://github.com/pc-magas/mkdotenv/releases ) and run it through cmd/powershell:
 
 ```
 mkdotenv-windows-amd64.exe 
 ```
 
+Once downloaded it can be renamed as `mkdotenv.exe`.
+
 ## Install upon MacOS
 
 ### Using Homebrew
 
-MacOs binaries for M Series are shipped via homebrew.
+macOS binaries for M Series are shipped via homebrew.
 For intel based releases compile it from source.
 
 ```bash
@@ -214,27 +238,11 @@ brew install pc-magas/mkdotenv/mkdotenv
 mkdotenv --help
 ```
 
-
-### Build from Source
-
-For masos build, you can [install go](https://go.dev/doc/install) and build from source.
-
-Builsing is supported for both intel and M Series mac and requires no extra dependencies excepe go lang
-
-
-The steps are the same as the ones used upon linux:
-
-```bash
-git clone https://github.com/pc-magas/mkdotenv.git
-make
-sudo make install
-```
-
-Look upon linux instructions for more info. Once `make install` is sucessfully run golang can be uninstalled.
+> For intel macs you need to [compile from source](#build-from-source-supported-in-linux--mac)
 
 ### From Statically Built Binaries
 
-Statiuc binaries that can be converted into executable for M series MACOs are also shipped as well.
+Statically-built binaries that can be converted into executable for M series macOS are also shipped as well.
 
 ```shell
 export VERSION=v0.3.2
@@ -285,7 +293,7 @@ DB_USER=xxx
 ## Selecting file to read and write upon
 
 Instead of outputing the .env value you can use the `--output-file` argument in order to write the contents upon a file.
-Also you can use the parameter `--input-file` in order to select which file to read upon, if ommited `.env` file is used.
+Also you can use the parameter `--input-file` in order to select which file to read upon, if omited `.env` file is used.
 
 ### Example 1 Read a specified file and output its contents to *stdout*:
 
@@ -314,7 +322,7 @@ This would **create** a file named `.env.production` containing:
 DB_HOST=127.0.0.1
 ```
 
-### Example 3 Read a specified .env file and output its contents to a seperate .env file:
+### Example 3 Read a specified .env file and output its contents to a separate .env file:
 
 Assuming we have a file named `.env.template` containing:
 
@@ -372,7 +380,7 @@ COPY --from=mkdotenv /usr/bin/mkdotenv /bin/mkdotenv
 
 ```
 
-Or temporaly mounting it on a run command:
+Or temporarily mounting it on a run command:
 
 ```Dockerfile
 RUN --mount=type=bind,from=pcmagas/mkdotenv:latest,source=/usr/bin/mkdotenv,target=/bin/mkdotenv
@@ -397,13 +405,13 @@ Or if you want multiple variables:
 ```shell
 cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA | docker run -i pcmagas/mkdotenv mkdotenv BIG BROTHER > .env.new
 ```
-Keep in mind to use the `-i` argument upon docker command that enables to read the input via the pipes. If ommited the `mkdotenv` command residing inside the container will not be able to read the contents of .env file piped to it.
+Keep in mind to use the `-i` argument upon docker command that enables to read the input via the pipes. If omited the `mkdotenv` command residing inside the container will not be able to read the contents of .env file piped to it.
 
 ### <ins>**Note**</ins>
 
-If running the `pcmagas/mkdotenv` image **as is** the arguments `--env-file`,`--input-file` and `--input-file` will result an unsucessfull execution of `mkdotenv`. 
+If running the `pcmagas/mkdotenv` image **as is** the arguments `--env-file`,`--input-file` and `--input-file` will result an unsuccessful execution of `mkdotenv`. 
 
-If a `.env` file needs to be manipulated either pipe the ouitputs as shown upon examples above or extend the `pcmagas/mkdotenv` using a your own Dockerfile providing a nessesary volume:
+If a `.env` file needs to be manipulated either pipe the outputs as shown upon examples above or extend the `pcmagas/mkdotenv` using a your own Dockerfile providing a necessary volume:
 
 ```Dockerfile
 FROM `pcmagas/mkdotenv`
