@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 Name:           mkdotenv
 Version:        0.3.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
 License:        GPL-3
@@ -75,3 +75,8 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 - Improved README (fixing typos and improve clarification).
 - Arch package does installs oficial golang and does not requires it as dependency.
 
+
+* Sun Jun 22 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.3-2
+- Improved README (fixing typos and improve clarification).
+- Arch package does installs oficial golang and does not requires it as dependency.
+- Using ./fedora folder for rpm building.
