@@ -12,11 +12,13 @@
 
 MkDotenv is a lightweight and efficient tool for managing your `.env` files. Whether you're adding, updating, or replacing environment variables, MkDotenv makes it easy and hassle-free.
 
-# Install
+# Installation
 
-## From source code:
+## Install In linux 
 
-### Step 0 Install golang:
+### Method 1: From source code
+
+#### Step 0: Install golang:
 
 Upon Linux Mint and ubuntu you can run:
 
@@ -27,7 +29,7 @@ sudo apt-get install make golang-1.23*
 For other linux distros look upon: https://go.dev/doc/install
 
 
-### Step1 Clone repo:
+#### Step1 Clone repo:
 
 ```bash
 git clone https://github.com/pc-magas/mkdotenv.git
@@ -40,20 +42,20 @@ export VERSION=v0.3.2
 git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git
 ```
 
-### Step 2 build source code
+#### Step 2 build source code
 
 ```bash
 make
 ```
 
-### Note
+#### Note
 In case you use the `golang-1.23` package shipped with ubuntu and linux mint, and unable to run `go` command line into the shell you can also run this command:
 
 ```bash
 make GO=/usr/lib/go-1.23/bin/go
 ```
 
-### Step 3 Install
+#### Step 3 Install
 
 ```bash
 sudo make install
@@ -63,7 +65,7 @@ sudo make install
 
 Once `make install` is sucessfully run golang can be uninstalled if desired, it is a build-only requirement.
 
-### Uninstall
+#### Uninstall
 
 If cloned this repo and built the tool you can do:
 
@@ -81,9 +83,9 @@ sudo rm -f /usr/local/bin/mkdotenv
 sudo rm -f /usr/local/share/man/man1/mkdotenv.1 
 ```
 
-## From Statically Built Executable Binaries
+### Method 2: From Statically Built Executable Binaries
 
-### Install
+#### Install
 
 In short you must do
 
@@ -129,7 +131,7 @@ mkdotenv --version
 rm -rf /bin/mkdotenv
 ```
 
-## On Ubuntu & Linux Mint
+### Via PPA for Ubuntu & Linux Mint
 
 If running ubuntu or Linux mint you can use our PPA repository:
 
@@ -139,7 +141,7 @@ sudo apt-get update
 sudo apt-get install mkdotenv
 ```
 
-## From debian package
+### From debian package
 
 Works in Debian, Mint and Ubuntu (or any other Debian-compartible distros)
 
@@ -153,7 +155,7 @@ sudo dpkg -i mkdotenv_${VERSION}_amd64.deb
 At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
 
 
-## From RPM package
+#### From RPM package
 
 Tested on Fedora
 
@@ -161,13 +163,13 @@ Tested on Fedora
 # Replace with actual version number, e.g., v0.3.2
 export VERSION=^found_version^
 wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}/mkdotenv-${VERSION}-1.fc41.x86_64.rpm
-sudo rpm -i mkdotenv_${VERSION}_amd64.deb
+sudo rpm -i mkdotenv-${VERSION}-1.fc41.x86_64.rpm
 ```
 
 At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
 
 
-## In Alpine Linux
+### In Alpine Linux
 
 ```shell
 # Replace with actual version number, e.g., v0.3.2
@@ -183,7 +185,7 @@ apk add --allow-untrusted mkdotenv-${VERSION}-r0.apk
 
 At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
 
-## In arch Linux
+### In arch Linux
 
 Mkdotenv is shipped via [AUR](https://aur.archlinux.org/packages/mkdotenv), use `yay` to install:
 
@@ -191,7 +193,7 @@ Mkdotenv is shipped via [AUR](https://aur.archlinux.org/packages/mkdotenv), use 
 yay mkdotenv
 ```
 
-## In windows
+## Install upon Windows
 
 Windows builds are binaries without an installer. Just download the exe from releases page ( https://github.com/pc-magas/mkdotenv/releases ) and run it through cmd/powershell:
 
@@ -199,12 +201,12 @@ Windows builds are binaries without an installer. Just download the exe from rel
 mkdotenv-windows-amd64.exe 
 ```
 
-## In MacOS
+## Install upon MacOS
 
 ### Using Homebrew
 
 MacOs binaries for M Series are shipped via homebrew.
-For intel based releases compile freom source.
+For intel based releases compile it from source.
 
 ```bash
 brew tap pc-magas/mkdotenv
@@ -239,21 +241,6 @@ export VERSION=v0.3.2
 wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-darwin-arm64 
 sudo cp mkdotenv /usr/local/bin/mkdotenv
 sudo chmod 755 /usr/local/mkdotenv
-
-mkdotenv --version
-```
-
-
-
-## From statically built binaries:
-
-```bash
-# Replace with actual version number, e.g., v0.3.2
-export VERSION=v0.3.2
-wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-darwin-amd64
-
-sudo cp mkdotenv /usr/local/bin/mkdotenv
-sudo chmod 755 /usr/local/bin/mkdotenv
 
 mkdotenv --version
 ```

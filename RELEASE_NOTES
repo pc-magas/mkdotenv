@@ -1,3 +1,2 @@
-Release for MACOS
-Use ghcr hosted images for fedora and alpine builds
-Native building of app usiong Make both on MacOs and Linux.
+Improved README (typos fix and make clarification).
+Arch package does installs oficial golang and does not requires it as dependency.
