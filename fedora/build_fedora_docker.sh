@@ -15,8 +15,6 @@ tar tzf ${GENERATED_TAR} | head -n 1
 
 mkdir -p ${SOURCEPATH}rpmbuild/RPMS/x86_64
 
-# rpmbuild -bb /home/pkgbuild/rpmbuild/SPECS/mkdotenv.spec
-
 docker run \
     -e UID=$(id -u) -e GID=$(id -g)\
     -v "${SOURCEPATH}/rpmbuild/SOURCES:/home/pkgbuild/rpmbuild/SOURCES" \
