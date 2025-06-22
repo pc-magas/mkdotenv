@@ -276,14 +276,14 @@ jobs:
         run: bash ./fedora/build_fedora_docker.sh
 
       - name: list rpms
-        run: ls -l rpmbuild/RPMS/x86_64/
+        run: ls -l ./fedora/rpmbuild/RPMS/x86_64/
 
       - name: Upload RPM artifact
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: mkdotenv-rpm
-          path: rpmbuild/RPMS/x86_64/mkdotenv*.rpm  
+          path: ./fedora/rpmbuild/RPMS/x86_64/mkdotenv*.rpm  
 
   release:
     runs-on: ubuntu-latest

@@ -1,12 +1,12 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.3.2
-Release:        2%{?dist}
+Version:        0.3.3
+Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
 License:        GPL-3
 URL:            https://github.com/pc-magas/mkdotenv
-Source0:        %{name}-%{version}.tar.gz
+Source0:        %{name}-%{version}-rpm.tar.gz
 
 BuildRequires:  go, make
 
@@ -28,10 +28,10 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 /usr/share/man/man1/mkdotenv.1.gz
 
 %changelog
-* Sun Feb 16 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+* Sun Feb 16 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.1.7-1
 - Initial RPM package
 
-* Thu Mar 27 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+* Thu Mar 27 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.2.0-1
 - 1. Split codebase into multiple files.
 - 2. Use a seperate version file and define built version upon compile.
 - 4. [BUGFIX] If input file is same as output file copy input file into a temporary one.
@@ -39,18 +39,18 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 - 6. [BUGFIX] Out of bounds argument parsing
 - 7. [BUGFIX] Values should not be an Argument
 
-* Mon Apr 07 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+* Mon Apr 07 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.2.1-1
 - 1. Improve Argument parsing
 
-* Thu Apr 10 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+* Thu Apr 10 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.2.2-1
 - Release for windows
 - make runs `bin` target by default
 - Fix lang upon rpm changelog
 
-* Thu Apr 24 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+* Thu Apr 24 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.2.3-1
 - Release for Alpine
 
-* Mon May 12 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+* Mon May 12 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.1-1
 - 1. Use common naming convention for golang module using repoesitory's name
 - 2. Upon rpm builds use Makefile
 - 3. Ability to specify a version externally in Makefile.
@@ -59,14 +59,19 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 - 6. Moving pcmagas/alpinebuild (used upon alpine image releases) docker image into a seperate repository.
 - 7. Release for AUR and arch linux
 
-* Mon May 26 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+* Mon May 26 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.1-1
 - 1. [BUGFIX] Check Variable name
 - 2. Use External Docker image for rpm builds.
 
-* Sat May 31 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-1
+* Sat May 31 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.2-1
 - Release for MACOS
 
-* Thu Jun 12 2025 Dimitrios Desyllas <pcmagas@disroot.org> - %{version}-2
+* Thu Jun 12 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.2-2
 - Release for MACOS
 - Use ghcr hosted images for fedora and alpine builds
 - Native building of app usiong Make both on MacOs and Linux.
+
+* Sun Jun 22 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.3-1
+- Improved README (fixing typos and improve clarification).
+- Arch package does installs oficial golang and does not requires it as dependency.
+
