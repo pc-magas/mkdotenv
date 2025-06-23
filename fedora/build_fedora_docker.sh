@@ -6,14 +6,22 @@ SOURCEPATH=${SCRIPTPATH}/
 
 VERSION=$(cat ${SOURCEPATH}/../VERSION)
 
-SRC_FOLDER=mkdotenv-${VERSION}
 RPM_SRC=${SCRIPTPATH}/rpmbuild/SOURCES
+
+rm -rf ${RPM_SRC}
+mkdir -p ${RPM_SRC}
 
 GENERATED_TAR=$(bash ${SCRIPTPATH}/make_tar.sh)
 
+echo "TAR COntents"
 tar tzf ${GENERATED_TAR} | head -n 1
 
+echo "Recreating RPM Storage folder"
+rm -rf ${SOURCEPATH}rpmbuild/RPMS/x86_64
 mkdir -p ${SOURCEPATH}rpmbuild/RPMS/x86_64
+
+echo "Recreate SRPM Storage folder"
+rm -rf ${SOURCEPATH}rpmbuild/SRPMS
 mkdir -p ${SOURCEPATH}rpmbuild/SRPMS
 
 echo "Generating SRPM"
@@ -34,6 +42,3 @@ docker run \
     -v "${SOURCEPATH}/rpmbuild/SRPMS:/home/pkgbuild/rpmbuild/SRPMS" \
     ghcr.io/pc-magas/fedora_rpm_build_docker rpmbuild --rebuild /home/pkgbuild/rpmbuild/SRPMS/mkdotenv-${VERSION}-2.fc41.src.rpm
 
-
-echo "Cleanup"
-rm -rf ${SRC_FOLDER}
