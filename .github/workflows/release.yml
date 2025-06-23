@@ -285,6 +285,13 @@ jobs:
           name: mkdotenv-rpm
           path: ./fedora/rpmbuild/RPMS/x86_64/mkdotenv*.rpm  
 
+      - name: Upload SRPM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: mkdotenv-srpm
+          path: ./fedora/rpmbuild/SRPMS/mkdotenv*.src.rpm
+
   release:
     runs-on: ubuntu-latest
     permissions:
@@ -441,3 +448,24 @@ jobs:
           gh auth login --with-token <<< "$GH_PAT"
           VERSION=$(grep -E '^  version ' ./Formula/mkdotenv.rb | sed 's/.*"\(.*\)".*/\1/')
           gh pr create --title "Update formula [VERSION $(cat ${VERSION})]" --body "Automated update" --head update-formula-${{ github.run_number }} --base master
+
+  release_corpr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs:
+      - release
+      - build_rpm
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+         fetch-depth: 0
+
+      - name: Download homebrew formula for macos
+        uses: actions/download-artifact@v4
+        with:
+          name: mkdotenv-srpm
+
+      - name: list downloaded srpm
+        run: ls -l ./fedora/rpmbuild/SRPMS/mkdotenv*.src.rpm
