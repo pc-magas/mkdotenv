@@ -14,13 +14,26 @@ GENERATED_TAR=$(bash ${SCRIPTPATH}/make_tar.sh)
 tar tzf ${GENERATED_TAR} | head -n 1
 
 mkdir -p ${SOURCEPATH}rpmbuild/RPMS/x86_64
+mkdir -p ${SOURCEPATH}rpmbuild/SRPMS
+
+echo "Generating SRPM"
 
 docker run \
     -e UID=$(id -u) -e GID=$(id -g)\
     -v "${SOURCEPATH}/rpmbuild/SOURCES:/home/pkgbuild/rpmbuild/SOURCES" \
     -v "${SOURCEPATH}/mkdotenv.spec:/home/pkgbuild/rpmbuild/SPECS/mkdotenv.spec" \
     -v "${SOURCEPATH}/rpmbuild/RPMS/x86_64:/home/pkgbuild/rpmbuild/RPMS/x86_64" \
-    ghcr.io/pc-magas/fedora_rpm_build_docker rpmbuild -bb /home/pkgbuild/rpmbuild/SPECS/mkdotenv.spec
+    -v "${SOURCEPATH}/rpmbuild/SRPMS:/home/pkgbuild/rpmbuild/SRPMS" \
+    ghcr.io/pc-magas/fedora_rpm_build_docker rpmbuild -bs /home/pkgbuild/rpmbuild/SPECS/mkdotenv.spec
+
+echo "Build SRPM"
+
+docker run \
+    -e UID=$(id -u) -e GID=$(id -g)\
+    -v "${SOURCEPATH}/rpmbuild/RPMS/x86_64:/home/pkgbuild/rpmbuild/RPMS/x86_64" \
+    -v "${SOURCEPATH}/rpmbuild/SRPMS:/home/pkgbuild/rpmbuild/SRPMS" \
+    ghcr.io/pc-magas/fedora_rpm_build_docker rpmbuild --rebuild /home/pkgbuild/rpmbuild/SRPMS/mkdotenv-${VERSION}-2.fc41.src.rpm
+
 
 echo "Cleanup"
 rm -rf ${SRC_FOLDER}
