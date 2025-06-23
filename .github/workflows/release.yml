@@ -468,4 +468,4 @@ jobs:
           name: mkdotenv-srpm
 
       - name: list downloaded srpm
-        run: ls -l ./fedora/rpmbuild/SRPMS/mkdotenv*.src.rpm
+        run: ls -l mkdotenv*.src.rpm
