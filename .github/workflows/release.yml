@@ -424,6 +424,7 @@ jobs:
         run: brew install --formula ./macos/bin/mkdotenv.rb
       
       - name: Create Pull Request to homebrew repo
+        if:  github.ref == 'refs/heads/master'
         env:
           GH_PAT: ${{ secrets.HOMEBREW_PAT }}
         run: |
@@ -462,10 +463,14 @@ jobs:
         with:
          fetch-depth: 0
 
-      - name: Download homebrew formula for macos
+      - name: create download dir
+        run: mkdir -p ./fedora/rpmbuild/SRPMS
+
+      - name: Doenload SRPM
         uses: actions/download-artifact@v4
         with:
           name: mkdotenv-srpm
+          path: ./fedora/rpmbuild/SRPMS
 
       - name: list downloaded srpm
-        run: ls -l mkdotenv*.src.rpm
+        run: ls  ./fedora/rpmbuild/SRPMS/mkdotenv*.src.rpm
