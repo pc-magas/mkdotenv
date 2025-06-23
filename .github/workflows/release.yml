@@ -490,5 +490,5 @@ jobs:
         run: |
           docker run \
             -v ./fedora/rpmbuild/SRPMS:/home/pkgbuild/rpmbuild/SRPMS \
-            -e COPR_SECRET=${COPR_SECRET} \
+            -e COPR_SECRET="${COPR_SECRET}" \
             ghcr.io/pc-magas/fedora_rpm_build_docker copr-cli build mkdotenv /home/pkgbuild/rpmbuild/SRPMS/mkdotenv*.src.rpm
