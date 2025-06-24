@@ -51,7 +51,7 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 - Release for Alpine
 
 * Mon May 12 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.1-1
-- 1. Use common naming convention for golang module using repoesitory's name
+- 1. Use common naming convention for golang module using repository's name
 - 2. Upon rpm builds use Makefile
 - 3. Ability to specify a version externally in Makefile.
 - 4. Unit test value appending logic
