@@ -484,11 +484,18 @@ jobs:
       - name: list downloaded srpm
         run: ls  ./fedora/rpmbuild/SRPMS/mkdotenv*.src.rpm
 
+      - name: create corprconfig file
+        env:
+          COPR_SECRET: ${{ secrets.CORPR_SETTINGS }}
+        run: |
+          mkdir ./.config
+          echo "${COPR_SECRET}"" > ./.config/copr
+
       - name: upload to corpr
         env:
           COPR_SECRET: ${{ secrets.CORPR_SETTINGS }}
         run: |
           docker run \
             -v ./fedora/rpmbuild/SRPMS:/home/pkgbuild/rpmbuild/SRPMS \
-            -e COPR_SECRET="${COPR_SECRET}" \
+            -v ./.config/corpr:/home/pkgbuild/.config/corpr:ro \
             ghcr.io/pc-magas/fedora_rpm_build_docker copr-cli build mkdotenv /home/pkgbuild/rpmbuild/SRPMS/mkdotenv*.src.rpm
