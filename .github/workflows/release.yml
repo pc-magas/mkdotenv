@@ -492,7 +492,7 @@ jobs:
       - name: Set up Copr config
         run: |
           mkdir -p ~/.config
-          echo ${{secrets.CORPR_SETTINGS}} > ~/.config/copr
+          echo "${{secrets.CORPR_SETTINGS}}" > ~/.config/copr
           chmod 600 ~/.config/copr
 
       - name: upload to corpr
