@@ -484,12 +484,17 @@ jobs:
       - name: list downloaded srpm
         run: ls  ./fedora/rpmbuild/SRPMS/mkdotenv*.src.rpm
 
-      - name: create corprconfig file
+      - name: create corpr config file
         env:
           COPR_SECRET: ${{ secrets.CORPR_SETTINGS }}
         run: |
           mkdir ./.config
           echo "${COPR_SECRET}" > ./.config/copr
+
+      - name: test contents
+        run:
+          cat ./.config/copr
+
 
       - name: upload to corpr
         run: |
