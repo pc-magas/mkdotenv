@@ -493,7 +493,7 @@ jobs:
 
       - name: test contents
         run:
-          cat ./.config/copr
+          grep 'copr-cli' ./.config/copr
 
 
       - name: upload to corpr
