@@ -472,6 +472,11 @@ jobs:
         with:
          fetch-depth: 0
 
+      - uses: actions/setup-python@v1
+
+      - name: install copr cli
+        run: pip3 install copr-cli
+
       - name: create download dir
         run: mkdir -p ./fedora/rpmbuild/SRPMS
 
@@ -498,7 +503,4 @@ jobs:
 
       - name: upload to corpr
         run: |
-          docker run \
-            -v ./fedora/rpmbuild/SRPMS:/home/pkgbuild/rpmbuild/SRPMS \
-            -v ./.config/copr:/home/pkgbuild/.config/copr \
-            ghcr.io/pc-magas/fedora_rpm_build_docker copr-cli build mkdotenv /home/pkgbuild/rpmbuild/SRPMS/mkdotenv*.src.rpm
+         copr-cli build mkdotenv /fedora/rpmbuild/SRPMS/mkdotenv*.src.rpm
