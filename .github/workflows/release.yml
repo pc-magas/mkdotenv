@@ -489,11 +489,9 @@ jobs:
           COPR_SECRET: ${{ secrets.CORPR_SETTINGS }}
         run: |
           mkdir ./.config
-          echo "${COPR_SECRET}"" > ./.config/copr
+          echo "${COPR_SECRET}" > ./.config/copr
 
       - name: upload to corpr
-        env:
-          COPR_SECRET: ${{ secrets.CORPR_SETTINGS }}
         run: |
           docker run \
             -v ./fedora/rpmbuild/SRPMS:/home/pkgbuild/rpmbuild/SRPMS \
