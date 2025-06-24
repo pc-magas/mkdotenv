@@ -497,4 +497,4 @@ jobs:
 
       - name: upload to corpr
         run: |
-         copr-cli build mkdotenv ./fedora/rpmbuild/SRPMS/mkdotenv-$(cat VERSION).fc41.src.rpm
+         copr-cli build mkdotenv ./fedora/rpmbuild/SRPMS/mkdotenv-$(cat VERSION)-1.fc41.src.rpm
