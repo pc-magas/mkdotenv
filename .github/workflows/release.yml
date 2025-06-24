@@ -496,11 +496,6 @@ jobs:
             EOF
           chmod 600 ~/.config/copr
 
-      - name: test contents
-        run:
-          grep '' ./.config/copr
-
-
       - name: upload to corpr
         run: |
           docker run \
