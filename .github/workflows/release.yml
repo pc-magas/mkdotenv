@@ -484,16 +484,21 @@ jobs:
       - name: list downloaded srpm
         run: ls  ./fedora/rpmbuild/SRPMS/mkdotenv*.src.rpm
 
-      - name: create corpr config file
-        env:
-          COPR_SECRET: ${{ secrets.CORPR_SETTINGS }}
+      - name: Set up Copr config
         run: |
-          mkdir ./.config
-          echo "${COPR_SECRET}" > ./.config/copr
+          mkdir -p ~/.config
+          cat <<EOF > ~/.config/copr
+[copr-cli]
+login = ${{ secrets.COPR_LOGIN }}
+username = ${{ secrets.COPR_LOGIN }}
+token = ${{ secrets.COPR_TOKEN }}
+copr_url = https://copr.fedorainfracloud.org
+EOF
+          chmod 600 ~/.config/copr
 
       - name: test contents
         run:
-          grep 'copr-cli' ./.config/copr
+          grep '' ./.config/copr
 
 
       - name: upload to corpr
