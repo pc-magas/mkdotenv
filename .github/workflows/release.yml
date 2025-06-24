@@ -492,13 +492,7 @@ jobs:
       - name: Set up Copr config
         run: |
           mkdir -p ~/.config
-          cat <<EOF > ~/.config/copr
-            [copr-cli]
-            login = ${{ secrets.COPR_LOGIN }}
-            username = ${{ secrets.COPR_LOGIN }}
-            token = ${{ secrets.COPR_TOKEN }}
-            copr_url = https://copr.fedorainfracloud.org
-            EOF
+          echo ${{secrets.CORPR_SETTINGS}} > ~/.config/copr
           chmod 600 ~/.config/copr
 
       - name: upload to corpr
