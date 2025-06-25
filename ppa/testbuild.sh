@@ -20,6 +20,6 @@ MIRROR="http://archive.ubuntu.com/ubuntu"
 
 for distro in "${DISTROS[@]}"; do
     echo "Building for ${distro}"
-    dput ppa:pcmagas/mkdotenv-test ${SCRIPTPATH}/../../mkdotenv_${VERSION}-0ubuntu1~${distro}1_source.changes
+    dput ppa:pcmagas/mkdotenv-test2 ${SCRIPTPATH}/../../mkdotenv_${VERSION}-0ubuntu1~${distro}1_source.changes
     sleep 10
 done

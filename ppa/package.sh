@@ -4,8 +4,7 @@ SCRIPTPATH=$(dirname "$0")
 VERSION=$(cat ${SCRIPTPATH}/../VERSION)
 DISTROS=("jammy" "noble")
 
-SRC_FOLDER=${SCRIPTPATH}/mkdotenv_${VERSION}
-TAR_PATH=${SCRIPTPATH}/../../mkdotenv_${VERSION}.orig.tar.gz
+SRC_FOLDER=mkdotenv_${VERSION}
 CHANGES_FILE=${SCRIPTPATH}/../../mkdotenv_*_source.changes
 
 echo "VERSION: ${VERSION}"
@@ -14,20 +13,7 @@ echo "VERSION: ${VERSION}"
 LINUX_DIST="ubuntu"
 DIST=jammy
 
-mkdir -p ${SRC_FOLDER}
-cp -r ${SCRIPTPATH}/../mkdotenv ${SRC_FOLDER}
-cp -r ${SCRIPTPATH}/../man ${SRC_FOLDER}
-cp ${SCRIPTPATH}/../Makefile ${SRC_FOLDER}
-cp ${SCRIPTPATH}/../LICENCE ${SRC_FOLDER}
-tar --exclude=debian --exclude=alpinebuild -czf ${TAR_PATH} ${SRC_FOLDER}
-
-echo "Generated tar name ${TAR_PATH}"
-
-if [ ! -f ${TAR_PATH} ]; then
-	echo "Tarball does not exist"
-fi
-
-tar tzf ${TAR_PATH} | head -n 1
+bash ${SCRIPTPATH}/make_tar.sh
 
 for distro in "${DISTROS[@]}"; do
     echo "Create source package for: "${distro}

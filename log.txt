@@ -1,0 +1,21 @@
+dpkg-buildpackage -b
+[1mdpkg-buildpackage: [0m[32minfo[0m: source package mkdotenv
+[1mdpkg-buildpackage: [0m[32minfo[0m: source version 0.3.3-0debian1~unstable1
+[1mdpkg-buildpackage: [0m[32minfo[0m: source distribution unstable
+[1mdpkg-buildpackage: [0m[32minfo[0m: source changed by Dimitrios Desyllas <pcmagas@disroot.org>
+[1mdpkg-buildpackage: [0m[32minfo[0m: host architecture amd64
+[1mdpkg-source: [0m[32minfo[0m: using options from mkdotenv_app/debian/source/options: --extend-diff-ignore=alpinebuild|.*|Vagrantfile|docs
+make[1]: Entering directory '/home/pcmagas/Kwdikas/go/mkdotenv/mkdotenv_app'
+dh clean --buildsystem=golang --with=golang
+   dh_auto_clean -O--buildsystem=golang
+   dh_autoreconf_clean -O--buildsystem=golang
+   dh_clean -O--buildsystem=golang
+make[1]: Leaving directory '/home/pcmagas/Kwdikas/go/mkdotenv/mkdotenv_app'
+make[1]: Entering directory '/home/pcmagas/Kwdikas/go/mkdotenv/mkdotenv_app'
+dh build --buildsystem=golang --with=golang
+   dh_update_autotools_config -O--buildsystem=golang
+   dh_autoreconf -O--buildsystem=golang
+   dh_auto_configure -O--buildsystem=golang
+   dh_auto_build -O--buildsystem=golang
+	cd obj-x86_64-linux-gnu && go install -trimpath -v -p 4
+make[1]: Leaving directory '/home/pcmagas/Kwdikas/go/mkdotenv/mkdotenv_app'

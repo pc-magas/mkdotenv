@@ -1,44 +1,28 @@
 #!/usr/bin/make -f
 
-GO := $(shell command -v go || echo /usr/lib/go-1.23/bin/go)
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export GO := $(shell command -v go || echo /usr/lib/go-1.23/bin/go)
 
 %:
 	dh $@
 
-clean:
-	$(MAKE) clean GO=$(GO)
-	dh clean
+override_dh_dwz:
+	# Disable dwz due to Go debug info incompatibility
 
-build:
-	$(MAKE) GO=$(GO) INSTALL_BIN_DIR=/usr/bin INSTALL_MAN_DIR=/usr/share/man/man1
-	
-binary:
-	mkdir -p debian/mkdotenv/usr/share/lintian/overrides
-	mkdir -p debian/mkdotenv/usr/share/doc/mkdotenv
-	chmod -R 755 debian/mkdotenv/usr
+override_dh_auto_build:
+	mkdir -p .gocache .gomodcache bin
+	$(MAKE) GO=$(GO)
 
-	$(MAKE) install DESTDIR=debian/mkdotenv INSTALL_BIN_DIR=/usr/bin INSTALL_MAN_DIR=/usr/share/man/man1
-	chmod -R 755 debian/mkdotenv/usr/bin
+override_dh_auto_install:
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/mkdotenv INSTALL_BIN_DIR=/usr/bin INSTALL_MAN_DIR=/usr/share/man/man1
 
-	install -D -m644 debian/copyright debian/mkdotenv/usr/share/doc/mkdotenv/copyright
-
-	gzip -9 --no-name -k debian/mkdotenv/usr/share/man/man1/mkdotenv.1
-	rm -rf debian/mkdotenv/usr/share/man/man1/mkdotenv.1
-	chmod 755 debian/mkdotenv/usr/share/man
-	chmod 755 debian/mkdotenv/usr/share/man/man1
-
+override_dh_install:
+	dh_install
 	install -D -m644 debian/lintian-overrides debian/mkdotenv/usr/share/lintian/overrides/mkdotenv
-	chmod 644 debian/mkdotenv/usr/share/doc/mkdotenv/copyright
-	chmod 644 debian/mkdotenv/usr/share/man/man1/mkdotenv.1.gz
 
-	
-	gzip -9 --no-name -f -k debian/changelog
-	install -D -m644 debian/changelog.gz debian/mkdotenv/usr/share/doc/mkdotenv/changelog.gz
-	rm -f debian/changelog.gz
+override_dh_fixperms:
+	dh_fixperms
 
-	strip --strip-all debian/mkdotenv/usr/bin/mkdotenv
-	dh_makeshlibs
-	dh_gencontrol
-	dh_builddeb
-
-.PHONY: clean build binary
+override_dh_strip:
+	dh_strip --dbg-package=mkdotenv-dbg || true
+	strip debian/mkdotenv/usr/bin/mkdotenv || true
