@@ -10,7 +10,6 @@ SRC_FOLDER=mkdotenv-${VERSION}
 TAR_NAME=${SRC_FOLDER}-rpm.tar.gz
 SRC_DEST=/tmp/${SRC_FOLDER}
 
-
 cd ${SCRIPTPATH}
 
 mkdir -p ${RPM_SRC}

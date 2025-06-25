@@ -2,6 +2,8 @@
 
 SCRIPTPATH=$(dirname "$0") 
 VERSION=$(cat ${SCRIPTPATH}/../VERSION)
+DISTROS=("jammy" "noble")
+
 SRC_FOLDER=${SCRIPTPATH}/mkdotenv_${VERSION}
 TAR_PATH=${SCRIPTPATH}/../../mkdotenv_${VERSION}.orig.tar.gz
 CHANGES_FILE=${SCRIPTPATH}/../../mkdotenv_*_source.changes
@@ -10,9 +12,7 @@ echo "VERSION: ${VERSION}"
 
 # PPA distro config
 LINUX_DIST="ubuntu"
-DISTROS=("jammy" "noble")
 DIST=jammy
-
 
 mkdir -p ${SRC_FOLDER}
 cp -r ${SCRIPTPATH}/../mkdotenv ${SRC_FOLDER}
@@ -26,6 +26,8 @@ echo "Generated tar name ${TAR_PATH}"
 if [ ! -f ${TAR_PATH} ]; then
 	echo "Tarball does not exist"
 fi
+
+tar tzf ${TAR_PATH} | head -n 1
 
 for distro in "${DISTROS[@]}"; do
     echo "Create source package for: "${distro}

@@ -19,19 +19,7 @@ DISTROS=("jammy" "noble")
 MIRROR="http://archive.ubuntu.com/ubuntu"
 
 for distro in "${DISTROS[@]}"; do
-    CHROOT_NAME="${distro}-amd64"
-    CHROOT_PATH="/srv/chroot/${CHROOT_NAME}"
-
-    echo "Checking if sbuild chroot exists for ${distro}..."
-
-    if ! schroot -l | grep -q "$CHROOT_NAME"; then
-        echo "Chroot for ${distro} not found. Creating..."
-        sudo sbuild-createchroot ${distro} ${CHROOT_PATH} ${MIRROR}
-    else
-        echo "Chroot for ${distro} already exists."
-    fi
-
     echo "Building for ${distro}"
-    sudo sbuild -d ${distro} ${SCRIPTPATH}/../../mkdotenv_${VERSION}-${distro}1.dsc
+    dput ppa:pcmagas/mkdotenv-test ${SCRIPTPATH}/../../mkdotenv_${VERSION}-0ubuntu1~${distro}1_source.changes
     sleep 10
 done
