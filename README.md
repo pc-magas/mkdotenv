@@ -174,6 +174,11 @@ sudo dpkg -i mkdotenv_${VERSION}_amd64.deb
 
 At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
 
+Uninstalling the package is easy as:
+
+```bash
+sudo apt-get remove mkdotenv
+```
 
 #### From RPM package
 
