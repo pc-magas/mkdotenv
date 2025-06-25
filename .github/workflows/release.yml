@@ -287,19 +287,25 @@ jobs:
       - name: list rpms
         run: ls -l ./fedora/rpmbuild/RPMS/x86_64/
 
+      - name: rename rpm file
+        run: cp "$(find ./fedora/rpmbuild/RPMS/x86_64/ -maxdepth 1 -type f | head -n 1)" ./fedora/rpmbuild/RPMS/x86_64/mkdotenv.rpm
+
       - name: Upload RPM artifact
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: mkdotenv-rpm
-          path: ./fedora/rpmbuild/RPMS/x86_64/mkdotenv*.rpm  
+          path: ./fedora/rpmbuild/RPMS/x86_64/mkdotenv.rpm  
+
+      - name: rename srpm file
+        run: cp "$(find ./fedora/rpmbuild/SRPMS -maxdepth 1 -type f | head -n 1)" ./fedora/rpmbuild/SRPMS/mkdotenv.src.rpm
 
       - name: Upload SRPM artifact
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: mkdotenv-srpm
-          path: ./fedora/rpmbuild/SRPMS/mkdotenv*.src.rpm
+          path: ./fedora/rpmbuild/SRPMS/mkdotenv.src.rpm
 
   release:
     runs-on: ubuntu-latest
@@ -391,8 +397,8 @@ jobs:
             ./bin/mkdotenv-windows-amd64.exe,
             ./bin/mkdotenv-darwin-arm64,
             ./macos/mkdotenv-macos.zip,
+            mkdotenv.rpm, 
             mkdotenv*.deb,
-            mkdotenv*.rpm, 
             mkdotenv*.tar.gz,
             APKFILE,
             mkdotenv*-r0.apk,
@@ -497,4 +503,4 @@ jobs:
 
       - name: upload to corpr
         run: |
-         copr-cli build mkdotenv ./fedora/rpmbuild/SRPMS/mkdotenv-$(cat VERSION)-2.fc41.src.rpm
+         copr-cli build mkdotenv ./fedora/rpmbuild/SRPMS/mkdotenv.src.rpm
