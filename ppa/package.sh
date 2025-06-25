@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Path config
-
 SCRIPTPATH=$(dirname "$0") 
 VERSION=$(cat ${SCRIPTPATH}/../VERSION)
 SRC_FOLDER=${SCRIPTPATH}/mkdotenv_${VERSION}
@@ -38,6 +36,3 @@ for distro in "${DISTROS[@]}"; do
 	sed -i "s/${distro}/unstable/g" debian/changelog
 	sed -i 's/ubuntu/debian/g' debian/changelog
 done
-
-dput ppa:pcmagas/mkdotenv ${CHANGES_FILE}
-
