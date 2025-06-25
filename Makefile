@@ -55,7 +55,8 @@ make_bin_folder:
 compile:
 	@echo "Building on OS=$(OS), ARCH=$(ARCH)"
 	cd ./mkdotenv && \
-	ls -l &&\
+	mkdir -p /tmp/go-mod-cache &&\
+	GOMODCACHE=/tmp/go-mod-cache \
 	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) \
 	$(GO) build -ldflags "-X github.com/pc-magas/mkdotenv/msg.version=$(VERSION)" -o $(COMPILED_BIN_PATH) . &&\
 	cd ../
