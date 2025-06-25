@@ -262,12 +262,15 @@ jobs:
       - name: build
         run: make deb
    
+      - name: rename deb
+        run: cp $(find ./ -maxdepth 1 -type f -name "mkdotenv*$(cat VERSION)*.deb" | head -n 1) mkdotenv.deb
+
       - name: Upload DEB artifact
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: mkdotenv-deb
-          path: mkdotenv*.deb  
+          path: mkdotenv.deb
 
 
   build_rpm:
@@ -377,8 +380,8 @@ jobs:
             ./bin/mkdotenv-windows-amd64.exe,
             ./bin/mkdotenv-darwin-arm64,
             ./macos/mkdotenv-macos.zip,
-            mkdotenv*.deb,
-            mkdotenv*.rpm, 
+            mkdotenv.deb,
+            mkdotenv.rpm, 
             mkdotenv*.tar.gz,
             APKFILE,
             mkdotenv*-r0.apk,
@@ -398,7 +401,7 @@ jobs:
             ./bin/mkdotenv-darwin-arm64,
             ./macos/mkdotenv-macos.zip,
             mkdotenv.rpm, 
-            mkdotenv*.deb,
+            mkdotenv.deb,
             mkdotenv*.tar.gz,
             APKFILE,
             mkdotenv*-r0.apk,

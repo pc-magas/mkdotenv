@@ -12,6 +12,8 @@
 
 MkDotenv is a lightweight and efficient tool for managing your `.env` files. Whether you're adding, updating, or replacing environment variables, MkDotenv makes it easy and hassle-free.
 
+[![Copr build status](https://copr.fedorainfracloud.org/coprs/pc-magas/mkdotenv/package/mkdotenv/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/pc-magas/mkdotenv/package/mkdotenv/) 
+
 # Build from source (Supported in Linux & macOS)
 
 Compilation required to have make and golang installed.
@@ -180,12 +182,21 @@ Tested on Fedora
 ```shell
 # Replace with actual version number, e.g., v0.3.2
 export VERSION=^found_version^
-wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}/mkdotenv-${VERSION}-1.fc41.x86_64.rpm
+wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}/mkdotenv.rpm
 sudo rpm -i mkdotenv-${VERSION}-1.fc41.x86_64.rpm
 ```
 
 At code above replace `^found_version^` with the version shown at [Detect Latest Version](#detect-latest-version).
 
+### In Fedora Linux
+
+App is delivered via corpr you can install it like this:
+
+```bash
+sudo dnf install dnf-plugins-core
+dnf copr enable pc-magas/mkdotenv 
+sudo dnf install mkdotenv
+```
 
 ### In Alpine Linux
 
