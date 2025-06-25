@@ -54,9 +54,10 @@ make_bin_folder:
 # Compile Go binary
 compile:
 	@echo "Building on OS=$(OS), ARCH=$(ARCH)"
-	cd ./mkdotenv &&\
-	echo $(VERSION) &&\
-	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) $(GO) build -ldflags "-X 'github.com/pc-magas/mkdotenv/msg.version=$(VERSION)'" -o $(COMPILED_BIN_PATH) mkdotenv.go &&\
+	cd ./mkdotenv && \
+	ls -l &&\
+	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) \
+	$(GO) build -ldflags "-X github.com/pc-magas/mkdotenv/msg.version=$(VERSION)" -o $(COMPILED_BIN_PATH) . &&\
 	cd ../
 
 test_run:
