@@ -36,9 +36,11 @@ docker run \
 
 echo "Build SRPM"
 
+SRPM_FILE_NAME=$(ls "${SOURCEPATH}/rpmbuild/SRPMS"| head -1)
+
 docker run \
     -e UID=$(id -u) -e GID=$(id -g)\
     -v "${SOURCEPATH}/rpmbuild/RPMS/x86_64:/home/pkgbuild/rpmbuild/RPMS/x86_64" \
     -v "${SOURCEPATH}/rpmbuild/SRPMS:/home/pkgbuild/rpmbuild/SRPMS" \
-    ghcr.io/pc-magas/fedora_rpm_build_docker rpmbuild --rebuild /home/pkgbuild/rpmbuild/SRPMS/mkdotenv-${VERSION}-2.fc41.src.rpm
+    ghcr.io/pc-magas/fedora_rpm_build_docker rpmbuild --rebuild /home/pkgbuild/rpmbuild/SRPMS/${SRPM_FILE_NAME}
 
