@@ -19,4 +19,4 @@ DISTROS=("jammy" "noble")
 MIRROR="http://archive.ubuntu.com/ubuntu"
 
 rm -rf ${SCRIPTPATH}/../../mkdotenv_*.ppa.upload 
-dput ppa:pcmagas/mkdotenv-test3 ${SCRIPTPATH}/../../mkdotenv_${VERSION}-0ubuntu1~*1_source.changes
+dput ppa:pcmagas/mkdotenv-test6 ${SCRIPTPATH}/../../mkdotenv_${VERSION}-0ubuntu1~*1_source.changes

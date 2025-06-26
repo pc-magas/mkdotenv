@@ -56,18 +56,18 @@ compile:
 	@echo "Building on OS=$(OS), ARCH=$(ARCH)"
 	cd ./mkdotenv && \
 	mkdir -p /tmp/go-mod-cache &&\
-	GOMODCACHE=/tmp/go-mod-cache \
+	GOCACHE=/tmp/go-build-cache \
 	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) \
 	$(GO) build -ldflags "-X github.com/pc-magas/mkdotenv/msg.version=$(VERSION)" -o $(COMPILED_BIN_PATH) . &&\
 	cd ../
 
 test_run:
 	cd ./mkdotenv &&\
-	go run mkdotenv.go
+	$(GO) run mkdotenv.go
 
 test:
 	cd ./mkdotenv &&\
-    go test ./... &&\
+    $(GO) test ./... &&\
     cd ../
 
 # Raw binary build
