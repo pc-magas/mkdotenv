@@ -8,7 +8,7 @@ SOURCEPATH=${SCRIPTPATH}/../
 UPSTREAM_VERSION=$(cat ${SOURCEPATH}/VERSION)
 RELEASE_NOTES_FILE=${SOURCEPATH}/RELEASE_NOTES
 
-SPEC_FILE=$SOURCEPATH/rpmbuild/SPECS/mkdotenv.spec
+SPEC_FILE=$SOURCEPATH/fedora/mkdotenv.spec
 
 CURRENT_RPM_VERSION=$(grep -E '^Version:' "$SPEC_FILE" | awk '{print $2}')
 CURRENT_RPM_RELEASE=$(grep -E '^Release:' "$SPEC_FILE" | awk '{print $2}' | sed 's/%{?dist}//')
@@ -42,7 +42,7 @@ sed -i "s/^Version:.*/Version:        $UPSTREAM_VERSION/" "$SPEC_FILE"
 sed -i "s/^Release:.*/Release:        $NEW_RPM_RELEASE%{?dist}/" "$SPEC_FILE"
 
 RPM_DATE=$(date +"%a %b %d %Y")
-CHANGELOG_LINE="* $RPM_DATE ${NAME_VAL} <${EMAIL_VAL}> - %{version}-$NEW_RPM_RELEASE"
+CHANGELOG_LINE="* $RPM_DATE ${NAME_VAL} <${EMAIL_VAL}> - $UPSTREAM_VERSION-$NEW_RPM_RELEASE"
 
 echo "" >> $SPEC_FILE
 echo "$CHANGELOG_LINE" >> $SPEC_FILE

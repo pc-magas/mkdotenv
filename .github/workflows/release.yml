@@ -240,6 +240,15 @@ jobs:
           KEY_ID=$(gpg --list-secret-keys --keyid-format=long | awk '/sec/{print $2}' | cut -d'/' -f2)
           echo "DEB_SIGN_KEYID=$KEY_ID" >> $GITHUB_ENV
 
+      - name: Cache APT packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            /var/cache/apt/archives
+          key: apt-cache-${{ runner.os }}-${{ hashFiles('.github/workflows/build.yml') }}
+          restore-keys: |
+            apt-cache-${{ runner.os }}-
+
       - name: Install dependencies
         env:
           DEBIAN_FRONTEND: noninteractive
@@ -253,12 +262,15 @@ jobs:
       - name: build
         run: make deb
    
+      - name: rename deb
+        run: cp $(find ./ -maxdepth 1 -type f -name "mkdotenv*$(cat VERSION)*.deb" | head -n 1) mkdotenv.deb
+
       - name: Upload DEB artifact
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: mkdotenv-deb
-          path: mkdotenv*.deb  
+          path: mkdotenv.deb
 
 
   build_rpm:
@@ -276,14 +288,27 @@ jobs:
         run: bash ./fedora/build_fedora_docker.sh
 
       - name: list rpms
-        run: ls -l rpmbuild/RPMS/x86_64/
+        run: ls -l ./fedora/rpmbuild/RPMS/x86_64/
+
+      - name: rename rpm file
+        run: cp "$(find ./fedora/rpmbuild/RPMS/x86_64/ -maxdepth 1 -type f | head -n 1)" ./fedora/rpmbuild/RPMS/x86_64/mkdotenv.rpm
 
       - name: Upload RPM artifact
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: mkdotenv-rpm
-          path: rpmbuild/RPMS/x86_64/mkdotenv*.rpm  
+          path: ./fedora/rpmbuild/RPMS/x86_64/mkdotenv.rpm  
+
+      - name: rename srpm file
+        run: cp "$(find ./fedora/rpmbuild/SRPMS -maxdepth 1 -type f | head -n 1)" ./fedora/rpmbuild/SRPMS/mkdotenv.src.rpm
+
+      - name: Upload SRPM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: mkdotenv-srpm
+          path: ./fedora/rpmbuild/SRPMS/mkdotenv.src.rpm
 
   release:
     runs-on: ubuntu-latest
@@ -355,8 +380,8 @@ jobs:
             ./bin/mkdotenv-windows-amd64.exe,
             ./bin/mkdotenv-darwin-arm64,
             ./macos/mkdotenv-macos.zip,
-            mkdotenv*.deb,
-            mkdotenv*.rpm, 
+            mkdotenv.deb,
+            mkdotenv.rpm, 
             mkdotenv*.tar.gz,
             APKFILE,
             mkdotenv*-r0.apk,
@@ -375,8 +400,8 @@ jobs:
             ./bin/mkdotenv-windows-amd64.exe,
             ./bin/mkdotenv-darwin-arm64,
             ./macos/mkdotenv-macos.zip,
-            mkdotenv*.deb,
-            mkdotenv*.rpm, 
+            mkdotenv.rpm, 
+            mkdotenv.deb,
             mkdotenv*.tar.gz,
             APKFILE,
             mkdotenv*-r0.apk,
@@ -417,6 +442,7 @@ jobs:
         run: brew install --formula ./macos/bin/mkdotenv.rb
       
       - name: Create Pull Request to homebrew repo
+        if:  github.ref == 'refs/heads/master'
         env:
           GH_PAT: ${{ secrets.HOMEBREW_PAT }}
         run: |
@@ -441,3 +467,43 @@ jobs:
           gh auth login --with-token <<< "$GH_PAT"
           VERSION=$(grep -E '^  version ' ./Formula/mkdotenv.rb | sed 's/.*"\(.*\)".*/\1/')
           gh pr create --title "Update formula [VERSION $(cat ${VERSION})]" --body "Automated update" --head update-formula-${{ github.run_number }} --base master
+
+  release_corpr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs:
+      - release
+      - build_rpm
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+         fetch-depth: 0
+
+      - uses: actions/setup-python@v1
+
+      - name: install copr cli
+        run: pip3 install copr-cli
+
+      - name: create download dir
+        run: mkdir -p ./fedora/rpmbuild/SRPMS
+
+      - name: Doenload SRPM
+        uses: actions/download-artifact@v4
+        with:
+          name: mkdotenv-srpm
+          path: ./fedora/rpmbuild/SRPMS
+
+      - name: list downloaded srpm
+        run: ls  ./fedora/rpmbuild/SRPMS/mkdotenv*.src.rpm
+
+      - name: Set up Copr config
+        run: |
+          mkdir -p ~/.config
+          echo "${{secrets.CORPR_SETTINGS}}" > ~/.config/copr
+          chmod 600 ~/.config/copr
+
+      - name: upload to corpr
+        run: |
+         copr-cli build mkdotenv ./fedora/rpmbuild/SRPMS/mkdotenv.src.rpm

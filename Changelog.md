@@ -1,3 +1,11 @@
+# Version 0.3.3 2025-06-26
+
+Improved README (fixing typos and improve clarification).
+Arch package does installs oficial golang and does not requires it as dependency.
+Using ./fedora folder for rpm building.
+Improvement upon debian building
+Fixing ppa release
+
 # Version 0.3.2 2025-06-12
 
 Release for MACOS

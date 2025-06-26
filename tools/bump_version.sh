@@ -105,7 +105,7 @@ echo "Version updated successfully: $UPSTREAM_VERSION"
 
 git add ./$CHANGELOG 
 git add ./$DEBIAN_CHANGELOG
-git add ./$SPEC_FILE
+git add ./fedora/mkdotenv.spec
 git add ./Changelog.md 
 git add ./VERSION
 git add ./RELEASE_NOTES
