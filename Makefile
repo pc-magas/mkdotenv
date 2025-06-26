@@ -67,6 +67,8 @@ test_run:
 
 test:
 	cd ./mkdotenv &&\
+	mkdir -p /tmp/go-mod-cache &&\
+	GOCACHE=/tmp/go-build-cache \
     $(GO) test ./... &&\
     cd ../
 

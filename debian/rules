@@ -2,6 +2,7 @@
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export GO := $(shell command -v go || echo /usr/lib/go-1.23/bin/go)
+export PATH := $(dir $(GO)):$(PATH)
 
 %:
 	dh $@
