@@ -16,6 +16,7 @@ cp -r ${SCRIPTPATH}/../mkdotenv ${SRC_FOLDER}
 cp -r ${SCRIPTPATH}/../man ${SRC_FOLDER}
 cp ${SCRIPTPATH}/../Makefile ${SRC_FOLDER}
 cp ${SCRIPTPATH}/../LICENCE ${SRC_FOLDER}
+cp ${SCRIPTPATH}/../VERSION ${SRC_FOLDER}
 tar --exclude=debian --exclude=alpinebuild -czf ${TAR_PATH} ${SRC_FOLDER}
 
 if [ ! -f ${TAR_PATH} ]; then
