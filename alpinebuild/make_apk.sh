@@ -12,6 +12,7 @@ echo ${VERSION}
 OVERLAY=${VOLUME_DIR}/apkbuild-overlay
 ABUILD_VOLUME=${VOLUME_DIR}/abuild
 RELEASE_DIR=${SCRIPT_DIR}/release
+
 mkdir -p ${OVERLAY}
 mkdir -p ${ABUILD_VOLUME}
 mkdir -p ${RELEASE_DIR}

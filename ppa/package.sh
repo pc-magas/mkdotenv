@@ -15,12 +15,14 @@ DIST=jammy
 
 bash ${SCRIPTPATH}/make_tar.sh
 
+cd ${SCRIPTPATH}/..
+
 for distro in "${DISTROS[@]}"; do
     echo "Create source package for: "${distro}
 
-    sed -i "s/unstable/${distro}/g" debian/changelog
-	sed -i 's/debian/ubuntu/g' debian/changelog
+    sed -i "s/unstable/${distro}/g" ${SCRIPTPATH}/../debian/changelog
+	sed -i 's/debian/ubuntu/g' ${SCRIPTPATH}/../debian/changelog
 	dpkg-buildpackage -S -sa
-	sed -i "s/${distro}/unstable/g" debian/changelog
-	sed -i 's/ubuntu/debian/g' debian/changelog
+	sed -i "s/${distro}/unstable/g" ${SCRIPTPATH}/debian/changelog
+	sed -i 's/ubuntu/debian/g' ${SCRIPTPATH}/debian/changelog
 done

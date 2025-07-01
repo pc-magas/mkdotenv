@@ -1,3 +1,10 @@
+mkdotenv (0.3.4-0debian1~unstable1) unstable; urgency=medium
+
+  * Add release number upon ppa build.
+  * Fix alpine build
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Tue, 01 Jul 2025 21:43:53 +0300
+
 mkdotenv (0.3.3-0debian1~unstable1) unstable; urgency=medium
 
   * Improved README (fixing typos and improve clarification).
