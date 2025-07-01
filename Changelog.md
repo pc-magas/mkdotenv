@@ -1,3 +1,8 @@
+# Version 0.3.4 2025-07-01
+
+Add release number upon ppa build.
+Fix alpine build
+
 # Version 0.3.3 2025-06-26
 
 Improved README (fixing typos and improve clarification).

@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.3.3
-Release:        3%{?dist}
+Version:        0.3.4
+Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
 License:        GPL-3
@@ -94,3 +94,7 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 - Using ./fedora folder for rpm building.
 - Improvement upon debian building
 - Fixing ppa release
+
+* Tue Jul 01 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.4-1
+- Add release number upon ppa build.
+- Fix alpine build
