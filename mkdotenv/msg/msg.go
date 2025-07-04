@@ -20,7 +20,7 @@ func PrintHelp() {
 	fmt.Println("\nUsage:\n\t"+os.Args[0]+" [-v|--version|-h|--help] <variable_name> <variable_value> [--env-file | --input-file <file_path>] [--output-file <file_path>]\n")
 	fmt.Println("Arguments:")
 	fmt.Println("\tvariable_name\tREQUIRED The name of the variable")
-	fmt.Println("\tvariable_value\tREQUIRED The value of the variable prtovided upon <variable_name>")
+	fmt.Println("\tvariable_value\tREQUIRED The value of the variable provided upon <variable_name>")
 	fmt.Println("\nOptions:")
 	fmt.Println("\t-v (or --version)\tOPTIONAL Display Version Number. If provided any other argument is ignored.")
 	fmt.Println("\t-h (or --help)\tOPTIONAL Display the current message. If provided any other argument is ignored.")

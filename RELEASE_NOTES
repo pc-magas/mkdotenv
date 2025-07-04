@@ -1,2 +1,6 @@
-Add release number upon ppa build.
-Fix alpine build
+Fix alpine build.
+Use variable-value parameter for setting the value as variable value.
+Use variable-name parameter for setting the value as variable value.
+[NEW FEATURE] Flag to update first occurence only
+[NEW FEATURE] Flag to remove multiple occurenced of the variable.
+[NEW FEATURE] Use - value upon in order to output modified .env contents upon stdout. Defaultbehaviour is outputing upon .env

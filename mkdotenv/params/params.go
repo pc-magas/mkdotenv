@@ -2,7 +2,6 @@ package params
 
 import(
 	"os"
-	"strings"
 	"slices"
 	"github.com/pc-magas/mkdotenv/msg"
 	"errors"
@@ -10,11 +9,33 @@ import(
 	"fmt"
 )
 
-var FLAG_ARGUMENTS = []string{"--env-file", "--input-file", "--output-file", "-v", "--version", "-h", "--h", "--help"}
+var FLAG_ARGUMENTS = []string{"--env-file", "--input-file", "--output-file", "-v", "--version", "-h", "--h", "--help","--variable-name","-"}
 
 type Arguments struct {
 	DotenvFilename,VariableName,VariableValue,OutputFile string
 	ParseComplete  bool
+}
+
+var flagSet *flag.FlagSet = nil
+
+func initFlags() {
+
+	if flagSet != nil {
+		return
+	}
+
+	flagSet = flag.NewFlagSet("params", flag.ContinueOnError)
+
+	flagSet.String("env-file", "", "<file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
+	flagSet.String("input-file", "", "<file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
+	flagSet.String("output-file", ".env", "<file_path>\tOPTIONAL Instead of printing the result into console write it into a file.")
+	flagSet.String("variable-name", "", "REQUIRED The name of the variable")
+	flagSet.String("variable-value", "", "REQUIRED The value of the variable provided upon <variable_name>")
+
+	// Custom usage printer
+	flagSet.Usage = func() {
+		
+	}
 }
 
 func GetParameters(osArguments []string) (error,Arguments) {
@@ -25,33 +46,18 @@ func GetParameters(osArguments []string) (error,Arguments) {
 
 	args := Arguments{
 		DotenvFilename: ".env",
-		VariableName:   osArguments[1],
-		VariableValue:  osArguments[2],
-		OutputFile: "",
+		VariableName:   "",
+		VariableValue:  "",
+		OutputFile: ".env",
 		ParseComplete:  false,
 	}
 
-	if strings.HasPrefix(args.VariableName, "-") {
-		return errors.New("variable name should not start with - or --"),args
-	}
-
-	if slices.Contains(FLAG_ARGUMENTS, args.VariableValue) {
-		return errors.New("variable value should not contain reserved flag values"),args
-	}
 
 	var err error=nil
 	var inputFileSet,outputFileSet bool=false,false
 	
-	flagSet := flag.NewFlagSet("params", flag.ContinueOnError)
-
-	flagSet.String("env-file","",".env File to read upon")
-	flagSet.String("input-file","",".env File to read upon")
-	flagSet.String("output-file","",".env File to read upon")
-
-
-	err=flagSet.Parse(osArguments[3:])
-		
-
+	initFlags()
+	err=flagSet.Parse(osArguments[1:])
 	if err != nil {
         return err, args
     }
@@ -98,8 +104,19 @@ func GetParameters(osArguments []string) (error,Arguments) {
 					return
 				}
 
+				if(value == ""){
+					err=fmt.Errorf(f.Name+" should not be empty")
+					return
+				}
+
 				args.OutputFile=value
 				outputFileSet=true
+
+			case "variable-name":
+				args.VariableName=value
+
+			case "variable-value":
+				args.VariableValue=value
 		}
 
 	})
