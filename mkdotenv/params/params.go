@@ -9,29 +9,24 @@ import(
 	"fmt"
 )
 
-var FLAG_ARGUMENTS = []string{"--env-file", "--input-file", "--output-file", "-v", "--version", "-h", "--h", "--help","--variable-name","-"}
+var FLAG_ARGUMENTS = []string{"--env-file", "--input-file", "--output-file", "-v", "--version", "-h", "--h", "--help","--variable-name"}
 
 type Arguments struct {
 	DotenvFilename,VariableName,VariableValue,OutputFile string
 	ParseComplete  bool
 }
 
-var flagSet *flag.FlagSet = nil
+func initFlags() (*flag.FlagSet) {
 
-func initFlags() {
-
-	flagSet = flag.NewFlagSet("params", flag.ContinueOnError)
+	flagSet := flag.NewFlagSet("params", flag.ContinueOnError)
 
 	flagSet.String("variable-name", "", "REQUIRED The name of the variable")
 	flagSet.String("variable-value", "", "REQUIRED The value of the variable provided upon <variable_name>")
 	flagSet.String("env-file", "", "<file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
 	flagSet.String("input-file", "", "<file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
-	flagSet.String("output-file", ".env", "<file_path>\tOPTIONAL Instead of printing the result into console write it into a file.")
-	
-	// Custom usage printer
-	// flagSet.Usage = func() {
-		
-	// }
+	flagSet.String("output-file", "", "<file_path>\tOPTIONAL Instead of printing the result into console write it into a file.")
+
+	return flagSet
 }
 
 func GetParameters(osArguments []string) (error,Arguments) {
@@ -52,17 +47,15 @@ func GetParameters(osArguments []string) (error,Arguments) {
 	var err error=nil
 	var inputFileSet,outputFileSet bool=false,false
 	
-	initFlags()
+	var flagSet *flag.FlagSet = initFlags()
 	err=flagSet.Parse(osArguments[1:])
 	if err != nil {
         return err, args
     }
 
-	fmt.Println(osArguments[1:])
-
 	flagSet.Visit(func(f *flag.Flag){
 
-		if(slices.Contains(FLAG_ARGUMENTS,f.Value.String())){
+		if (slices.Contains(FLAG_ARGUMENTS,f.Value.String())){
 			err=fmt.Errorf("Flag %s should not contain a param value",f.Name)
 			return
 		}
@@ -78,7 +71,6 @@ func GetParameters(osArguments []string) (error,Arguments) {
 			return
 		}
 		
-		fmt.Println(inputFileSet)
 		switch (f.Name){
 
 			case "input-file","env-file":
@@ -89,7 +81,6 @@ func GetParameters(osArguments []string) (error,Arguments) {
 				}
 				
 				if(value == ""){
-					fmt.Println("Here")
 					err=fmt.Errorf("Only One of `--env-file` and `--input-file` should be provided")
 					return
 				}
@@ -139,7 +130,7 @@ func PrintVersionOrHelp(){
 		case "-h":
 			fallthrough
 		case "--help":
-			msg.PrintHelp()
+			flag.Usage()
 			os.Exit(0)
 		case "-v":
 			fallthrough
