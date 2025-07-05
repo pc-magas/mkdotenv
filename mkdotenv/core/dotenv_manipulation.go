@@ -14,7 +14,7 @@ func validateVarName(variable_name string) (error){
 	if(variable_name == ""){
 		return errors.New("Variable Name should not be an empty string")
 	}
-	fmt.Println(variable_name)
+
 	re, _ := regexp.Compile(`^[A-Za-z\d+_]+$`)
 	if(!re.MatchString(variable_name)){
 		return errors.New("Variable name is Invalid string")
