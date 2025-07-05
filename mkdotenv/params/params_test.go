@@ -13,11 +13,11 @@ func TestValidParams(t *testing.T){
 	testCases := []struct {
 		args []string
 	}{
-		{[]string{"exec", "123", "XXXX", "--input-file", "xxxx", "--output-file", "zzzz"}},
-		{[]string{"exec", "123", "XXXX", "--env-file", "xxxx", "--output-file", "zzzz"}},
-		{[]string{"exec", "123", "XXXX", "--input-file=xxxx", "--output-file", "zzzz"}},
-		{[]string{"exec", "123", "XXXX", "--input-file", "xxxx", "--output-file=zzzz"}},
-		{[]string{"exec", "123", "XXXX", "--input-file=xxxx", "--output-file=zzzz"}},
+		{[]string{"exec", "--variable-name","123","--variable-value", "XXXX", "--input-file", "xxxx", "--output-file", "zzzz"}},
+		{[]string{"exec", "--variable-name", "123","--variable-value", "XXXX", "--env-file", "xxxx", "--output-file", "zzzz"}},
+		{[]string{"exec", "--variable-name", "123","--variable-value", "XXXX", "--input-file=xxxx", "--output-file", "zzzz"}},
+		{[]string{"exec", "--variable-name", "123","--variable-value=XXXX", "--input-file", "xxxx", "--output-file=zzzz"}},
+		{[]string{"exec", "--variable-name=123","--variable-value", "XXXX", "--input-file=xxxx", "--output-file=zzzz"}},
 	}
 
 	for _, tc := range testCases {
@@ -48,14 +48,14 @@ func TestValidParams(t *testing.T){
 			}
 
 			if(argumentStruct.ParseComplete == false){
-				t.Errorf("argument parsin is expected to be complete")
+				t.Errorf("argument parsing is expected to be complete")
 			}
 		})
 	}
 }
 
 func TestMissingInputFileAndOutputFile(t *testing.T){
-	arguments:=[]string{"exec","123","XXXX"}
+	arguments:=[]string{"exec","--variable-name","123","--variable-value", "XXXX"}
 
 	err,argumentStruct := GetParameters(arguments)
 
@@ -69,7 +69,7 @@ func TestMissingInputFileAndOutputFile(t *testing.T){
 	}
 
 	expected_dotenv_filename:=".env"
-	var expected_output_filename string = ""
+	var expected_output_filename string = ".env"
 	expected_variable_name:="123"
 	expected_variable_value:="XXXX"
 
@@ -100,8 +100,8 @@ func TestMissingParams(t *testing.T){
 	testCases := []struct {
 		args []string
 	}{
-		{[]string{"exec","123","XXXX","--input-file","--output-file"}},
-		{[]string{"exec","123","XXXX","--input-file=","--output-file="}},
+		{[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file","--output-file"}},
+		{[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file=","--output-file="}},
 	}
 
 	for _, tc := range testCases {
@@ -121,12 +121,12 @@ func TestDuplicateArguments(t *testing.T){
 	testCases := []struct {
 		args []string
 	}{
-		{[]string{"exec","123","XXXX","--input-file=XXXX","--env-file","EEEE","--output-file=SSS","--output-file","SSS"}},
-		{[]string{"exec","123","XXXX","--input-file=XXXX","--env-file=EEEE","--output-file=SSS","--output-file","SSS"}},
-		{[]string{"exec","123","XXXX","--input-file=XXXX","--env-file","EEEE","--output-file","SSS","--output-file","SSS"}},
-		{[]string{"exec","123","XXXX","--input-file=XXXX","--env-file","EEEE","--output-file","SSS","--output-file","SSS","--output-file=SSS"}},
-		{[]string{"exec","123","XXXX","--input-file=XXXX","--env-file","EEEE","--output-file","SSS"}},
-		{[]string{"exec","123","XXXX","--input-file=XXXX","--input-file","XXXX","--env-file=QQQQ","--env-file","EEEE","--output-file","SSS"}},
+		{[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file=XXXX","--env-file","EEEE","--output-file=SSS","--output-file","SSS"}},
+		{[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file=XXXX","--env-file=EEEE","--output-file=SSS","--output-file","SSS"}},
+		{[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file=XXXX","--env-file","EEEE","--output-file","SSS","--output-file","SSS"}},
+		{[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file=XXXX","--env-file","EEEE","--output-file","SSS","--output-file","SSS","--output-file=SSS"}},
+		{[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file=XXXX","--env-file","EEEE","--output-file","SSS"}},
+		{[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file=XXXX","--input-file","XXXX","--env-file=QQQQ","--env-file","EEEE","--output-file","SSS"}},
 	}
 
 	for _, tc := range testCases {

@@ -20,22 +20,18 @@ var flagSet *flag.FlagSet = nil
 
 func initFlags() {
 
-	if flagSet != nil {
-		return
-	}
-
 	flagSet = flag.NewFlagSet("params", flag.ContinueOnError)
 
+	flagSet.String("variable-name", "", "REQUIRED The name of the variable")
+	flagSet.String("variable-value", "", "REQUIRED The value of the variable provided upon <variable_name>")
 	flagSet.String("env-file", "", "<file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
 	flagSet.String("input-file", "", "<file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
 	flagSet.String("output-file", ".env", "<file_path>\tOPTIONAL Instead of printing the result into console write it into a file.")
-	flagSet.String("variable-name", "", "REQUIRED The name of the variable")
-	flagSet.String("variable-value", "", "REQUIRED The value of the variable provided upon <variable_name>")
-
+	
 	// Custom usage printer
-	flagSet.Usage = func() {
+	// flagSet.Usage = func() {
 		
-	}
+	// }
 }
 
 func GetParameters(osArguments []string) (error,Arguments) {
@@ -62,6 +58,8 @@ func GetParameters(osArguments []string) (error,Arguments) {
         return err, args
     }
 
+	fmt.Println(osArguments[1:])
+
 	flagSet.Visit(func(f *flag.Flag){
 
 		if(slices.Contains(FLAG_ARGUMENTS,f.Value.String())){
@@ -79,17 +77,19 @@ func GetParameters(osArguments []string) (error,Arguments) {
 			err=fmt.Errorf("Value should not be empty for param %s",f.Name)
 			return
 		}
-
+		
+		fmt.Println(inputFileSet)
 		switch (f.Name){
 
 			case "input-file","env-file":
-
+				
 				if(inputFileSet){
 					err=fmt.Errorf("Only One of `--env-file` and `--input-file` should be provided")
 					return
 				}
 				
 				if(value == ""){
+					fmt.Println("Here")
 					err=fmt.Errorf("Only One of `--env-file` and `--input-file` should be provided")
 					return
 				}
