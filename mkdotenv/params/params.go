@@ -12,7 +12,10 @@ import(
 var FLAG_ARGUMENTS = []string{"--env-file", "--input-file", "--output-file", "-v", "--version", "-h", "--h", "--help","--variable-name"}
 
 type Arguments struct {
-	DotenvFilename,VariableName,VariableValue,OutputFile string
+	DotenvFilename,OutputFile,VariableName,VariableValue string
+	KeepFirst bool
+	DisplayHelp bool
+	DisplayVersion bool
 	ParseComplete  bool
 }
 
@@ -25,6 +28,11 @@ func initFlags() (*flag.FlagSet) {
 	flagSet.String("env-file", "", "<file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
 	flagSet.String("input-file", "", "<file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
 	flagSet.String("output-file", "", "<file_path>\tOPTIONAL Instead of printing the result into console write it into a file.")
+	flagSet.Bool("keep-first",false,"\tOPTIONAL Keep only the first occuirence and remove the rest occurences of the variable having <variable_name>")
+	flagSet.Bool("h",false,"\tOPTIONAL Display the current message.")
+	flagSet.Bool("help",false,"\tOPTIONAL Display the current message.")
+	flagSet.Bool("v",false,"\tOPTIONAL Display Version Number.")
+	flagSet.Bool("version",false,"tOPTIONAL Display Version Number.")
 
 	return flagSet
 }
@@ -36,10 +44,13 @@ func GetParameters(osArguments []string) (error,Arguments) {
 	}
 
 	args := Arguments{
-		DotenvFilename: ".env",
 		VariableName:   "",
 		VariableValue:  "",
 		OutputFile: ".env",
+		DotenvFilename: ".env",
+		KeepFirst: false,
+		DisplayHelp: false,
+		DisplayVersion: false,
 		ParseComplete:  false,
 	}
 
@@ -63,7 +74,7 @@ func GetParameters(osArguments []string) (error,Arguments) {
 		if(err !=nil){
 			return
 		}
-
+		
 		value:=f.Value.String()
 
 		if(value == ""){
@@ -108,6 +119,12 @@ func GetParameters(osArguments []string) (error,Arguments) {
 
 			case "variable-value":
 				args.VariableValue=value
+			case "keep-first":
+				args.KeepFirst = value=="true"
+			case "h","help":
+				args.DisplayHelp = value=="true"
+			case "v","version":
+				args.DisplayVersion = value=="true"
 		}
 
 	})
