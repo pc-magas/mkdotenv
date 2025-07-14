@@ -1,45 +1,140 @@
 package params
 
 import(
-	"os"
 	"slices"
-	"github.com/pc-magas/mkdotenv/msg"
 	"errors"
 	"flag"
 	"fmt"
 )
 
-var FLAG_ARGUMENTS = []string{"--env-file", "--input-file", "--output-file", "-v", "--version", "-h", "--h", "--help","--variable-name"}
+type CLIArgType string
+
+const (
+	StringType CLIArgType = "string"
+	BoolType   CLIArgType = "bool"
+	IntType    CLIArgType = "int"
+)
+
+type FlagMeta struct {
+    Name        string   // canonical flag name
+	Type 		CLIArgType
+	DefaultValue string
+    Aliases     []string // e.g., "h" is alias for "help"
+    Required    bool     // whether the flag is required
+    Usage       string   // help message
+    Order       int      // display order
+}
 
 type Arguments struct {
-	DotenvFilename,OutputFile,VariableName,VariableValue string
+	DotenvFilename string
+	OutputFile string
+	VariableName string
+	VariableValue string
 	KeepFirst bool
 	DisplayHelp bool
 	DisplayVersion bool
 	ParseComplete  bool
+	RemoveDoubles bool
+	ArgumentNum int
 }
+
+var FLAG_ARGUMENTS = []string{}
+
+var flagsMeta = []FlagMeta{
+    {
+        Name:     "help",
+        Aliases:  []string{"h"},
+        Required: false,
+        Usage:    "Display help message and exit",
+		Type:  	BoolType,
+        Order:    0,
+    },
+    {
+        Name:     "version",
+        Aliases:  []string{"v"},
+        Required: false,
+		Type:  	BoolType,
+        Usage:    "Display version and exit",
+        Order:    0,
+    },
+    {
+        Name:     "variable-name",
+        Aliases:  []string{},
+		Type: StringType,
+        Required: true,
+        Usage:    "Name of the variable to be set",
+        Order:    1,
+    },
+    {
+        Name:     "variable-value",
+        Aliases:  []string{},
+		Type: StringType,
+        Required: true,
+        Usage:    "Value to assign to the variable",
+        Order:    1,
+    },
+    {
+        Name:     "env-file",
+        Aliases:  []string{"input-file"},
+		Type: StringType,
+        Required: false,
+		DefaultValue: ".env",
+        Usage:    "Input .env file path (default .env)",
+        Order:    2,
+    },
+    {
+        Name:     "output-file",
+        Aliases:  []string{},
+		Type: StringType,
+        Required: false,
+		DefaultValue: ".env",
+        Usage:    "File to write output to (`-` for stdout)",
+        Order:    2,
+    },
+    {
+        Name:     "remove-doubles",
+		Type: BoolType,
+        Aliases:  []string{},
+        Required: false,
+        Usage:    "Remove duplicate variable entries, keeping the first",
+        Order:    3,
+    },
+}
+
 
 func initFlags() (*flag.FlagSet) {
 
 	flagSet := flag.NewFlagSet("params", flag.ContinueOnError)
 
-	flagSet.String("variable-name", "", "REQUIRED The name of the variable")
-	flagSet.String("variable-value", "", "REQUIRED The value of the variable provided upon <variable_name>")
-	flagSet.String("env-file", "", "<file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
-	flagSet.String("input-file", "", "<file_path>\tOPTIONAL The .env file path in <file_path> that will be manipulated. Default value .env")
-	flagSet.String("output-file", "", "<file_path>\tOPTIONAL Instead of printing the result into console write it into a file.")
-	flagSet.Bool("keep-first",false,"\tOPTIONAL Keep only the first occuirence and remove the rest occurences of the variable having <variable_name>")
-	flagSet.Bool("h",false,"\tOPTIONAL Display the current message.")
-	flagSet.Bool("help",false,"\tOPTIONAL Display the current message.")
-	flagSet.Bool("v",false,"\tOPTIONAL Display Version Number.")
-	flagSet.Bool("version",false,"tOPTIONAL Display Version Number.")
+	for _, meta := range flagsMeta {
+
+		FLAG_ARGUMENTS=append(FLAG_ARGUMENTS,"--"+meta.Name)
+		FLAG_ARGUMENTS=append(FLAG_ARGUMENTS,"-"+meta.Name)
+
+        switch meta.Type {
+			case StringType:
+				flagSet.String(meta.Name, meta.DefaultValue, meta.Usage)
+				for _, alias := range meta.Aliases {
+					FLAG_ARGUMENTS=append(FLAG_ARGUMENTS,"-"+alias)
+					FLAG_ARGUMENTS=append(FLAG_ARGUMENTS,"--"+alias)
+					flagSet.String(alias, meta.DefaultValue, "(alias of --"+meta.Name+") "+meta.Usage)
+				}
+
+			case BoolType:
+				def := meta.DefaultValue == "true"
+				flagSet.Bool(meta.Name, def, meta.Usage)
+				for _, alias := range meta.Aliases {
+					flagSet.Bool(alias, def, "(alias of --"+meta.Name+") "+meta.Usage)
+				}
+        }
+    }
 
 	return flagSet
 }
 
 func GetParameters(osArguments []string) (error,Arguments) {
 	
-	if len(osArguments) < 3 {
+	if len(osArguments) < 1 {
 		return errors.New("not enough arguments provided"),Arguments{}
 	}
 
@@ -48,9 +143,10 @@ func GetParameters(osArguments []string) (error,Arguments) {
 		VariableValue:  "",
 		OutputFile: ".env",
 		DotenvFilename: ".env",
-		KeepFirst: false,
+		RemoveDoubles: false,
 		DisplayHelp: false,
 		DisplayVersion: false,
+		ArgumentNum: len(osArguments),
 		ParseComplete:  false,
 	}
 
@@ -119,8 +215,8 @@ func GetParameters(osArguments []string) (error,Arguments) {
 
 			case "variable-value":
 				args.VariableValue=value
-			case "keep-first":
-				args.KeepFirst = value=="true"
+			case "remove-doubles":
+				args.RemoveDoubles = value=="true"
 			case "h","help":
 				args.DisplayHelp = value=="true"
 			case "v","version":
@@ -137,24 +233,8 @@ func GetParameters(osArguments []string) (error,Arguments) {
 	return nil,args
 }
 
-func PrintVersionOrHelp(){
-
-	if(len(os.Args) > 2 ){
-		return
-	}
-
-	switch(os.Args[1]){
-		case "-h":
-			fallthrough
-		case "--help":
-			flag.Usage()
-			os.Exit(0)
-		case "-v":
-			fallthrough
-		case "--version":
-			msg.PrintVersion()
-			os.Exit(0)
-		default:
-			msg.ExitError("Not enough arguments provided")
-	}
+func GetFlagsMeta() []FlagMeta {
+    out := make([]FlagMeta, len(flagsMeta))
+    copy(out, flagsMeta)
+    return out
 }

@@ -30,14 +30,12 @@ import (
 
 func main() {
 
-	if (len(os.Args) == 1 ){
+	paramErr,paramStruct := params.GetParameters(os.Args)
+
+	if (paramStruct.ArgumentNum == 1 ){
 		msg.PrintHelp()
 		os.Exit(0)
 	}
-
-	params.PrintVersionOrHelp()
-
-	paramErr,paramStruct := params.GetParameters(os.Args)
 
 	if(paramErr != nil){
 		msg.ExitError(paramErr.Error())

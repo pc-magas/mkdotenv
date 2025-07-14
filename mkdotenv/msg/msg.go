@@ -3,6 +3,9 @@ package msg
 import(
 	"os"
 	"fmt"
+	"slices"
+	"strings"
+	"github.com/pc-magas/mkdotenv/params"
 )
 
 // This is changed upon runtime.
@@ -14,18 +17,84 @@ func ExitError(msg string){
 	os.Exit(1)
 }
 
+func buildArgumentUsage() string {
+	var paramUsage strings.Builder
+
+	for _, meta := range params.GetFlagsMeta() {
+		line := fmt.Sprintf("  --%s, -%s", meta.Name,meta.Name)
+		for _,alias := range meta.Aliases {
+			line+= fmt.Sprintf(", --%s, -%s",alias,alias)
+		}
+		
+		line+="\t"
+		if meta.Required {
+			line+="REQUIRED"
+		} else {
+			line+="OPTIONAL"
+		}
+
+		line+=" "+meta.Usage
+		line+="\n"
+		paramUsage.WriteString(line)
+	}
+
+	return paramUsage.String()
+}
+
+func buildCommandUsage() string {
+	groups := make(map[int][]params.FlagMeta)
+	orders := []int{}
+
+	for _, meta := range params.GetFlagsMeta() {
+		order := meta.Order
+		groups[order] = append(groups[order], meta)
+
+		if !slices.Contains(orders, order) {
+			orders = append(orders, order)
+		}
+	}
+
+	slices.Sort(orders)
+
+	var builder strings.Builder
+
+	for _, order := range orders {
+		flags := groups[order]
+		builder.WriteString("\n\t  ")
+		for _, meta := range flags {
+			// Start with canonical flag
+			part := fmt.Sprintf("--%s|-%s", meta.Name,meta.Name)
+				
+			for _,alias := range meta.Aliases {
+					part+= fmt.Sprintf("|--%s|-%s",alias,alias)
+			}
+
+			if meta.Type == params.StringType {
+				part+= fmt.Sprintf(" <%s>", strings.ReplaceAll(meta.Name, "-", "_"))
+			}
+
+			// Wrap optional flags in []
+			if !meta.Required {
+				part = "[ " + part + " ]"
+			}
+
+			// Append with a space
+			builder.WriteString(" ")
+			builder.WriteString(part)
+		}
+
+		builder.WriteString(" \\")
+	}
+
+	return builder.String()
+}
+
 func PrintHelp() {
 	PrintVersion()
-
-	fmt.Fprintln(os.Stderr,"\nUsage:\n\t"+os.Args[0]+" [-v|--version|-h|--help] --variable-name <variable_name> --variable-value <variable_value> [--env-file | --input-file <file_path>] [--output-file <file_path>] [--update-first] [--keep-first]\n")
-	fmt.Fprintln(os.Stderr,"\nOptions:")
-	fmt.Fprintln(os.Stderr,"\t--variable_name <variable_name>\tREQUIRED The name of the variable")
-	fmt.Fprintln(os.Stderr,"\t--variable_value <variable_value>\tREQUIRED The value of the variable provided upon <variable_name>")
-	fmt.Fprintln(os.Stderr,"\t-v, --version \tOPTIONAL Display Version Number.")
-	fmt.Fprintln(os.Stderr,"\t-h, --help \tOPTIONAL Display the current message.")
-	fmt.Fprintln(os.Stderr,"\t--env-file, --input-file <file_path>\tOPTIONAL Path to the .env file to modify. Default is `.env`.")
-	fmt.Fprintln(os.Stderr,"\t--output-file <file_path>\tOPTIONAL Write the result to a file. Value `-` prints to console default is `.env`")
-	fmt.Fprintln(os.Stderr,"\t--keep-first \tOPTIONAL Keep only the first occuirence and remove the rest occurences of the variable having <variable_name>")
+	executable:=os.Args[0]
+	fmt.Fprintln(os.Stderr,"\nUsage:\n\t"+executable+" \\"+buildCommandUsage()+"\n")
+	fmt.Fprint(os.Stderr,"Options:\n\n")
+	fmt.Fprintln(os.Stderr,buildArgumentUsage())
 }
 
 func PrintVersion(){
