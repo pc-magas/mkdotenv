@@ -28,6 +28,19 @@ import (
 	"github.com/pc-magas/mkdotenv/core"
 )
 
+func displayVersionOrHelp(paramStruct params.Arguments){
+
+	if(paramStruct.DisplayHelp){
+		msg.PrintHelp()
+		os.Exit(0)
+	}
+
+	if(paramStruct.DisplayVersion){
+		msg.PrintVersion()
+		os.Exit(0)
+	}
+}
+
 func main() {
 
 	paramErr,paramStruct := params.GetParameters(os.Args)
@@ -40,6 +53,8 @@ func main() {
 	if(paramErr != nil){
 		msg.ExitError(paramErr.Error())
 	}
+
+	displayVersionOrHelp(paramStruct)
 
 	filenameToRead := paramStruct.DotenvFilename
 	filenameCopy:=paramStruct.DotenvFilename+"."+strconv.FormatInt(time.Now().UnixMilli(),10)
