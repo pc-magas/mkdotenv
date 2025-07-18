@@ -77,7 +77,7 @@ func main() {
 	}
 	defer writer.Flush()
 
-	_,err := core.AppendValueToDotenv(file,writer,paramStruct.VariableName,paramStruct.VariableValue)
+	_,err := core.AppendValueToDotenv(file,writer,paramStruct.VariableName,paramStruct.VariableValue,paramStruct.RemoveDoubles)
 
     if(err!=nil){
         fmt.Fprintln(os.Stderr, "Error:", err)

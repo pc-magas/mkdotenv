@@ -23,7 +23,7 @@ func validateVarName(variable_name string) (error){
 	return nil
 }
 
-func AppendValueToDotenv(input io.Reader,output *bufio.Writer,variable_name string,variable_value string) (bool,error) {
+func AppendValueToDotenv(input io.Reader,output *bufio.Writer,variable_name string,variable_value string,removeDoubles bool) (bool,error) {
 	
 	variable_name=strings.TrimSpace(variable_name)
 	validationError:=validateVarName(variable_name)
@@ -53,6 +53,11 @@ func AppendValueToDotenv(input io.Reader,output *bufio.Writer,variable_name stri
 		line_to_write:=line
 		
 		if re.MatchString(line) {
+
+			if(variableFound && removeDoubles){
+				continue
+			}
+
 			line_to_write = newline	
 			variableFound=true
 		}
