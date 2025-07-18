@@ -1,3 +1,11 @@
+# Version 0.4.0 2025-07-18
+
+Fix alpine build.
+Use variable-value parameter for setting the value as variable value.
+Use variable-name parameter for setting the value as variable value.
+[NEW FEATURE] Flag to remove multiple occurences of the variable.
+[NEW FEATURE] Use - value upon in order to output modified .env contents upon stdout. Default behaviour is outputing upon .env
+
 # Version 0.3.4 2025-07-01
 
 Add release number upon ppa build.

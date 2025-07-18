@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.3.4
+Version:        0.4.0
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -55,7 +55,7 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 - 2. Upon rpm builds use Makefile
 - 3. Ability to specify a version externally in Makefile.
 - 4. Unit test value appending logic
-- 5. Validate variable name
+	- 5. Validate variable name
 - 6. Moving pcmagas/alpinebuild (used upon alpine image releases) docker image into a seperate repository.
 - 7. Release for AUR and arch linux
 
@@ -98,3 +98,10 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 * Tue Jul 01 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.4-1
 - Add release number upon ppa build.
 - Fix alpine build
+
+* Fri Jul 18 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.0-1
+- Fix alpine build.
+- Use variable-value parameter for setting the value as variable value.
+- Use variable-name parameter for setting the value as variable value.
+- [NEW FEATURE] Flag to remove multiple occurences of the variable.
+- [NEW FEATURE] Use - value upon in order to output modified .env contents upon stdout. Default behaviour is outputing upon .env
