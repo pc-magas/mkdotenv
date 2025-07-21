@@ -14,6 +14,11 @@ The \fBmkdotenv\fR command allows users to add or update environment variables i
 By default, it modifies the current \fB.env\fR file. You can optionally specify input and output files. 
 
 It supports removing duplicate variable declarations while preserving the first occurrence.
+
+.SH PIPE SUPPORT
+To apply multiple updates or transformations sequentially, \fBmkdotenv\fR supports reading from standard input and writing to standard output.  
+Use \fB--output-file=-\fR to stream to stdout, and pipe the result into another \fBmkdotenv\fR invocation. This enables flexible, chainable modification workflows.
+
 .SH REQUIRED ARGUMENTS
 .TP
 .B --variable-name, -variable-name
@@ -21,6 +26,7 @@ The name of the environment variable to be added or updated.
 .TP
 .B --variable-value, -variable-value
 The value assigned to the \fIVARIABLE_NAME\fR.
+
 .SH OPTIONAL OPTIONS
 .TP
 .B --help, -help, --h, -h
@@ -37,30 +43,47 @@ Write the modified contents to the specified file. Use \fB-\fR to write to stand
 .TP
 .B --remove-doubles, -remove-doubles
 Remove duplicate variable entries from the file, keeping only the first occurrence.
+
 .SH EXAMPLES
 .TP
 Add a variable to the default .env file:
 .RS
 $ mkdotenv --variable-name API_KEY --variable-value 123456
 .RE
+
 .TP
 Add a variable to a specific file:
 .RS
 $ mkdotenv --variable-name API_KEY --variable-value 123456 --env-file config.env
 .RE
+
 .TP
 Write the result to a different file:
 .RS
 $ mkdotenv --variable-name API_KEY --variable-value 123456 --output-file output.env
 .RE
+
 .TP
 Remove duplicates while writing:
 .RS
 $ mkdotenv --variable-name API_KEY --variable-value 123456 --remove-doubles
 .RE
+
+.TP
+Chain multiple updates using pipes (stream between commands with \fB--output-file=-\fR):
+.RS
+.nf
+$ mkdotenv --variable-name DB_HOST --variable-value 127.0.0.1 --output-file=- \\
+  | mkdotenv --variable-name DB_USER --variable-value maiuser --output-file=- \\
+  | mkdotenv --variable-name DB_PASSWORD --variable-value XXXX --output-file=.env.production
+.fi
+.RE
+
 .SH AUTHOR
 Written by Desyllas Dimitrios.
+
 .SH BUGS
 Report issues at https://github.com/pc-magas/mkdotenv/issues
+
 .SH SEE ALSO
 .BR dotenv (1)

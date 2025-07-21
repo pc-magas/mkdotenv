@@ -419,13 +419,13 @@ docker run pcmagas/mkdotenv mkdotenv --version
 If you want to manipulate a `.env` file using the docker image. You can use it like this:
 
 ```shell
-cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA > .env.new
+cat .env | docker run -i pcmagas/mkdotenv mkdotenv --variable-name DB_HOST --variable-value 127.0.0.1 > .env.new
 ```
 
 Or if you want multiple variables:
 
 ```shell
-cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA | docker run -i pcmagas/mkdotenv mkdotenv BIG BROTHER > .env.new
+cat .env | docker run -i pcmagas/mkdotenv mkdotenv --variable-name DB_HOST --variable-value 127.0.0.1 | docker run -i pcmagas/mkdotenv mkdotenv --variable-name BIG --variable-value BROTHER > .env.new
 ```
 Keep in mind to use the `-i` argument upon docker command that enables to read the input via the pipes. If omited the `mkdotenv` command residing inside the container will not be able to read the contents of .env file piped to it.
 
