@@ -20,7 +20,7 @@ func TestAppendValueToDotenvCreatesANewEnvFile(t *testing.T) {
 	var outputBuffer bytes.Buffer
 	writer := bufio.NewWriter(&outputBuffer)
 
-	_, err := AppendValueToDotenv(input, writer, variable, value)
+	_, err := AppendValueToDotenv(input, writer, variable, value,false)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -43,7 +43,7 @@ func TestAppendValueToDotenvCreatesANewEnvFileAndVarContainsUnderscore(t *testin
 	var outputBuffer bytes.Buffer
 	writer := bufio.NewWriter(&outputBuffer)
 
-	_, err := AppendValueToDotenv(input, writer, variable, value)
+	_, err := AppendValueToDotenv(input, writer, variable, value,false)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -67,7 +67,7 @@ func TestAppendValueToDotenvDoesNotCreateAnEnvFileDueToWrongParamName(t *testing
 	var outputBuffer bytes.Buffer
 	writer := bufio.NewWriter(&outputBuffer)
 
-	_, err := AppendValueToDotenv(input, writer, variable, value)
+	_, err := AppendValueToDotenv(input, writer, variable, value,false)
 	if err == nil {
 		t.Fatalf("expected error, got nil")
 	}
@@ -100,7 +100,7 @@ MYVAR=MYVAL
 	var outputBuffer bytes.Buffer
 	writer := bufio.NewWriter(&outputBuffer)
 
-	_, err := AppendValueToDotenv(reader, writer, variable, value)
+	_, err := AppendValueToDotenv(reader, writer, variable, value,false)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -136,7 +136,7 @@ MYVAR=MYVAL
 	var outputBuffer bytes.Buffer
 	writer := bufio.NewWriter(&outputBuffer)
 
-	_, err := AppendValueToDotenv(reader, writer, variable, value)
+	_, err := AppendValueToDotenv(reader, writer, variable, value,false)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -164,7 +164,7 @@ MYVAR=OLDVAL
 	var outputBuffer bytes.Buffer
 	writer := bufio.NewWriter(&outputBuffer)
 
-	_, err := AppendValueToDotenv(reader, writer, variable, value)
+	_, err := AppendValueToDotenv(reader, writer, variable, value,false)
 	if err == nil {
 		t.Fatalf("expected no error, got nil")
 	}
@@ -185,7 +185,7 @@ MYVAR=OLDVAL
 	var outputBuffer bytes.Buffer
 	writer := bufio.NewWriter(&outputBuffer)
 
-	_, err := AppendValueToDotenv(reader, writer, variable, value)
+	_, err := AppendValueToDotenv(reader, writer, variable, value,false)
 	if err == nil {
 		t.Fatalf("expected no error, got nil")
 	}
@@ -206,8 +206,75 @@ MYVAR=OLDVAL
 	var outputBuffer bytes.Buffer
 	writer := bufio.NewWriter(&outputBuffer)
 
-	_, err := AppendValueToDotenv(reader, writer, variable, value)
+	_, err := AppendValueToDotenv(reader, writer, variable, value,false)
 	if err == nil {
 		t.Fatalf("expected no error, got nil")
+	}
+}
+
+func TestModifyMultipleOccurences(t *testing.T) {
+	variable := "MYVAR"
+	value := "XXXX"
+
+	dotenv := `
+MYVAR=OLDVAL
+MYVAR=OLDVAL
+`
+	expectedOutput := `
+MYVAR=XXXX
+MYVAR=XXXX
+`
+
+	var reader io.Reader = strings.NewReader(dotenv)
+
+	var outputBuffer bytes.Buffer
+	writer := bufio.NewWriter(&outputBuffer)
+
+	_, err := AppendValueToDotenv(reader, writer, variable, value,false)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	// Ensure data is flushed from bufio.Writer to bytes.Buffer
+	if err := writer.Flush(); err != nil {
+		t.Fatalf("failed to flush writer: %v", err)
+	}
+
+	actualOutput := outputBuffer.String()
+	if actualOutput != expectedOutput {
+		t.Errorf("output does not match expected:\nExpected:\n%q\nGot:\n%q", expectedOutput, actualOutput)
+	}
+}
+
+func TestRemoveDoubles(t *testing.T) {
+	variable := "MYVAR"
+	value := "XXXX"
+
+	dotenv := `
+MYVAR=OLDVAL
+MYVAR=OLDVAL
+`
+	expectedOutput := `
+MYVAR=XXXX
+`
+
+	var reader io.Reader = strings.NewReader(dotenv)
+
+	var outputBuffer bytes.Buffer
+	writer := bufio.NewWriter(&outputBuffer)
+
+	_, err := AppendValueToDotenv(reader, writer, variable, value,true)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	// Ensure data is flushed from bufio.Writer to bytes.Buffer
+	if err := writer.Flush(); err != nil {
+		t.Fatalf("failed to flush writer: %v", err)
+	}
+
+	actualOutput := outputBuffer.String()
+	if actualOutput != expectedOutput {
+		t.Errorf("output does not match expected:\nExpected:\n%q\nGot:\n%q", expectedOutput, actualOutput)
 	}
 }

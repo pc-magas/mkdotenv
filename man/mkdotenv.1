@@ -1,70 +1,89 @@
-.TH MKDOTENV 1 "February 2025" "mkdotenv 0.0.1"
+.TH MKDOTENV 1 "February 2025" "mkdotenv 0.4.0"
 .SH NAME
 mkdotenv \- A command-line tool to add or update environment variables in a .env file.
 .SH SYNOPSIS
 .B mkdotenv
-[\fI-h\fR | \fI--help\fR | \fI-v\fR | \fI--version\fR] 
-[\fIVARIABLE_NAME\fR] [\fIVARIABLE_VALUE\fR] 
-[\fI--env-file\fR \fI<file_path>\fR | \fI--input-file\fR \fI<file_path>\fR] 
-[\fI--output-file\fR \fI<file_path>\fR]
+[\fI--help\fR|\fI-help\fR|\fI--h\fR|\fI-h\fR] 
+[\fI--version\fR|\fI-version\fR|\fI--v\fR|\fI-v\fR] 
+\fI--variable-name\fR <\fIVARIABLE_NAME\fR> \fI--variable-value\fR <\fIVARIABLE_VALUE\fR> 
+[\fI--env-file\fR <\fIFILE\fR>|\fI--input-file\fR <\fIFILE\fR>] 
+[\fI--output-file\fR <\fIFILE\fR>] 
+[\fI--remove-doubles\fR]
 .SH DESCRIPTION
 The \fBmkdotenv\fR command allows users to add or update environment variables in a .env file. 
-By default, it modifies the current .env file, but users can specify a different file for input and output.
-.SH ARGUMENTS
+By default, it modifies the current \fB.env\fR file. You can optionally specify input and output files. 
+
+It supports removing duplicate variable declarations while preserving the first occurrence.
+
+.SH PIPE SUPPORT
+To apply multiple updates or transformations sequentially, \fBmkdotenv\fR supports reading from standard input and writing to standard output.  
+Use \fB--output-file=-\fR to stream to stdout, and pipe the result into another \fBmkdotenv\fR invocation. This enables flexible, chainable modification workflows.
+
+.SH REQUIRED ARGUMENTS
 .TP
-.B VARIABLE_NAME
-(REQUIRED) The name of the environment variable to be added or updated.
+.B --variable-name, -variable-name
+The name of the environment variable to be added or updated.
 .TP
-.B VARIABLE_VALUE
-(REQUIRED) The value assigned to the \fIVARIABLE_NAME\fR.
-.SH OPTIONS
+.B --variable-value, -variable-value
+The value assigned to the \fIVARIABLE_NAME\fR.
+
+.SH OPTIONAL OPTIONS
 .TP
-.B -h, --help
-Display the help message and exit. If provided with any other arguments, the command is ignored.
+.B --help, -help, --h, -h
+Display the help message and exit.
 .TP
-.B -v, --version
-Display the application version and exit. If provided with any other arguments, the command is ignored.
+.B --version, -version, --v, -v
+Display the application version and exit.
 .TP
-.B --env-file \fI<file_path>\fR, --input-file \fI<file_path>\fR, --env-file=\fI<file_path>\fR, --input-file=\fI<file_path>\fR
-(OPTIONAL) Specifies the .env file to be modified. If not provided, the default is \fB.env\fR in the current directory.
+.B --env-file <file>, -env-file <file>, --input-file <file>, -input-file <file>
+Specify the .env file to read from. Defaults to \fB.env\fR in the current directory.
 .TP
-.B --output-file \fI<file_path>\fR, --output-file=<file_path>
-(OPTIONAL) Write the modified .env contents to the specified file instead of printing to the console.
-If this option is used, the result will not be printed to the terminal.
+.B --output-file <file>, -output-file <file>
+Write the modified contents to the specified file. Use \fB-\fR to write to standard output.
+.TP
+.B --remove-doubles, -remove-doubles
+Remove duplicate variable entries from the file, keeping only the first occurrence.
+
 .SH EXAMPLES
 .TP
 Add a variable to the default .env file:
 .RS
-$ mkdotenv API_KEY 123456
+$ mkdotenv --variable-name API_KEY --variable-value 123456
 .RE
+
 .TP
-Add a variable to a specific .env file:
+Add a variable to a specific file:
 .RS
-$ mkdotenv API_KEY 123456 --env-file config.env
+$ mkdotenv --variable-name API_KEY --variable-value 123456 --env-file config.env
 .RE
+
 .TP
-The value can also be provided using the `=` syntax:
+Write the result to a different file:
 .RS
-$ mkdotenv API_KEY=123456 --env-file=config.env
+$ mkdotenv --variable-name API_KEY --variable-value 123456 --output-file output.env
 .RE
+
 .TP
-Write the output to a separate file:
+Remove duplicates while writing:
 .RS
-$ mkdotenv API_KEY 123456 --output-file output.env
+$ mkdotenv --variable-name API_KEY --variable-value 123456 --remove-doubles
 .RE
+
 .TP
-The value can also be provided using the `=` syntax:
+Chain multiple updates using pipes (stream between commands with \fB--output-file=-\fR):
 .RS
-$ mkdotenv API_KEY=123456 --output-file=output.env
+.nf
+$ mkdotenv --variable-name DB_HOST --variable-value 127.0.0.1 --output-file=- \\
+  | mkdotenv --variable-name DB_USER --variable-value maiuser --output-file=- \\
+  | mkdotenv --variable-name DB_PASSWORD --variable-value XXXX --output-file=.env.production
+.fi
 .RE
-.TP
-Update multiple variables:
-.RS
-$ mkdotenv API_KEY 123456 | mkdotenv API_KEY2 7890 --output-file output.env
-.RE
+
 .SH AUTHOR
 Written by Desyllas Dimitrios.
+
 .SH BUGS
 Report issues at https://github.com/pc-magas/mkdotenv/issues
+
 .SH SEE ALSO
 .BR dotenv (1)

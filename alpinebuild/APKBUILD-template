@@ -1,6 +1,6 @@
 # Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>
 pkgname=mkdotenv
-pkgver=0.3.4
+pkgver=0.4.0
 pkgrel=0
 pkgdesc="Lightweight and efficient tool for managing your .env files."
 url="https://github.com/pc-magas/mkdotenv"
