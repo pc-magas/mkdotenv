@@ -316,7 +316,7 @@ Also you can use the parameter `--input-file` in order to select which file to r
 Assuming we run the command
 
 ```
-mkdotenv DB_HOST 127.0.0.1 --input-file=.env.example
+mkdotenv --variable-name DB_HOST 127.0.0.1 --input-file=.env.example
 ```
 
 This will read the `.env.example` and output:
@@ -329,7 +329,7 @@ DB_HOST=127.0.0.1
 ### Example 2 Write file upon a .env file:
 
 ```
-mkdotenv DB_HOST 127.0.0.1 --output-file=.env.production
+mkdotenv --variable-name DB_HOST 127.0.0.1 --output-file=.env.production
 ```
 
 This would **create** a file named `.env.production` containing:
@@ -359,15 +359,21 @@ DB_PASSWORD=zzz
 We have to run:
 
 ```
-mkdotenv DB_HOST 127.0.0.1 --input-file .env.template --output-file .env.production
+mkdotenv --variable-name DB_HOST 127.0.0.1 --input-file .env.template --output-file .env.production
 ```
 
 ## Piping outputs
 
-You can provide a .env via a pipe. A common use is to replace multiple variables:
+You can provide a .env via a pipe, for that you must provide the value `-` upon `--output-file` argument. A common use is to replace multiple variables for example:
 
 ```
-mkdotenv DB_HOST 127.0.0.1 | mkdotenv DB_USER maiuser | mkdotenv DB_PASSWORD XXXX --output_file .env.production
+mkdotenv --variable-name DB_HOST --variable-value 127.0.0.1 --output-file=- | mkdotenv --variable-name DB_USER --variable-value maiuser --output-file=- | mkdotenv --variable-name DB_PASSWORD --variable-value XXXX --output_file .env.production
+```
+
+Or in case you want to update .env:
+
+```
+mkdotenv --variable-name DB_HOST --variable-value 127.0.0.1 --output-file=- | mkdotenv --variable-name DB_USER --variable-value maiuser --output-file=- | mkdotenv --variable-name DB_PASSWORD --variable-value XXXX --output_file .env
 ```
 
 # Docker
@@ -413,13 +419,13 @@ docker run pcmagas/mkdotenv mkdotenv --version
 If you want to manipulate a `.env` file using the docker image. You can use it like this:
 
 ```shell
-cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA > .env.new
+cat .env | docker run -i pcmagas/mkdotenv mkdotenv --variable-name DB_HOST --variable-value 127.0.0.1 > .env.new
 ```
 
 Or if you want multiple variables:
 
 ```shell
-cat .env | docker run -i pcmagas/mkdotenv mkdotenv Hello BAKA | docker run -i pcmagas/mkdotenv mkdotenv BIG BROTHER > .env.new
+cat .env | docker run -i pcmagas/mkdotenv mkdotenv --variable-name DB_HOST --variable-value 127.0.0.1 | docker run -i pcmagas/mkdotenv mkdotenv --variable-name BIG --variable-value BROTHER > .env.new
 ```
 Keep in mind to use the `-i` argument upon docker command that enables to read the input via the pipes. If omited the `mkdotenv` command residing inside the container will not be able to read the contents of .env file piped to it.
 

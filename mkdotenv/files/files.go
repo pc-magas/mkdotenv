@@ -120,8 +120,12 @@ func GetFileToRead(dotenv_filename string) *os.File {
 
 func CreateWriter(filename string) (*bufio.Writer,*os.File) {
 	
-	if(filename == ""){
+	if(filename == "-"){
 		return bufio.NewWriter(os.Stdout),nil
+	}
+
+	if(filename == ""){
+		filename=".env"
 	}
 
 	outfile,err := os.OpenFile(filename,os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)

@@ -19,6 +19,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: check version
+        run: cat VERSION
+
       - name: get version
         id: version
         run: |

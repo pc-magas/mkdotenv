@@ -28,20 +28,33 @@ import (
 	"github.com/pc-magas/mkdotenv/core"
 )
 
-func main() {
+func displayVersionOrHelp(paramStruct params.Arguments){
 
-	if (len(os.Args) == 1 ){
+	if(paramStruct.DisplayHelp){
 		msg.PrintHelp()
 		os.Exit(0)
 	}
 
-	params.PrintVersionOrHelp()
+	if(paramStruct.DisplayVersion){
+		msg.PrintVersion()
+		os.Exit(0)
+	}
+}
+
+func main() {
 
 	paramErr,paramStruct := params.GetParameters(os.Args)
+
+	if (paramStruct.ArgumentNum == 1 ){
+		msg.PrintHelp()
+		os.Exit(0)
+	}
 
 	if(paramErr != nil){
 		msg.ExitError(paramErr.Error())
 	}
+
+	displayVersionOrHelp(paramStruct)
 
 	filenameToRead := paramStruct.DotenvFilename
 	filenameCopy:=paramStruct.DotenvFilename+"."+strconv.FormatInt(time.Now().UnixMilli(),10)
@@ -64,7 +77,7 @@ func main() {
 	}
 	defer writer.Flush()
 
-	_,err := core.AppendValueToDotenv(file,writer,paramStruct.VariableName,paramStruct.VariableValue)
+	_,err := core.AppendValueToDotenv(file,writer,paramStruct.VariableName,paramStruct.VariableValue,paramStruct.RemoveDoubles)
 
     if(err!=nil){
         fmt.Fprintln(os.Stderr, "Error:", err)

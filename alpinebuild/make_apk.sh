@@ -15,6 +15,8 @@ RELEASE_DIR=${SCRIPT_DIR}/release
 
 mkdir -p ${OVERLAY}
 mkdir -p ${ABUILD_VOLUME}
+# Release dir may contain unwanted structure therefore it is re-created
+rm -rf ${RELEASE_DIR}
 mkdir -p ${RELEASE_DIR}
 
 # TARBALL name and path  
