@@ -97,19 +97,6 @@ clean:
 	rm -rf *.deb
 	rm -rf mkdotenv_$(VERSION)
 
-clean-deb:
-	rm -rf mkdotenv_$(VERSION)
-	rm -rf ../*.changes
-	rm -rf ../*.buildinfo
-	rm -rf ../*.dsc	
-	rm -rf ../*.orig.tar.gz
-	rm -rf ../*.debian.tar.xz
-
-# Package as binary debian image
-deb:
-	dpkg-buildpackage -b
-	mv ../*.deb ./
-
 # Build into docker image
 docker:
 	docker build -t pcmagas/mkdotenv:$(VERSION) --build-arg VERSION=${VERSION} -t pcmagas/mkdotenv:latest .
