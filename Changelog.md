@@ -1,3 +1,7 @@
+# Version 0.4.1 2025-08-20
+
+Use Seperate script for debian builds
+
 # Version 0.4.0 2025-07-18
 
 Fix alpine build.

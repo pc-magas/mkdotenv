@@ -1,3 +1,9 @@
+mkdotenv (0.4.1-0debian1~unstable1) unstable; urgency=medium
+
+  * Use Seperate script for debian builds
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Wed, 20 Aug 2025 13:07:49 +0300
+
 mkdotenv (0.4.0-0debian1~unstable1) unstable; urgency=medium
 
   * Fix alpine build.
