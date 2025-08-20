@@ -11,6 +11,9 @@ if [ -f keyid ]; then
     export DEB_SIGN_KEYID=$(cat keyid)
 fi
 
+echo "Vendoring Go dependencies..."
+make vendor-clean
+( cd mkdotenv && go mod tidy && go mod vendor )
 
 mkdir -p ${PKGPATH}
 rm -rv ${PKGPATH}/*

@@ -7,7 +7,6 @@ GO := go
 ARCH ?= $(shell uname -m)
 OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 
-
 INSTALL_BIN_DIR ?= /usr/local/bin
 INSTALL_MAN_DIR ?= /usr/local/share/man/man1
 
@@ -43,6 +42,13 @@ endif
 BIN_NAME ?= $(PKG_NAME)-$(OS)-$(ARCH)$(EXT)
 COMPILED_BIN_PATH ?= /tmp/$(BIN_NAME)
 
+VENDOR ?= 0
+MODFLAG :=
+ifeq ($(VENDOR),1)
+    MODFLAG := -mod=vendor
+endif
+
+
 .PHONY: all,compile,install
 
 # Default target
@@ -58,7 +64,7 @@ compile:
 	mkdir -p /tmp/go-mod-cache &&\
 	GOCACHE=/tmp/go-build-cache \
 	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) \
-	$(GO) build -ldflags "-X github.com/pc-magas/mkdotenv/msg.version=$(VERSION)" -o $(COMPILED_BIN_PATH) . &&\
+	$(GO) build $(MODFLAG) -ldflags "-X github.com/pc-magas/mkdotenv/msg.version=$(VERSION)" -o $(COMPILED_BIN_PATH) . &&\
 	cd ../
 
 test_run:
@@ -69,7 +75,7 @@ test:
 	cd ./mkdotenv &&\
 	mkdir -p /tmp/go-mod-cache &&\
 	GOCACHE=/tmp/go-build-cache \
-    $(GO) test ./... &&\
+    $(GO) test $(MODFLAG) ./... &&\
     cd ../
 
 # Raw binary build
@@ -96,6 +102,14 @@ clean:
 	rm -rf $(COMPILED_BIN_PATH)
 	rm -rf *.deb
 	rm -rf mkdotenv_$(VERSION)
+
+vendor-clean:
+	cd mkdotenv && \
+	rm -rf vendor && \
+	go clean -modcache && \
+	go mod tidy && \
+	go mod vendor && \
+	go mod verify
 
 # Build into docker image
 docker:
