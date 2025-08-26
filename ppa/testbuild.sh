@@ -2,9 +2,8 @@
 
 set -e  # Exit on any error
 
-SCRIPTPATH=$(dirname "$0")
+SCRIPTPATH=$(dirname "$0") 
 bash ${SCRIPTPATH}/package.sh
-
 VERSION=$(cat ${SCRIPTPATH}/../VERSION)
 
 ls -l ${SCRIPTPATH}/../../mkdotenv_${VERSION}.orig.tar.gz

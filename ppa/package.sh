@@ -2,6 +2,12 @@
 
 SCRIPTPATH=$(dirname "$0") 
 VERSION=$(cat ${SCRIPTPATH}/../VERSION)
+
+if [ -f  ${SCRIPTPATH}/../keyid ]; then
+    echo "Export Keyid from file"
+    export DEB_SIGN_KEYID=$(cat ${SCRIPTPATH}/../keyid)
+fi
+
 DISTROS=("jammy" "noble")
 
 SRC_FOLDER=mkdotenv_${VERSION}

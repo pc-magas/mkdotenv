@@ -10,6 +10,16 @@ SRC_FOLDER=mkdotenv_${VERSION}
 
 echo "VERSION: ${VERSION}"
 
+echo "Vendoring Go dependencies..."
+(
+  cd "${SCRIPTPATH}/../mkdotenv" || exit 1
+  go clean -modcache
+  go mod tidy
+  go mod vendor
+  go mod verify
+)
+
+
 cd ${SCRIPTPATH}
 mkdir -p ${SRC_FOLDER}
 cp -r ${SCRIPTPATH}/../mkdotenv ${SRC_FOLDER}
