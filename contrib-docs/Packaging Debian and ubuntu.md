@@ -55,6 +55,7 @@ Meaning that this step is optional.
 * `keyid` is used for debian building scripts to export the keyid in ordeer to sign the packages.
 * `EMAIL` contains the email of package maintainer. It is used for changelog syncronization.
 * `NAME` contains the name of debian package maintainer. It is used for changelog syncronization.
+* `PPA_OPVERRIDE` overrides the default ppa repository used for testing.
 
 All files are in `.gitignore` and never should be commited upon git.
 
