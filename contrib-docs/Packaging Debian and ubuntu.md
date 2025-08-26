@@ -66,12 +66,31 @@ Just run
 bash ./deb/build_debian.sh
 ```
 
-## Upload To PPA
+## PPA
 
-Run: 
+### Upload
 
-```
+##### Install nesessary utils
+
+Install nessesary tools
+
+```shell
 sudo apt-get update
 sudo apt-get install dput
-bash ./ppa/create.sh
 ```
+
+#### Test build
+
+In order to upload run:
+
+```shell
+bash ./ppa/testbuild.sh
+```
+
+### Test whether installing upon ubuntu environment works
+
+```shell
+bash ./ppa/testInstall.sh
+```
+
+The tool above requires to have [docker](https://docs.docker.com/engine/install/) installed
