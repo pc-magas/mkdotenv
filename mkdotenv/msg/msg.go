@@ -21,9 +21,14 @@ func buildArgumentUsage() string {
 	var paramUsage strings.Builder
 
 	for _, meta := range params.GetFlagsMeta() {
-		line := fmt.Sprintf("  --%s, -%s", meta.Name,meta.Name)
+		line := fmt.Sprintf("  --%s", meta.Name)
+
+		if(meta.Short != ""){
+			line+= fmt.Sprintf(", -%s",meta.Short)
+		}
+
 		for _,alias := range meta.Aliases {
-			line+= fmt.Sprintf(", --%s, -%s",alias,alias)
+			line+= fmt.Sprintf(", --%s",alias)
 		}
 		
 		line+="\t"
@@ -63,10 +68,14 @@ func buildCommandUsage() string {
 		builder.WriteString("\n\t  ")
 		for _, meta := range flags {
 			// Start with canonical flag
-			part := fmt.Sprintf("--%s|-%s", meta.Name,meta.Name)
-				
+			part := fmt.Sprintf("--%s", meta.Name)
+			
+			if(meta.Short != ""){
+				part+=fmt.Sprintf("|-%s",meta.Short)
+			}
+
 			for _,alias := range meta.Aliases {
-					part+= fmt.Sprintf("|--%s|-%s",alias,alias)
+					part+= fmt.Sprintf("|--%s",alias)
 			}
 
 			if meta.Type == params.StringType {
@@ -86,7 +95,8 @@ func buildCommandUsage() string {
 		builder.WriteString(" \\")
 	}
 
-	return builder.String()
+	usage := strings.TrimSuffix(builder.String(), " \\")
+	return usage
 }
 
 func PrintHelp() {
