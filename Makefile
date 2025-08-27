@@ -69,7 +69,7 @@ compile:
 
 test_run:
 	cd ./mkdotenv &&\
-	$(GO) run mkdotenv.go
+	$(GO) run mkdotenv.go $(ARGS)
 
 test:
 	cd ./mkdotenv &&\
