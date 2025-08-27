@@ -71,11 +71,11 @@ func buildCommandUsage() string {
 			part := fmt.Sprintf("--%s", meta.Name)
 			
 			if(meta.Short != ""){
-				part+=fmt.Sprintf("|-%s",meta.Short)
+				part+=fmt.Sprintf(" | -%s",meta.Short)
 			}
 
 			for _,alias := range meta.Aliases {
-					part+= fmt.Sprintf("|--%s",alias)
+					part+= fmt.Sprintf(" | --%s",alias)
 			}
 
 			if meta.Type == params.StringType {
