@@ -9,7 +9,7 @@ if [ -f "${SCRIPTPATH}/../PPA_OVERRIDE" ]; then
     PPA_REPO=$(cat "${SCRIPTPATH}/../PPA_OVERRIDE")
 fi
 
-COMMAND="mkdotenv -v"
+COMMAND="mkdotenv -h"
 
 # Run everything inside a temporary Docker container
 docker run --rm -it ubuntu:$UBUNTU_VERSION bash -c "
