@@ -110,11 +110,4 @@ vendor-clean:
 	go mod tidy && \
 	go mod vendor && \
 	go mod verify
-
-# Build into docker image
-docker:
-	docker build -t pcmagas/mkdotenv:$(VERSION) --build-arg VERSION=${VERSION} -t pcmagas/mkdotenv:latest .
-
-docker-push: docker
-	docker push pcmagas/mkdotenv:$(VERSION)
-	docker push pcmagas/mkdotenv:latest
+	
