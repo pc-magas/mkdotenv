@@ -75,9 +75,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: release_image
-        if: github.ref == 'refs/heads/master'
         run:
-          make docker-push
+          bash ./docker/build_docker.sh
 
 
   alpine_source:
