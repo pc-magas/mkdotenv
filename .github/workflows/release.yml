@@ -470,6 +470,7 @@ jobs:
 
   release_corpr:
     runs-on: ubuntu-latest
+    if:  github.ref == 'refs/heads/master'
     permissions:
       contents: write
     needs:
@@ -489,7 +490,7 @@ jobs:
       - name: create download dir
         run: mkdir -p ./fedora/rpmbuild/SRPMS
 
-      - name: Doenload SRPM
+      - name: Download SRPM
         uses: actions/download-artifact@v4
         with:
           name: mkdotenv-srpm
