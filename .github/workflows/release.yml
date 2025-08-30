@@ -200,9 +200,6 @@ jobs:
       - name: list_macos_bin
         run: ls -l .
 
-      - name: test_homebrew_formula_locally
-        run: brew install --formula ./macos/bin/mkdotenv.rb
-
       - name: execute mkdotenv
         run: mkdotenv --help
 
@@ -439,7 +436,7 @@ jobs:
 
       - name: Test Homebrew install
         run: brew install --formula ./macos/bin/mkdotenv.rb
-      
+
       - name: Create Pull Request to homebrew repo
         if:  github.ref == 'refs/heads/master'
         env:
