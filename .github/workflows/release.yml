@@ -197,11 +197,8 @@ jobs:
       - name: list_macos_bin
         run: ls -l ./bin
 
-      - name: list_macos_bin
-        run: ls -l .
-
-      - name: execute mkdotenv
-        run: mkdotenv --help
+      - name: test execute
+        run: ./bin/mkdotenv-darwin-arm64 --help
 
       - name: Upload Binary artifact
         uses: actions/upload-artifact@v4
