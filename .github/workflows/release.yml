@@ -434,11 +434,7 @@ jobs:
         run:
           sed -i -E "s|url.*|url \"https://github.com/pc-magas/mkdotenv/releases/download/v#{version}/mkdotenv-macos.zip\"|" ./macos/bin/mkdotenv.rb
 
-      - name: Test Homebrew install
-        run: brew install --formula ./macos/bin/mkdotenv.rb
-
-      - name: Create Pull Request to homebrew repo
-        if:  github.ref == 'refs/heads/master'
+      - name: setup git and clone brew formula
         env:
           GH_PAT: ${{ secrets.HOMEBREW_PAT }}
         run: |
@@ -451,10 +447,24 @@ jobs:
           # Create new branch for PR
           git checkout -b update-formula-${{ github.run_number }}
 
-          # Copy updated file
+      - name: setup formula
+        run: |
           mkdir -p ./Formula
           cp ../macos/bin/mkdotenv.rb ./Formula/mkdotenv.rb
+      
+      - name: test formula installation
+        run: |
+          brew update-reset >/dev/null
+          brew install --build-from-source ./Formula/mkdotenv.rb
+          # Verify it works by running the installed binary
+          mkdotenv --version
 
+
+      - name: Create Pull Request to homebrew repo
+        if:  github.ref == 'refs/heads/master'
+        env:
+          GH_PAT: ${{ secrets.HOMEBREW_PAT }}
+        run: |
           git add ./Formula/mkdotenv.rb
           git commit -m "Update formula via GitHub Actions"
           git push origin update-formula-${{ github.run_number }}
