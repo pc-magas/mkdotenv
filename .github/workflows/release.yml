@@ -456,11 +456,18 @@ jobs:
           # Verify it works by running the installed binary
           mkdotenv --version
 
+      - name: Generate GitHub App token
+        id: token
+        uses: qoomon/actions--access-token@v2
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          repositories: pc-magas/homebrew-mkdotenv
 
       - name: Create Pull Request to homebrew repo
-        if:  github.ref == 'refs/heads/master'
+        # if:  github.ref == 'refs/heads/master'
         env:
-          GH_PAT: ${{ secrets.HOMEBREW_PAT }}
+          GH_PAT: ${{ steps.token.outputs.token }}
         run: |
           # Create new branch for PR
           git checkout -b update-formula-${{ github.run_number }}
