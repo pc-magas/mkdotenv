@@ -3,9 +3,9 @@ package params
 import(
 	"slices"
 	"errors"
-	"flag"
 	"fmt"
 )
+import flag "github.com/spf13/pflag"
 
 type CLIArgType string
 
@@ -19,6 +19,7 @@ type FlagMeta struct {
     Name        string   // canonical flag name
 	Type 		CLIArgType
 	DefaultValue string
+	Short 		string   // short value of the flag
     Aliases     []string // e.g., "h" is alias for "help"
     Required    bool     // whether the flag is required
     Usage       string   // help message
@@ -43,7 +44,8 @@ var FLAG_ARGUMENTS = []string{}
 var flagsMeta = []FlagMeta{
     {
         Name:     "help",
-        Aliases:  []string{"h"},
+        Aliases:  []string{},
+		Short: "h",
         Required: false,
         Usage:    "Display help message and exit",
 		Type:  	BoolType,
@@ -51,7 +53,8 @@ var flagsMeta = []FlagMeta{
     },
     {
         Name:     "version",
-        Aliases:  []string{"v"},
+        Aliases:  []string{},
+		Short: "v",
         Required: false,
 		Type:  	BoolType,
         Usage:    "Display version and exit",
@@ -113,16 +116,27 @@ func initFlags() (*flag.FlagSet) {
 
         switch meta.Type {
 			case StringType:
-				flagSet.String(meta.Name, meta.DefaultValue, meta.Usage)
+				
+				if(meta.Short == ""){
+					flagSet.String(meta.Name, meta.DefaultValue, meta.Usage)
+				} else {
+					flagSet.StringP(meta.Name, meta.Short, meta.DefaultValue, meta.Usage)
+				}
+
 				for _, alias := range meta.Aliases {
-					FLAG_ARGUMENTS=append(FLAG_ARGUMENTS,"-"+alias)
 					FLAG_ARGUMENTS=append(FLAG_ARGUMENTS,"--"+alias)
 					flagSet.String(alias, meta.DefaultValue, "(alias of --"+meta.Name+") "+meta.Usage)
 				}
 
 			case BoolType:
 				def := meta.DefaultValue == "true"
-				flagSet.Bool(meta.Name, def, meta.Usage)
+
+				if(meta.Short == ""){
+					flagSet.Bool(meta.Name, def, meta.Usage)
+				} else {
+					flagSet.BoolP(meta.Name,meta.Short, def, meta.Usage)
+				}
+				
 				for _, alias := range meta.Aliases {
 					flagSet.Bool(alias, def, "(alias of --"+meta.Name+") "+meta.Usage)
 				}

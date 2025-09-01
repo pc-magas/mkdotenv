@@ -45,6 +45,8 @@ notes.txt
 TAR_FILES
 EMAIL
 NAME
+PPA_OVERRIDE
 
 *.swp
 
+vendor

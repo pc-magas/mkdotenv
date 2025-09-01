@@ -1,5 +1,5 @@
 class Mkdotenv < Formula
-  version "0.4.0"
+  version "0.4.2"
   desc "Simplify Your .env Files – One Variable at a Time!"
 
   homepage "https://github.com/pc-magas/mkdotenv"
@@ -13,8 +13,6 @@ class Mkdotenv < Formula
   def install
     bin.install "mkdotenv"
   end
-
-  # COmment for new version
 
   test do
     system "#{bin}/mkdotenv", "--help"

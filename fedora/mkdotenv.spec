@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.4.0
+Version:        0.4.2
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -105,3 +105,13 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 - Use variable-name parameter for setting the value as variable value.
 - [NEW FEATURE] Flag to remove multiple occurences of the variable.
 - [NEW FEATURE] Use - value upon in order to output modified .env contents upon stdout. Default behaviour is outputing upon .env
+
+* Wed Aug 20 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.1-1
+- Use Seperate script for debian builds
+
+* Wed Aug 27 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.2-1
+- Use Seperate script for debian builds
+- Vendor dependencies upon build.
+- Introducing tools for PPA and debian building
+- Improve Documentation
+- Use `pflag` for argument parsing

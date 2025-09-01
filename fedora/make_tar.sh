@@ -12,6 +12,15 @@ SRC_DEST=/tmp/${SRC_FOLDER}
 
 cd ${SCRIPTPATH}
 
+echo "Vendoring Go dependencies..."
+(
+  cd "${SCRIPTPATH}/../mkdotenv" || exit 1
+  go clean -modcache
+  go mod tidy
+  go mod vendor
+  go mod verify
+)
+
 mkdir -p ${RPM_SRC}
 mkdir -p ${SRC_DEST}
 

@@ -1,3 +1,15 @@
+# Version 0.4.2 2025-08-27
+
+Use Seperate script for debian builds
+Vendor dependencies upon build.
+Introducing tools for PPA and debian building
+Improve Documentation
+Use `pflag` for argument parsing
+
+# Version 0.4.1 2025-08-20
+
+Use Seperate script for debian builds
+
 # Version 0.4.0 2025-07-18
 
 Fix alpine build.

@@ -13,7 +13,7 @@ mkdir -p ${RPM_SRC}
 
 GENERATED_TAR=$(bash ${SCRIPTPATH}/make_tar.sh)
 
-echo "TAR COntents"
+echo "TAR Contents"
 tar tzf ${GENERATED_TAR} | head -n 1
 
 echo "Recreating RPM Storage folder"

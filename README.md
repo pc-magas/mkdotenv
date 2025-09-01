@@ -228,7 +228,6 @@ Mkdotenv is shipped via [AUR](https://aur.archlinux.org/packages/mkdotenv), use 
 ```
 yay mkdotenv
 ```
-
 ## Install upon Windows
 
 Windows builds are provided as standalone binaries without an installer.
