@@ -460,7 +460,6 @@ jobs:
         id: token
         uses: qoomon/actions--access-token@v2
         with:
-          app-id: ${{ secrets.GH_APP_ID }}
           repositories: pc-magas/homebrew-mkdotenv
 
       - name: Create Pull Request to homebrew repo
