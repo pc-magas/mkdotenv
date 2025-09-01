@@ -442,7 +442,7 @@ jobs:
           cd homebrew-mkdotenv
 
           # Create new branch for PR
-          git checkout -b update-formula-${{ github.run_number }}
+          git checkout -b test-update-formula-${{ github.run_number }}
 
       - name: setup formula
         run: |
@@ -462,6 +462,9 @@ jobs:
         env:
           GH_PAT: ${{ secrets.HOMEBREW_PAT }}
         run: |
+          # Create new branch for PR
+          git checkout -b update-formula-${{ github.run_number }}
+
           git add ./Formula/mkdotenv.rb
           git commit -m "Update formula via GitHub Actions"
           git push origin update-formula-${{ github.run_number }}
