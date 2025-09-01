@@ -451,6 +451,7 @@ jobs:
       
       - name: test formula installation
         run: |
+          cd ./Formula
           brew update-reset >/dev/null
           brew install --build-from-source ./Formula/mkdotenv.rb
           # Verify it works by running the installed binary
