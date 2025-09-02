@@ -460,15 +460,11 @@ jobs:
         id: token
         uses: qoomon/actions--access-token@v3
         with:
-          repositories: |
-            [
-              "pc-magas/homebrew-mkdotenv"
-            ]
-          permissions: |
-            [
-              "contents:write",
-              "pull_requests:write"
-            ]
+          repositories: "pc-magas/homebrew-mkdotenv"
+          permissions: 
+              contents:read,
+              pull_requests:write
+            
 
       - name: Create Pull Request to homebrew repo
         # if:  github.ref == 'refs/heads/master'
