@@ -462,7 +462,7 @@ jobs:
         with:
           repositories: "pc-magas/homebrew-mkdotenv"
           permissions: 
-              contents:read,
+              contents:read
               pull_requests:write
             
 
