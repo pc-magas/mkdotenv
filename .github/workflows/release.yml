@@ -465,9 +465,6 @@ jobs:
           brew install-path ./Formula/mkdotenv.rb
           # Verify it works by running the installed binary
           mkdotenv --version
-
-
-
             
       - name: Create Pull Request to homebrew repo
         # if:  github.ref == 'refs/heads/master'
@@ -482,9 +479,20 @@ jobs:
           git push origin update-formula-${{ github.run_number }}
 
           # Create a PR using GitHub CLI
-          gh auth login --with-token <<< "$GH_PAT"
           VERSION=$(grep -E '^  version ' ./Formula/mkdotenv.rb | sed 's/.*"\(.*\)".*/\1/')
-          gh pr create --title "Update formula [VERSION $(echo ${VERSION})]" --body "Automated update" --head update-formula-${{ github.run_number }} --base master
+          BRANCH_NAME=update-formula-${{ github.run_number }}
+
+          curl -X POST https://api.github.com/repos/pc-magas/homebrew-mkdotenv/pulls \
+            -H "Authorization: Bearer $GH_PAT" \
+            -H "Accept: application/vnd.github+json" \
+            -d @- <<EOF
+          {
+            "title": "Update formula [VERSION $VERSION]",
+            "head": "$BRANCH_NAME",
+            "base": "master",
+            "body": "Automated update"
+          }
+          EOF
 
   release_corpr:
     runs-on: ubuntu-latest
