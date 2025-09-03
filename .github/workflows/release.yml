@@ -482,8 +482,6 @@ jobs:
           VERSION=$(grep -E '^  version ' ./Formula/mkdotenv.rb | sed 's/.*"\(.*\)".*/\1/')
           BRANCH_NAME=update-formula-${{ github.run_number }}
 
-
-
           curl --fail-with-body -vvv -X POST https://api.github.com/repos/pc-magas/homebrew-mkdotenv/pulls \
             -H "Authorization: Bearer $GH_PAT" \
             -H "Accept: application/vnd.github+json" \
