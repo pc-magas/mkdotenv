@@ -1,3 +1,10 @@
+mkdotenv (0.4.3-0debian1~unstable1) unstable; urgency=medium
+
+  * Fix version upon manpage and remove non-existent arguments
+  * Fix pipeline upon releasing macos homebrew fromula.
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Wed, 03 Sep 2025 23:00:24 +0300
+
 mkdotenv (0.4.2-0debian1~unstable1) unstable; urgency=medium
 
   * Use Seperate script for debian builds

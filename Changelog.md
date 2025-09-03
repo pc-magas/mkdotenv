@@ -1,3 +1,8 @@
+# Version 0.4.3 2025-09-03
+
+Fix version upon manpage and remove non-existent arguments
+Fix pipeline upon releasing macos homebrew fromula.
+
 # Version 0.4.2 2025-08-27
 
 Use Seperate script for debian builds

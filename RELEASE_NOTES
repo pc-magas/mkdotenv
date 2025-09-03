@@ -1,5 +1,2 @@
-Use Seperate script for debian builds
-Vendor dependencies upon build.
-Introducing tools for PPA and debian building
-Improve Documentation
-Use `pflag` for argument parsing
+Fix version upon manpage and remove non-existent arguments
+Fix pipeline upon releasing macos homebrew fromula.
