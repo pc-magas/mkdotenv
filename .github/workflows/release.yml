@@ -456,6 +456,7 @@ jobs:
 
       - name: setup formula
         run: |
+          cd homebrew-mkdotenv
           mkdir -p ./Formula
           cp ./macos/bin/mkdotenv.rb ./Formula/mkdotenv.rb
       
