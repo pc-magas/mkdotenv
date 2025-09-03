@@ -470,6 +470,8 @@ jobs:
         env:
           GH_PAT: ${{ steps.token.outputs.token }}
         run: |
+          cd homebrew-mkdotenv
+
           # Create new branch for PR
           git checkout -b update-formula-${{ github.run_number }}
 
