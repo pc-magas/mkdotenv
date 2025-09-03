@@ -462,6 +462,7 @@ jobs:
       
       - name: test formula installation
         run: |
+          cd homebrew-mkdotenv
           brew install nikitabobko/tap/brew-install-path
           brew install-path ./Formula/mkdotenv.rb
           # Verify it works by running the installed binary
