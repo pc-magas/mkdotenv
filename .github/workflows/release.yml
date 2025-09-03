@@ -406,6 +406,7 @@ jobs:
     runs-on: macos-latest
     permissions:
       contents: write
+      id-token: write
     needs:
       - release
       - build_mac
@@ -466,7 +467,6 @@ jobs:
             pull_requests: write
 
             
-
       - name: Create Pull Request to homebrew repo
         # if:  github.ref == 'refs/heads/master'
         env:
