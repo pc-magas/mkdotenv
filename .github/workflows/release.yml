@@ -432,9 +432,18 @@ jobs:
         run:
           sed -i -E "s|url.*|url \"https://github.com/pc-magas/mkdotenv/releases/download/v#{version}/mkdotenv-macos.zip\"|" ./macos/bin/mkdotenv.rb
 
+      - name: Generate GitHub App token
+        id: token
+        uses: qoomon/actions--access-token@v3
+        with:
+          repository: pc-magas/homebrew-mkdotenv
+          permissions: |
+            contents: write
+            pull_requests: write
+
       - name: setup git and clone brew formula
         env:
-          GH_PAT: ${{ secrets.HOMEBREW_PAT }}
+          GH_PAT: ${{ steps.token.outputs.token }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
@@ -457,14 +466,7 @@ jobs:
           # Verify it works by running the installed binary
           mkdotenv --version
 
-      - name: Generate GitHub App token
-        id: token
-        uses: qoomon/actions--access-token@v3
-        with:
-          repository: pc-magas/homebrew-mkdotenv
-          permissions: |
-            contents: write
-            pull_requests: write
+
 
             
       - name: Create Pull Request to homebrew repo
