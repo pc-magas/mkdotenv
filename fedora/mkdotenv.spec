@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.4.2
+Version:        0.4.3
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -115,3 +115,7 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 - Introducing tools for PPA and debian building
 - Improve Documentation
 - Use `pflag` for argument parsing
+
+* Wed Sep 03 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.3-1
+- Fix version upon manpage and remove non-existent arguments
+- Fix pipeline upon releasing macos homebrew fromula.
