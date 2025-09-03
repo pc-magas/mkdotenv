@@ -486,7 +486,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Content-Type: application/json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            -d "{\"title\": \"Update formula [VERSION $VERSION]\",\"head\": \"pc-magas:$BRANCH_NAME\",\"base\": \"master\",\"body\": \"Automated update\"}"
+            -d "{\"title\": \"Update formula [VERSION $VERSION]\",\"head\": \"$BRANCH_NAME\",\"base\": \"master\",\"body\": \"Automated update\"}"
 
   release_corpr:
     runs-on: ubuntu-latest
