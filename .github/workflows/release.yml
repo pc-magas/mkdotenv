@@ -484,14 +484,9 @@ jobs:
           curl --fail-with-body -vvv -X POST https://api.github.com/repos/pc-magas/homebrew-mkdotenv/pulls \
             -H "Authorization: Bearer $GH_PAT" \
             -H "Accept: application/vnd.github+json" \
-            -d @- <<EOF
-          {
-            "title": "Update formula [VERSION $VERSION]",
-            "head": "pc-magas:$BRANCH_NAME",
-            "base": "master",
-            "body": "Automated update"
-          }
-          EOF
+            -H "Content-Type: application/json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -d '{"title": "Update formula [VERSION $VERSION]","head": "pc-magas:$BRANCH_NAME","base": "master","body": "Automated update"}'
 
   release_corpr:
     runs-on: ubuntu-latest
