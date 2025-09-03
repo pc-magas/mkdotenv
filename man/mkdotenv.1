@@ -3,8 +3,8 @@
 mkdotenv \- A command-line tool to add or update environment variables in a .env file.
 .SH SYNOPSIS
 .B mkdotenv
-[\fI--help\fR|\fI-help\fR|\fI--h\fR|\fI-h\fR] 
-[\fI--version\fR|\fI-version\fR|\fI--v\fR|\fI-v\fR] 
+[\fI--help\fR | \fI-h\fR] 
+[\fI--version\fR | \fI-v\fR] 
 \fI--variable-name\fR <\fIVARIABLE_NAME\fR> \fI--variable-value\fR <\fIVARIABLE_VALUE\fR> 
 [\fI--env-file\fR <\fIFILE\fR>|\fI--input-file\fR <\fIFILE\fR>] 
 [\fI--output-file\fR <\fIFILE\fR>] 
@@ -29,19 +29,19 @@ The value assigned to the \fIVARIABLE_NAME\fR.
 
 .SH OPTIONAL OPTIONS
 .TP
-.B --help, -help, --h, -h
+.B --help, -h
 Display the help message and exit.
 .TP
-.B --version, -version, --v, -v
+.B --version, -v
 Display the application version and exit.
 .TP
-.B --env-file <file>, -env-file <file>, --input-file <file>, -input-file <file>
+.B --env-file <file>, --input-file <file>
 Specify the .env file to read from. Defaults to \fB.env\fR in the current directory.
 .TP
-.B --output-file <file>, -output-file <file>
+.B --output-file <file>
 Write the modified contents to the specified file. Use \fB-\fR to write to standard output.
 .TP
-.B --remove-doubles, -remove-doubles
+.B --remove-doubles
 Remove duplicate variable entries from the file, keeping only the first occurrence.
 
 .SH EXAMPLES
