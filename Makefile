@@ -4,40 +4,48 @@ BUILD = 1
 VERSION ?= $(shell [ -f VERSION ] && cat VERSION || echo dev)
 GO := go
 
-ARCH ?= $(shell uname -m)
-OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
-
 INSTALL_BIN_DIR ?= /usr/local/bin
 INSTALL_MAN_DIR ?= /usr/local/share/man/man1
 
-UNAME_S := $(shell uname -s)
-UNAME_M := $(shell uname -m)
+OS   ?= $(GOOS)
+ARCH ?= $(GOARCH)
 
-# Map to GOOS
-ifeq ($(UNAME_S),Darwin)
+# Fallback: only if not set
+ifeq ($(OS),)
+  UNAME_S := $(shell uname -s 2>/dev/null || echo Unknown)
+  ifeq ($(UNAME_S),Darwin)
     OS := darwin
-else ifeq ($(UNAME_S),Linux)
+  else ifeq ($(UNAME_S),Linux)
     OS := linux
-else ifeq ($(OS),)
+  else ifneq (,$(findstring MINGW,$(UNAME_S)))
+    OS := windows
+  else ifneq (,$(findstring MSYS,$(UNAME_S)))
+    OS := windows
+  else ifneq (,$(findstring CYGWIN,$(UNAME_S)))
+    OS := windows
+  else
     OS := unknown
+  endif
 endif
 
-# Map to GOARCH
-ifeq ($(UNAME_M),x86_64)
+ifeq ($(ARCH),)
+  UNAME_M := $(shell uname -m)
+  ifeq ($(UNAME_M),x86_64)
     ARCH := amd64
-else ifeq ($(UNAME_M),arm64)
+  else ifeq ($(UNAME_M),arm64)
     ARCH := arm64
-else ifeq ($(ARCH),)
+  else
     ARCH := unknown
+  endif
 endif
-
-EXT :=
-CGO := 1
 
 ifeq ($(OS),windows)
     EXT := .exe
 	CGO := 0
 endif
+
+EXT :=
+CGO := 0
 
 BIN_NAME ?= $(PKG_NAME)-$(OS)-$(ARCH)$(EXT)
 COMPILED_BIN_PATH ?= /tmp/$(BIN_NAME)
