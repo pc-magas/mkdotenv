@@ -39,13 +39,13 @@ ifeq ($(ARCH),)
   endif
 endif
 
-ifeq ($(OS),windows)
-    EXT := .exe
-	CGO := 0
-endif
-
 EXT :=
 CGO := 0
+
+ifeq ($(OS),windows)
+    EXT := .exe
+endif
+
 
 BIN_NAME ?= $(PKG_NAME)-$(OS)-$(ARCH)$(EXT)
 COMPILED_BIN_PATH ?= /tmp/$(BIN_NAME)
