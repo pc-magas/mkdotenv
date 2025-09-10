@@ -23,19 +23,12 @@ mkdir -p ${RELEASE_DIR}
 TARGZ_NAME=mkdotenv-${VERSION}.tar.gz
 TARGZ=${OVERLAY}/${TARGZ_NAME}
 
-sed -i "s|pkgver=".*"|pkgver="${VERSION}"|" ${SCRIPT_DIR}/APKBUILD-template
-
-APKBUILD_OVERLAY=${OVERLAY}/APKBUILD
-
 ORIG_TAR=$(bash ${SCRIPT_DIR}/make_tar.sh)
-
 cp ${ORIG_TAR} ${TARGZ}
 
-cp ${SCRIPT_DIR}/APKBUILD-template ${APKBUILD_OVERLAY}
+bash ${SCRIPT_DIR}/make_apkbuild.sh ${OVERLAY} --src_local
 
 tar -tzf ${TARGZ}
-
-sed -i '/^source="\$pkgname-\$pkgver.tar.gz::https:\/\/github.com\/pc-magas\/mkdotenv\/archive\/refs\/tags\/v\$pkgver.tar.gz"/d' ${APKBUILD_OVERLAY}
 
 docker run \
     -v ${OVERLAY}:/usr/src/apkbuild  \

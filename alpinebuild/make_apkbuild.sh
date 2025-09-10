@@ -6,34 +6,26 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=$(cat "${SCRIPT_DIR}/../VERSION")
 
 VOLUME_DIR=${SCRIPT_DIR}/volumes
-OVERLAY=${VOLUME_DIR}/apkbuild-overlay
 
 # Defaults
 LOCAL=0
-OUTPUT_DIR=""
+OUTPUT_DIR="${SCRIPT_DIR}"
 
 # Parse arguments (order-independent)
 for arg in "$@"; do
     case "$arg" in
-        --local)
+        --src_local)
             LOCAL=1
             ;;
         *)
-            # If OUTPUT_DIR not set yet, treat as directory
-            if [[ -z "$OUTPUT_DIR" ]]; then
-                OUTPUT_DIR="$arg"
-            fi
+            OUTPUT_DIR="$arg"
             ;;
     esac
 done
 
 # Set default directory if not provided
 if [[ -z "$OUTPUT_DIR" ]]; then
-    if [[ $LOCAL -eq 1 ]]; then
-        OUTPUT_DIR="${OVERLAY}"
-    else
-        OUTPUT_DIR="${SCRIPT_DIR}"
-    fi
+    OUTPUT_DIR="${SCRIPT_DIR}"
 fi
 
 # Ensure output directory exists
@@ -58,5 +50,22 @@ else
 fi
 
 echo "options=\"!check\" # No tests" >> "${APKBUILD_PATH}"
+
+echo "" >> "${APKBUILD_PATH}"
+
+if [[ -d "${SCRIPT_DIR}/APKBUILD.d" ]]; then
+    for step_file in "${SCRIPT_DIR}/APKBUILD.d/"*; do
+        base_file=$(basename "$step_file")
+        [[ "$base_file" == ".gitignore" ]] && continue
+        if [[ -f "$step_file" ]]; then
+            echo "source file: $base_file"
+            echo "$base_file(){" >> "${APKBUILD_PATH}"
+            sed '/./!d' "$step_file" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | tr -d "\n" | sed 's/^/    /' >> "${APKBUILD_PATH}"
+            echo $value >> "${APKBUILD_PATH}"
+            echo "}" >> "${APKBUILD_PATH}"
+            echo "" >> "${APKBUILD_PATH}"
+        fi
+    done
+fi
 
 echo "APKBUILD written to ${APKBUILD_PATH}"
