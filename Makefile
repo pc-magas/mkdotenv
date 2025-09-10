@@ -7,36 +7,54 @@ GO := go
 INSTALL_BIN_DIR ?= /usr/local/bin
 INSTALL_MAN_DIR ?= /usr/local/share/man/man1
 
-OS   ?= $(GOOS)
-ARCH ?= $(GOARCH)
+OS ?= $(GOOS)
 
-# Fallback: only if not set
 ifeq ($(OS),)
-  UNAME_S := $(shell uname -s 2>/dev/null || echo Unknown)
-  ifeq ($(UNAME_S),Darwin)
-    OS := darwin
-  else ifeq ($(UNAME_S),Linux)
-    OS := linux
-  else ifneq (,$(findstring MINGW,$(UNAME_S)))
-    OS := windows
-  else ifneq (,$(findstring MSYS,$(UNAME_S)))
-    OS := windows
-  else ifneq (,$(findstring CYGWIN,$(UNAME_S)))
-    OS := windows
-  else
-    OS := unknown
-  endif
+  OS := $(shell uname -s 2>/dev/null || echo Unknown)
 endif
 
+ifeq ($(OS),Darwin)
+    OS := darwin
+else ifeq ($(OS),Linux)
+    OS := linux
+else ifneq (,$(findstring MINGW,$(OS)))
+    OS := windows
+else ifneq (,$(findstring MSYS,$(OS)))
+    OS := windows
+else ifneq (,$(findstring CYGWIN,$(OS)))
+    OS := windows
+else
+    OS := unknown
+endif
+
+ARCH ?= $(GOARCH)
+
 ifeq ($(ARCH),)
-  UNAME_M := $(shell uname -m)
-  ifeq ($(UNAME_M),x86_64)
+  ARCH := $(shell uname -m)
+endif
+
+ifeq ($(ARCH),x86_64)
     ARCH := amd64
-  else ifeq ($(UNAME_M),arm64)
+else ifeq ($(ARCH),i386)
+    ARCH := 386
+else ifeq ($(ARCH),i686)
+    ARCH := 386
+else ifeq ($(ARCH),arm64)
     ARCH := arm64
-  else
+else ifeq ($(ARCH),aarch64)
+    ARCH := arm64
+else ifeq ($(ARCH),armv7l)
+    ARCH := arm
+else ifeq ($(ARCH),armv6l)
+    ARCH := arm
+else ifeq ($(ARCH),ppc64le)
+    ARCH := ppc64le
+else ifeq ($(ARCH),s390x)
+    ARCH := s390x
+else ifeq ($(ARCH),riscv64)
+    ARCH := riscv64
+else
     ARCH := unknown
-  endif
 endif
 
 EXT :=
