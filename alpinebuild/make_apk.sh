@@ -26,8 +26,14 @@ TARGZ=${OVERLAY}/${TARGZ_NAME}
 ORIG_TAR=$(bash ${SCRIPT_DIR}/make_tar.sh)
 cp ${ORIG_TAR} ${TARGZ}
 
-bash ${SCRIPT_DIR}/make_apkbuild.sh ${OVERLAY} --src_local
+echo "Generate APKBUILD"
+echo ${SCRIPT_DIR}
+echo ${TARGZ}
+bash ${SCRIPT_DIR}/make_apkbuild.sh ${SCRIPT_DIR} --src_local --checksum "$(sha512sum ${TARGZ} | awk '{print $1}')"
 
+cp ${SCRIPT_DIR}/APKBUILD ${OVERLAY}/
+
+echo "TAR contents"
 tar -tzf ${TARGZ}
 
 docker run \
@@ -35,4 +41,4 @@ docker run \
     -v ${ABUILD_VOLUME}:/home/packager/.abuild \
     -v ${VOLUME_DIR}/keys:/etc/apk/keys \
     -v ${RELEASE_DIR}:/home/packager/release \
-    ghcr.io/pc-magas/alpinebuild
+    ghcr.io/pc-magas/alpinebuild build --no-checksum

@@ -2,6 +2,8 @@
 
 set -e
 
+echo "Script Started"
+
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=$(cat "${SCRIPT_DIR}/../VERSION")
 
@@ -10,31 +12,46 @@ VOLUME_DIR=${SCRIPT_DIR}/volumes
 # Defaults
 LOCAL=0
 OUTPUT_DIR="${SCRIPT_DIR}"
+PKGNAME="mkdotenv"
+
 
 # Parse arguments (order-independent)
-for arg in "$@"; do
-    case "$arg" in
+while [[ $# -gt 0 ]]; do
+    case "$1" in
         --src_local)
             LOCAL=1
+            shift
+            ;;
+        --checksum)
+            CHECKSUM="$2"
+            shift 2
             ;;
         *)
-            OUTPUT_DIR="$arg"
+            OUTPUT_DIR="$1"
+            shift
             ;;
     esac
 done
+
+echo "HERE"
 
 # Set default directory if not provided
 if [[ -z "$OUTPUT_DIR" ]]; then
     OUTPUT_DIR="${SCRIPT_DIR}"
 fi
 
+
 # Ensure output directory exists
 mkdir -p "${OUTPUT_DIR}"
 APKBUILD_PATH="${OUTPUT_DIR}/APKBUILD"
 
+echo "Version: ${VERSION}"
+echo "Provided SHA512: ${CHECKSUM}"
+echo "APKBUILD path ${APKBUILD_PATH}"
+
 # Write APKBUILD
 echo "# Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>" > "${APKBUILD_PATH}"
-echo "pkgname=mkdotenv" >> "${APKBUILD_PATH}"
+echo "pkgname=${PKGNAME}" >> "${APKBUILD_PATH}"
 echo "pkgver=${VERSION}" >> "${APKBUILD_PATH}"
 echo "pkgrel=0" >> "${APKBUILD_PATH}"
 echo "pkgdesc=\"Lightweight and efficient tool for managing your .env files.\"" >> "${APKBUILD_PATH}"
@@ -67,5 +84,15 @@ if [[ -d "${SCRIPT_DIR}/APKBUILD.d" ]]; then
         fi
     done
 fi
+
+if [[ -n "$CHECKSUM" ]]; then
+
+    echo "Write checksum"
+    echo "sha512sums=\"" >> "${APKBUILD_PATH}"
+    echo "${CHECKSUM} ${PKGNAME}-${VERSION}.tar.gz"  >> "${APKBUILD_PATH}"
+    echo "\"" >> "${APKBUILD_PATH}"
+
+fi
+
 
 echo "APKBUILD written to ${APKBUILD_PATH}"
