@@ -29,7 +29,8 @@ cp ${ORIG_TAR} ${TARGZ}
 echo "Generate APKBUILD"
 echo ${SCRIPT_DIR}
 echo ${TARGZ}
-bash ${SCRIPT_DIR}/make_apkbuild.sh ${SCRIPT_DIR} --src_local --checksum "$(sha512sum ${TARGZ} | awk '{print $1}')"
+CHECKSUM=$(sha512sum ${TARGZ} | awk '{print $1}')""
+bash ${SCRIPT_DIR}/make_apkbuild.sh ${SCRIPT_DIR} --src_local --checksum "${CHECKSUM}"
 
 cp ${SCRIPT_DIR}/APKBUILD ${OVERLAY}/
 
@@ -42,3 +43,15 @@ docker run \
     -v ${VOLUME_DIR}/keys:/etc/apk/keys \
     -v ${RELEASE_DIR}:/home/packager/release \
     ghcr.io/pc-magas/alpinebuild build --no-checksum
+
+echo "Releasing source file"
+cp ${TARGZ} ${RELEASE_DIR}/
+echo "Tar.gz released upon ${RELEASE_DIR}"
+
+echo "Fixing APKBUILD for remote"
+cp ${RELEASE_DIR}/APKBUILD ${RELEASE_DIR}/APKBUILD.local
+bash ${SCRIPT_DIR}/make_apkbuild.sh ${RELEASE_DIR}/APKBUILD --checksum "${CHECKSUM}"
+
+echo "RELEASED FILES"
+
+ls -l ${RELEASE_DIR}
