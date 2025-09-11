@@ -79,42 +79,7 @@ jobs:
           bash ./docker/build_docker.sh
 
 
-  alp:
-    runs-on: ubuntu-latest
-    needs: tag_git
-    
-    permissions:
-      contents: write
-    
-    steps:
-
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0       
-
-      - name: make tar
-        id: make_tar
-        run:
-          echo "tar_file=$(bash ./alpinebuild/make_tar.sh)" >> "$GITHUB_OUTPUT" 
-
-      - name: make apkfile
-        run:
-          bash ./alpinebuild/release_apkfile.sh
-
-      - name: list file
-        run:
-          ls -l ./alpinebuild/${{ env.make_tar.tar_file }}
-
-      - name: Upload Source Tarball
-        uses: actions/upload-artifact@v4
-        with:
-          name: mkdotenv-source-tar
-          path: |
-            ./alpinebuild/${{ env.make_tar.tar_file }}
-            ./alpinebuild/APKFILE
-          if-no-files-found: error
-
-  alpine_apk:
+  alpine:
     runs-on: ubuntu-latest
     needs: tag_git
     
@@ -127,6 +92,7 @@ jobs:
         with:
           fetch-depth: 0   
 
+      # Make APK generates APK, source code AND APKFILE
       - name: make_apk
         run: |
           cd ./alpinebuild &&\
