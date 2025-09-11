@@ -332,8 +332,7 @@ jobs:
       - build_mac
       - build_deb
       - build_rpm
-      - alpine_source
-      - alpine_apk
+      - alpine
 
     steps:
 
