@@ -566,7 +566,7 @@ jobs:
           BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
           # Create new branch for PR
 
-          git add ./Formula/mkdotenv.rb
+          git add ./APKBUILD
           git commit -m "Update formula via GitHub Actions"
           git push origin ${BRANCH_NAME}
       
