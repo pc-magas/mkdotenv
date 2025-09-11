@@ -552,13 +552,13 @@ jobs:
           git config --global user.email "actions@github.com"
 
           git clone https://x-access-token:${GH_PAT}@github.com/pc-magas/mkdotenv-alpine-staging.git
-          cd homebrew-mkdotenv
+          cd mkdotenv-alpine-staging
 
           # Create new branch for PR
           git checkout -b test-update-formula-${{ github.run_number }}
 
       - name: copy APKBUILD
-        run: cp ./alpinebuild/release/APKBUILD ./mkdotenv-alpine-staging
+        run: cp ./alpinebuild/release/APKBUILD ./mkdotenv-alpine-staging/
     
       - name: commit push and PR
         run: |
