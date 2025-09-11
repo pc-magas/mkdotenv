@@ -96,7 +96,7 @@ jobs:
       - name: make_apk
         run: |
           cd ./alpinebuild &&\
-          bash ./alpinebuild/make_apk.sh &&\
+          bash ./make_apk.sh &&\
           ls -l ./release/home/x86_64 &&\
           ls -l ./release
 
