@@ -116,12 +116,12 @@ jobs:
             ./alpinebuild/release/${{ env.make_tar.tar_file }}
           if-no-files-found: error
 
-      - name: Upload APKFILE
+      - name: Upload APKBUILD
         uses: actions/upload-artifact@v4
         with:
           name: mkdotenv-apkfile
           path: |
-            ./alpinebuild/release/APKFILE
+            ./alpinebuild/release/APKBUILD
           if-no-files-found: error
 
           
