@@ -1,3 +1,10 @@
+mkdotenv (0.4.8-0debian1~unstable1) unstable; urgency=medium
+
+  * Enable GCO on some architectures also allow default GCO
+    architectures as well.
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Sat, 13 Sep 2025 00:22:31 +0300
+
 mkdotenv (0.4.7-0debian1~unstable1) unstable; urgency=medium
 
   * Autoenable gco support on some architectures. Windows only for
