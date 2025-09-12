@@ -1,3 +1,7 @@
+# Version 0.4.5 2025-09-12
+
+Vendor dependencies upon alpine vendor source.
+
 # Version 0.4.4 2025-09-12
 
 Alpine changes upon Makefile.
