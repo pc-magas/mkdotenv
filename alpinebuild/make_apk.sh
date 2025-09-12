@@ -23,23 +23,35 @@ mkdir -p ${RELEASE_DIR}
 TARGZ_NAME=mkdotenv-${VERSION}.tar.gz
 TARGZ=${OVERLAY}/${TARGZ_NAME}
 
-sed -i "s|pkgver=".*"|pkgver="${VERSION}"|" ${SCRIPT_DIR}/APKBUILD-template
-
-APKBUILD_OVERLAY=${OVERLAY}/APKBUILD
-
 ORIG_TAR=$(bash ${SCRIPT_DIR}/make_tar.sh)
-
 cp ${ORIG_TAR} ${TARGZ}
 
-cp ${SCRIPT_DIR}/APKBUILD-template ${APKBUILD_OVERLAY}
+echo "Generate APKBUILD"
+echo ${SCRIPT_DIR}
+echo ${TARGZ}
+CHECKSUM=$(sha512sum ${TARGZ} | awk '{print $1}')""
+bash ${SCRIPT_DIR}/make_apkbuild.sh ${SCRIPT_DIR} --src_local --checksum "${CHECKSUM}"
 
+cp ${SCRIPT_DIR}/APKBUILD ${OVERLAY}/
+
+echo "TAR contents"
 tar -tzf ${TARGZ}
-
-sed -i '/^source="\$pkgname-\$pkgver.tar.gz::https:\/\/github.com\/pc-magas\/mkdotenv\/archive\/refs\/tags\/v\$pkgver.tar.gz"/d' ${APKBUILD_OVERLAY}
 
 docker run \
     -v ${OVERLAY}:/usr/src/apkbuild  \
     -v ${ABUILD_VOLUME}:/home/packager/.abuild \
     -v ${VOLUME_DIR}/keys:/etc/apk/keys \
     -v ${RELEASE_DIR}:/home/packager/release \
-    ghcr.io/pc-magas/alpinebuild
+    ghcr.io/pc-magas/alpinebuild build --no-checksum
+
+echo "Releasing source file"
+cp ${TARGZ} ${RELEASE_DIR}/
+echo "Tar.gz released upon ${RELEASE_DIR}"
+
+echo "Fixing APKBUILD for remote"
+cp ${RELEASE_DIR}/APKBUILD ${RELEASE_DIR}/APKBUILD.local
+bash ${SCRIPT_DIR}/make_apkbuild.sh ${RELEASE_DIR}/APKBUILD --checksum "${CHECKSUM}"
+
+echo "RELEASED FILES"
+
+ls -l ${RELEASE_DIR}

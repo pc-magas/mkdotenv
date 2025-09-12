@@ -17,3 +17,4 @@ config
 volumes
 release
 !dockerscripts/*
+APKBUILD

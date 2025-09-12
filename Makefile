@@ -4,40 +4,66 @@ BUILD = 1
 VERSION ?= $(shell [ -f VERSION ] && cat VERSION || echo dev)
 GO := go
 
-ARCH ?= $(shell uname -m)
-OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
-
 INSTALL_BIN_DIR ?= /usr/local/bin
 INSTALL_MAN_DIR ?= /usr/local/share/man/man1
 
-UNAME_S := $(shell uname -s)
-UNAME_M := $(shell uname -m)
+OS ?= $(GOOS)
 
-# Map to GOOS
-ifeq ($(UNAME_S),Darwin)
+ifeq ($(OS),)
+  OS := $(shell uname -s 2>/dev/null || echo Unknown)
+endif
+
+ifeq ($(OS),Darwin)
     OS := darwin
-else ifeq ($(UNAME_S),Linux)
+else ifeq ($(OS),Linux)
     OS := linux
-else ifeq ($(OS),)
+else ifneq (,$(findstring MINGW,$(OS)))
+    OS := windows
+else ifneq (,$(findstring MSYS,$(OS)))
+    OS := windows
+else ifneq (,$(findstring CYGWIN,$(OS)))
+    OS := windows
+else
     OS := unknown
 endif
 
-# Map to GOARCH
-ifeq ($(UNAME_M),x86_64)
+ARCH ?= $(GOARCH)
+
+ifeq ($(ARCH),)
+  ARCH := $(shell uname -m)
+endif
+
+ifeq ($(ARCH),x86_64)
     ARCH := amd64
-else ifeq ($(UNAME_M),arm64)
+else ifeq ($(ARCH),i386)
+    ARCH := 386
+else ifeq ($(ARCH),i686)
+    ARCH := 386
+else ifeq ($(ARCH),arm64)
     ARCH := arm64
-else ifeq ($(ARCH),)
+else ifeq ($(ARCH),aarch64)
+    ARCH := arm64
+else ifeq ($(ARCH),armv7l)
+    ARCH := arm
+else ifeq ($(ARCH),armv6l)
+    ARCH := arm
+else ifeq ($(ARCH),ppc64le)
+    ARCH := ppc64le
+else ifeq ($(ARCH),s390x)
+    ARCH := s390x
+else ifeq ($(ARCH),riscv64)
+    ARCH := riscv64
+else
     ARCH := unknown
 endif
 
 EXT :=
-CGO := 1
+CGO := 0
 
 ifeq ($(OS),windows)
     EXT := .exe
-	CGO := 0
 endif
+
 
 BIN_NAME ?= $(PKG_NAME)-$(OS)-$(ARCH)$(EXT)
 COMPILED_BIN_PATH ?= /tmp/$(BIN_NAME)

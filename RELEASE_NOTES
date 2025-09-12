@@ -1,2 +1,2 @@
-Fix version upon manpage and remove non-existent arguments
-Fix pipeline upon releasing macos homebrew fromula.
+Alpine changes upon Makefile.
+Autogenerate APKBUILD for alpine builds.

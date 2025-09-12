@@ -26,6 +26,6 @@ echo ${TARGZ_NAME} >> TAR_FILES
 ls -l ${SCRIPT_DIR}/${TARGZ_NAME} >> TAR_FILES
 tar -tzf ${SCRIPT_DIR}/${TARGZ_NAME} >> TAR_FILES
 
-echo ${TARGZ_NAME}
+echo ${SCRIPT_DIR}/${TARGZ_NAME}
 
 rm -rf ${SOURCE_FOLDER}

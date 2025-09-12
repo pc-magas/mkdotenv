@@ -1,3 +1,8 @@
+# Version 0.4.4 2025-09-12
+
+Alpine changes upon Makefile.
+Autogenerate APKBUILD for alpine builds.
+
 # Version 0.4.3 2025-09-03
 
 Fix version upon manpage and remove non-existent arguments
