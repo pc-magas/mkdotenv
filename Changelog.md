@@ -1,3 +1,7 @@
+# Version 0.4.7 2025-09-12
+
+Autoenable gco support on some architectures. Windows only for x86_64 only.
+
 # Version 0.4.6 2025-09-12
 
 Add extra supported values for building on alpine aports ci/cd.

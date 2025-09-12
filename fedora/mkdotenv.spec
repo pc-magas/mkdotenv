@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.4.6
+Version:        0.4.7
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -132,3 +132,6 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 
 * Fri Sep 12 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.6-1
 - Add extra supported values for building on alpine aports ci/cd.
+
+* Fri Sep 12 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.7-1
+- Autoenable gco support on some architectures. Windows only for x86_64 only.
