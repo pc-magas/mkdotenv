@@ -10,6 +10,14 @@ rm -rf ${SOURCE_FOLDER}
 mkdir -p ${SOURCE_FOLDER}
 
 mkdir ${SOURCE_FOLDER}/mkdotenv
+echo "Vendoring Go dependencies..." >&2
+(
+  cd "${SCRIPT_DIR}/../mkdotenv" || exit 1
+  go clean -modcache
+  go mod tidy
+  go mod vendor
+  go mod verify
+) >&2
 
 cp -r ${SCRIPT_DIR}/../mkdotenv/* ${SOURCE_FOLDER}/mkdotenv
 cp -r ${SCRIPT_DIR}/../man ${SOURCE_FOLDER}/man
