@@ -1,6 +1,7 @@
 mkdotenv (0.4.4-0debian1~unstable1) unstable; urgency=medium
 
   * Alpine changes upon Makefile.
+  * Autogenerate APKBUILD for alpine builds.
 
  -- Dimitrios Desyllas <pcmagas@disroot.org>  Sat, 06 Sep 2025 13:09:37 +0300
 

@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 Name:           mkdotenv
 Version:        0.4.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
 License:        GPL-3
@@ -122,3 +122,7 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 
 * Sat Sep 06 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.4-1
 - Alpine changes upon Makefile.
+
+* Fri Sep 12 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.4-2
+- Alpine changes upon Makefile.
+- Autogenerate APKBUILD for alpine builds.
