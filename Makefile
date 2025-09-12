@@ -39,7 +39,6 @@ endif
 
 VALID_GOARCHES := 386 amd64 arm arm64 ppc64 ppc64le mips mipsle mips64 mips64le riscv64 s390x wasm loong64
 
-# Check if RAWARCH is in the valid Go architectures list
 ifeq ($(filter $(ARCH),$(VALID_GOARCHES)), $(ARCH))
     ARCH := $(ARCH)
 else ifeq ($(ARCH),x86_64)
