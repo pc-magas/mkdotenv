@@ -28,23 +28,27 @@ else
     OS := unknown
 endif
 
-ARCH ?= $(GOARCH)
+# Reset ARCH and CGO so we know if they get set
+ARCH := $(GOARCH)
+CGO := 0
+GOARM :=
 
-ifeq ($(ARCH),)
-  ARCH := $(shell uname -m)
-endif
+VALID_GOARCHES := 386 amd64 arm arm64 ppc64 ppc64le mips mipsle mips64 mips64le riscv64 s390x wasm loong64
 
-ifeq ($(ARCH),x86_64)
+# Check if RAWARCH is in the valid Go architectures list
+ifeq ($(filter $(ARCH),$(VALID_GOARCHES)), $(ARCH))
+    ARCH := $(ARCH)
+else ifeq ($(ARCH),x86_64)
     ARCH := amd64
 else ifeq ($(ARCH),i386)
     ARCH := 386
-	CGO := 1
+    CGO := 1
 else ifeq ($(ARCH),i686)
     ARCH := 386
-	CGO := 1
+    CGO := 1
 else ifeq ($(ARCH),x86)
     ARCH := 386
-	CGO := 1
+    CGO := 1
 else ifeq ($(ARCH),arm64)
     ARCH := arm64
 else ifeq ($(ARCH),aarch64)
@@ -53,22 +57,23 @@ else ifeq ($(ARCH),armv7l)
     ARCH := arm
 else ifeq ($(ARCH),armv7)
     ARCH := arm
+    CGO := 1
 else ifeq ($(ARCH),armv6l)
     ARCH := arm
 else ifeq ($(ARCH),armhf)
     ARCH := arm
     GOARM := 6
+    CGO := 1
 else ifeq ($(ARCH),ppc64le)
     ARCH := ppc64le
 else ifeq ($(ARCH),s390x)
     ARCH := s390x
-	CGO := 1
+    CGO := 1
 else ifeq ($(ARCH),riscv64)
     ARCH := riscv64
+    CGO := 1
 else ifeq ($(ARCH),loongarch64)
     ARCH := loong64
-else
-    ARCH := unknown
 endif
 
 EXT :=
@@ -108,7 +113,8 @@ compile:
 	cd ./mkdotenv && \
 	mkdir -p /tmp/go-mod-cache &&\
 	GOCACHE=/tmp/go-build-cache \
-	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) GOARM=$(GOARM) \
+	$(if $(GOARM),GOARM=$(GOARM)) \
+	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) \
 	$(GO) build $(MODFLAG) -ldflags "-X github.com/pc-magas/mkdotenv/msg.version=$(VERSION)" -o $(COMPILED_BIN_PATH) . &&\
 	cd ../
 
