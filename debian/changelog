@@ -1,3 +1,9 @@
+mkdotenv (0.4.6-0debian1~unstable1) unstable; urgency=medium
+
+  * Add extra supported values for building on alpine aports ci/cd.
+
+ -- Dimitrios Desyllas <pcmagas@disroot.org>  Fri, 12 Sep 2025 22:32:32 +0300
+
 mkdotenv (0.4.5-0debian1~unstable1) unstable; urgency=medium
 
   * Vendor dependencies upon alpine vendor source.

@@ -1,3 +1,7 @@
+# Version 0.4.6 2025-09-12
+
+Add extra supported values for building on alpine aports ci/cd.
+
 # Version 0.4.5 2025-09-12
 
 Vendor dependencies upon alpine vendor source.

@@ -39,20 +39,29 @@ else ifeq ($(ARCH),i386)
     ARCH := 386
 else ifeq ($(ARCH),i686)
     ARCH := 386
+else ifeq ($(ARCH),x86)
+    ARCH := 386
 else ifeq ($(ARCH),arm64)
     ARCH := arm64
 else ifeq ($(ARCH),aarch64)
     ARCH := arm64
 else ifeq ($(ARCH),armv7l)
     ARCH := arm
+else ifeq ($(ARCH),armv7)
+    ARCH := arm
 else ifeq ($(ARCH),armv6l)
     ARCH := arm
+else ifeq ($(ARCH),armhf)
+    ARCH := arm
+    GOARM := 6
 else ifeq ($(ARCH),ppc64le)
     ARCH := ppc64le
 else ifeq ($(ARCH),s390x)
     ARCH := s390x
 else ifeq ($(ARCH),riscv64)
     ARCH := riscv64
+else ifeq ($(ARCH),loongarch64)
+    ARCH := loong64
 else
     ARCH := unknown
 endif
@@ -85,11 +94,12 @@ make_bin_folder:
 
 # Compile Go binary
 compile:
-	@echo "Building on OS=$(OS), ARCH=$(ARCH)"
+	@echo "Building on OS=$(OS), ARCH=$(ARCH), GOARM=$(GOARM)"
+
 	cd ./mkdotenv && \
 	mkdir -p /tmp/go-mod-cache &&\
 	GOCACHE=/tmp/go-build-cache \
-	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) \
+	GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=$(CGO) GOARM=$(GOARM) \
 	$(GO) build $(MODFLAG) -ldflags "-X github.com/pc-magas/mkdotenv/msg.version=$(VERSION)" -o $(COMPILED_BIN_PATH) . &&\
 	cd ../
 
