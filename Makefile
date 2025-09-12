@@ -33,6 +33,10 @@ ARCH := $(GOARCH)
 CGO := 0
 GOARM :=
 
+ifeq ($(ARCH),)
+  ARCH := $(shell uname -m)
+endif
+
 VALID_GOARCHES := 386 amd64 arm arm64 ppc64 ppc64le mips mipsle mips64 mips64le riscv64 s390x wasm loong64
 
 # Check if RAWARCH is in the valid Go architectures list
