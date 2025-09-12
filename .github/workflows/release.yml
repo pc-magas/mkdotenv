@@ -575,7 +575,7 @@ jobs:
           # Create a PR using GitHub CLI
           VERSION=$(grep '^pkgver' ./APKBUILD | awk -F'=' '{print $2}')
           echo "VERSION ${VERSION}"
-          curl --fail-with-body -vvv -X POST https://api.github.com/repos/pc-magas/homebrew-mkdotenv/pulls \
+          curl --fail-with-body -vvv -X POST https://api.github.com/repos/pc-magas/mkdotenv-alpine-staging/pulls \
             -H "Authorization: Bearer $GH_PAT" \
             -H "Accept: application/vnd.github+json" \
             -H "Content-Type: application/json" \
