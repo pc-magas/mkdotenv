@@ -8,6 +8,7 @@ INSTALL_BIN_DIR ?= /usr/local/bin
 INSTALL_MAN_DIR ?= /usr/local/share/man/man1
 
 OS ?= $(GOOS)
+CGO := 0
 
 ifeq ($(OS),)
   OS := $(shell uname -s 2>/dev/null || echo Unknown)
@@ -37,10 +38,13 @@ ifeq ($(ARCH),x86_64)
     ARCH := amd64
 else ifeq ($(ARCH),i386)
     ARCH := 386
+	CGO := 1
 else ifeq ($(ARCH),i686)
     ARCH := 386
+	CGO := 1
 else ifeq ($(ARCH),x86)
     ARCH := 386
+	CGO := 1
 else ifeq ($(ARCH),arm64)
     ARCH := arm64
 else ifeq ($(ARCH),aarch64)
@@ -58,6 +62,7 @@ else ifeq ($(ARCH),ppc64le)
     ARCH := ppc64le
 else ifeq ($(ARCH),s390x)
     ARCH := s390x
+	CGO := 1
 else ifeq ($(ARCH),riscv64)
     ARCH := riscv64
 else ifeq ($(ARCH),loongarch64)
@@ -67,7 +72,6 @@ else
 endif
 
 EXT :=
-CGO := 0
 
 ifeq ($(OS),windows)
     EXT := .exe
@@ -95,6 +99,11 @@ make_bin_folder:
 # Compile Go binary
 compile:
 	@echo "Building on OS=$(OS), ARCH=$(ARCH), GOARM=$(GOARM)"
+	
+	@if [ "$(OS)" = "windows" ] && [ "$(ARCH)" != "amd64" ]; then \
+		echo "Error: Windows builds are only supported on x86_64 (amd64)."; \
+		exit 1; \
+	fi
 
 	cd ./mkdotenv && \
 	mkdir -p /tmp/go-mod-cache &&\
