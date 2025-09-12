@@ -20,29 +20,38 @@ This script does the following:
 
 1. Creates nessesary folders for volume moiunting
 2. Aggregates a source code in order to be built into a apk (using the `make_tar.sh` script).
-3. Generates an `APKBUILD` file from `APKBUILD-template` that allows you to build from the generated tar.
+3. Generates an `APKBUILD` file that allows you to build from the generated tar.
+4. Releases a production-readt `APKBUILD` upon `alpinebuild/release` directory.
 
-Is goal is to provide a common utility for generating a final apk.
+Is goal is to provide a common utility for generating a final apk. It executes `make_tar.sh` and `make_apkbuild.sh` scripts, described bellow.
+
+Upon folder `release` it releases:
+* `APKBUILD` ready for aports
+* `APKBUILD.local` a APKBUILD variatey that has the source into the generated tar instead or release
+* source code with *go* dependencies in a `.tar.gz` named as `mkdotenv-^version^.tar.gz` (replace `^version^` with current version).
+* generated alpine packahes upon `release/home/*` folders each built architecture has its owen dedicated folder in it.
+
+### The make_tar.sh script.
+
+It is executed inside the `make_apk.sh` one and packages and it is responsible to aggregate any nessesart source code and dependency into a single tar. 
+The source code includes the source code of go dependencies as well.
+
+### The make_apkbuild.sh script
+
+Script that creates the nessesary APKBUILD file. It accepts these arguments:
+
+* `--src_local` it uses the source code tar generated via `make_apk.sh` script instead of the apk uploaded into release
+* `--checksum` Source code tarball checksum
+
+Also you can place the path of the directory where APKFILE should be released if not value provided it is assumed the path where `make_apkbuild.sh` is stored upon.
 
 ## Docker Image
 
-The `Dockerfile` at `alpinebuild` directory is the one that setups an environment for packaging the app as an apk file.
+It uses the `ghcr.io/pc-magas/alpinebuild` image for any build upon alpine.
 
 ### Volumes
 
-It uses these volumes:
+2 folders are used as volume storage:
 
-1. `/usr/src/apkbuild` where `APKBUILD` and optionally nessesary tarball with *source code* reside upon.
-2. `/home/packager/.abuild` where private package signing keys and confoig for abuild is located upon
-3. `/etc/apk/keys/` Where public signing keys reside upon
-4. `/home/packager/release` where generated apk are stored upon.
-
-
-## Github actions
-
-Upon `release.yml` workflow, at action `alpine_source` the following files are generated:
-
-1. A `APKBUILD` file containing a remoter path for an aports build.
-2. A tar.gz with the source code that can be used for alpine building, already tested via `make_apk.sh` .
-
-Once generates are releases into a github actions release using the `release`. Then we can use the generated `APKBUILD` and tarball in order to create an aports build. 
+* `alpinebuild/volumes` in which any docker volume reside upon.
+* `alpinebuild/release` in which all built files (APKBUILD, source code tar and *.apk files) reside upon.

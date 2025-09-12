@@ -76,8 +76,8 @@ if [[ -d "${SCRIPT_DIR}/APKBUILD.d" ]]; then
         [[ "$base_file" == ".gitignore" ]] && continue
         if [[ -f "$step_file" ]]; then
             echo "source file: $base_file"
-            echo "$base_file(){" >> "${APKBUILD_PATH}"
-            sed '/./!d' "$step_file" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | tr -d "\n" | sed 's/^/    /' >> "${APKBUILD_PATH}"
+            echo "$base_file() {" >> "${APKBUILD_PATH}"
+            sed '/./!d' "$step_file" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | tr -d "\n" | sed 's/^/\t/' >> "${APKBUILD_PATH}"
             echo $value >> "${APKBUILD_PATH}"
             echo "}" >> "${APKBUILD_PATH}"
             echo "" >> "${APKBUILD_PATH}"

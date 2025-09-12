@@ -5,6 +5,7 @@ VERSION=$(cat ${SCRIPT_DIR}/../VERSION)
 
 VOLUME_DIR=${SCRIPT_DIR}/volumes
 
+sudo rm -rf ${VOLUME_DIR}
 mkdir -p ${VOLUME_DIR}
 
 echo ${VERSION}
@@ -15,6 +16,7 @@ RELEASE_DIR=${SCRIPT_DIR}/release
 
 mkdir -p ${OVERLAY}
 mkdir -p ${ABUILD_VOLUME}
+
 # Release dir may contain unwanted structure therefore it is re-created
 rm -rf ${RELEASE_DIR}
 mkdir -p ${RELEASE_DIR}
@@ -24,6 +26,7 @@ TARGZ_NAME=mkdotenv-${VERSION}.tar.gz
 TARGZ=${OVERLAY}/${TARGZ_NAME}
 
 ORIG_TAR=$(bash ${SCRIPT_DIR}/make_tar.sh)
+echo "GENERATED TAR ${ORIG_TAR}"
 cp ${ORIG_TAR} ${TARGZ}
 
 echo "Generate APKBUILD"
@@ -36,6 +39,7 @@ cp ${SCRIPT_DIR}/APKBUILD ${OVERLAY}/
 
 echo "TAR contents"
 tar -tzf ${TARGZ}
+cp ${TARGZ} ${RELEASE_DIR}/
 
 docker run \
     -v ${OVERLAY}:/usr/src/apkbuild  \
@@ -50,7 +54,8 @@ echo "Tar.gz released upon ${RELEASE_DIR}"
 
 echo "Fixing APKBUILD for remote"
 cp ${RELEASE_DIR}/APKBUILD ${RELEASE_DIR}/APKBUILD.local
-bash ${SCRIPT_DIR}/make_apkbuild.sh ${RELEASE_DIR}/APKBUILD --checksum "${CHECKSUM}"
+rm -rf ${RELEASE_DIR}/APKBUILD
+bash ${SCRIPT_DIR}/make_apkbuild.sh ${RELEASE_DIR} --checksum "${CHECKSUM}"
 
 echo "RELEASED FILES"
 
