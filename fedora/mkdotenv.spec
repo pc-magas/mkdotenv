@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.4.8
+Version:        0.4.9
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -138,3 +138,6 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 
 * Sat Sep 13 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.8-1
 - Enable GCO on some architectures also allow default GCO architectures as well.
+
+* Sun Sep 14 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.9-1
+- Enable GCO on some architectures, fine tuning unmapped architectures as well upon MAKEFILE.

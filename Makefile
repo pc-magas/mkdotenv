@@ -30,6 +30,7 @@ endif
 
 # Reset ARCH and CGO so we know if they get set
 ARCH := $(GOARCH)
+ORIG_ARCH := $(ARCH)
 CGO := 0
 GOARM :=
 
@@ -37,46 +38,52 @@ ifeq ($(ARCH),)
   ARCH := $(shell uname -m)
 endif
 
-VALID_GOARCHES := 386 amd64 arm arm64 ppc64 ppc64le mips mipsle mips64 mips64le riscv64 s390x wasm loong64
+UNMAPPED_GOARCHES := 386 amd64 arm arm64 ppc64 ppc64le mips mipsle mips64 mips64le loong64
 
-ifeq ($(filter $(ARCH),$(VALID_GOARCHES)), $(ARCH))
+ifeq ($(filter $(ARCH),$(UNMAPPED_GOARCHES)), $(ARCH))
     ARCH := $(ARCH)
-else ifeq ($(ARCH),x86_64)
-    ARCH := amd64
-else ifeq ($(ARCH),i386)
-    ARCH := 386
-    CGO := 1
-else ifeq ($(ARCH),i686)
-    ARCH := 386
-    CGO := 1
-else ifeq ($(ARCH),x86)
-    ARCH := 386
-    CGO := 1
-else ifeq ($(ARCH),arm64)
-    ARCH := arm64
-else ifeq ($(ARCH),aarch64)
-    ARCH := arm64
-else ifeq ($(ARCH),armv7l)
-    ARCH := arm
-else ifeq ($(ARCH),armv7)
-    ARCH := arm
-    CGO := 1
-else ifeq ($(ARCH),armv6l)
-    ARCH := arm
-else ifeq ($(ARCH),armhf)
-    ARCH := arm
-    GOARM := 6
-    CGO := 1
-else ifeq ($(ARCH),ppc64le)
-    ARCH := ppc64le
-else ifeq ($(ARCH),s390x)
-    ARCH := s390x
-    CGO := 1
-else ifeq ($(ARCH),riscv64)
-    ARCH := riscv64
-    CGO := 1
-else ifeq ($(ARCH),loongarch64)
-    ARCH := loong64
+else
+    ifeq ($(ARCH),x86_64)
+        ARCH := amd64
+    else ifeq ($(ARCH),i386)
+        ARCH := 386
+        CGO := 1
+    else ifeq ($(ARCH),i686)
+        ARCH := 386
+        CGO := 1
+    else ifeq ($(ARCH),x86)
+        ARCH := 386
+        CGO := 1
+    else ifeq ($(ARCH),arm64)
+        ARCH := arm64
+    else ifeq ($(ARCH),aarch64)
+        ARCH := arm64
+    else ifeq ($(ARCH),armv7l)
+        ARCH := arm
+    else ifeq ($(ARCH),armv7)
+        ARCH := arm
+        CGO := 1
+    else ifeq ($(ARCH),armv6l)
+        ARCH := arm
+    else ifeq ($(ARCH),armv8l)
+        ARCH := arm
+    else ifeq ($(ARCH),armhf)
+        ARCH := arm
+        GOARM := 6
+        CGO := 1
+    else ifeq ($(ARCH),ppc64le)
+        ARCH := ppc64le
+    else ifeq ($(ARCH),s390x)
+        ARCH := s390x
+        CGO := 1
+    else ifeq ($(ARCH),riscv64)
+        ARCH := riscv64
+        CGO := 1
+    else ifeq ($(ARCH),loongarch64)
+        ARCH := loong64
+    else
+        ARCH := unsupported
+    endif
 endif
 
 EXT :=
@@ -107,9 +114,14 @@ make_bin_folder:
 # Compile Go binary
 compile:
 	@echo "Building on OS=$(OS), ARCH=$(ARCH), GOARM=$(GOARM)"
-	
+
 	@if [ "$(OS)" = "windows" ] && [ "$(ARCH)" != "amd64" ]; then \
 		echo "Error: Windows builds are only supported on x86_64 (amd64)."; \
+		exit 1; \
+	fi
+	
+	@if [ "$(ARCH)" = "unsupported" ]; then \
+		echo "Error: $(ORIG_ARCH) is unsupported."; \
 		exit 1; \
 	fi
 

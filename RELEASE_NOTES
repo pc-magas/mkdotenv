@@ -1,1 +1,1 @@
-Enable GCO on some architectures also allow default GCO architectures as well.
+Enable GCO on some architectures, fine tuning unmapped architectures as well upon MAKEFILE.
