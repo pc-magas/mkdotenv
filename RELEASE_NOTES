@@ -1,1 +1,1 @@
-Autoenable gco support on some architectures. Windows only for x86_64 only.
+Enable GCO on some architectures also allow default GCO architectures as well.

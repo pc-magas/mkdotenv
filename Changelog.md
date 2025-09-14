@@ -1,3 +1,7 @@
+# Version 0.4.8 2025-09-13
+
+Enable GCO on some architectures also allow default GCO architectures as well.
+
 # Version 0.4.7 2025-09-12
 
 Autoenable gco support on some architectures. Windows only for x86_64 only.
