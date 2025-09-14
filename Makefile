@@ -37,9 +37,9 @@ ifeq ($(ARCH),)
   ARCH := $(shell uname -m)
 endif
 
-VALID_GOARCHES := 386 amd64 arm arm64 ppc64 ppc64le mips mipsle mips64 mips64le riscv64 s390x wasm loong64
+UNMAPPED_GOARCHES := 386 amd64 arm arm64 ppc64 ppc64le mips mipsle mips64 mips64le wasm loong64
 
-ifeq ($(filter $(ARCH),$(VALID_GOARCHES)), $(ARCH))
+ifeq ($(filter $(ARCH),$(UNMAPPED_GOARCHES)), $(ARCH))
     ARCH := $(ARCH)
 else ifeq ($(ARCH),x86_64)
     ARCH := amd64
@@ -62,6 +62,8 @@ else ifeq ($(ARCH),armv7)
     ARCH := arm
     CGO := 1
 else ifeq ($(ARCH),armv6l)
+    ARCH := arm
+else ifeq($(ARCH),armv8l)
     ARCH := arm
 else ifeq ($(ARCH),armhf)
     ARCH := arm
@@ -107,7 +109,7 @@ make_bin_folder:
 # Compile Go binary
 compile:
 	@echo "Building on OS=$(OS), ARCH=$(ARCH), GOARM=$(GOARM)"
-	
+    
 	@if [ "$(OS)" = "windows" ] && [ "$(ARCH)" != "amd64" ]; then \
 		echo "Error: Windows builds are only supported on x86_64 (amd64)."; \
 		exit 1; \
