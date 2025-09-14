@@ -1,3 +1,7 @@
+# Version 0.4.9 2025-09-14
+
+Enable GCO on some architectures, fine tuning unmapped architectures as well upon MAKEFILE.
+
 # Version 0.4.8 2025-09-13
 
 Enable GCO on some architectures also allow default GCO architectures as well.
