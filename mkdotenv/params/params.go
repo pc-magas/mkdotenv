@@ -1,10 +1,11 @@
 package params
 
 import(
-	"slices"
 	"errors"
 	"fmt"
+	"github.com/pc-magas/mkdotenv/secret"
 )
+
 import flag "github.com/spf13/pflag"
 
 type CLIArgType string
@@ -24,6 +25,7 @@ type FlagMeta struct {
     Required    bool     // whether the flag is required
     Usage       string   // help message
     Order       int      // display order
+	Validator    func(value string) bool
 }
 
 type Arguments struct {
@@ -68,6 +70,7 @@ var flagsMeta = []FlagMeta{
         Required: true,
         Usage:    "Name of the variable to be set",
         Order:    1,
+		Validator: valiDateNonEmpty,
     },
     {
         Name:     "variable-value",
@@ -76,6 +79,7 @@ var flagsMeta = []FlagMeta{
         Required: true,
         Usage:    "Value to assign to the variable",
         Order:    1,
+		Validator: valiDateNonEmpty,
     },
     {
         Name:     "env-file",
@@ -85,6 +89,7 @@ var flagsMeta = []FlagMeta{
 		DefaultValue: ".env",
         Usage:    "Input .env file path (default .env)",
         Order:    2,
+		Validator: valiDateNonEmpty,
     },
     {
         Name:     "output-file",
@@ -94,6 +99,7 @@ var flagsMeta = []FlagMeta{
 		DefaultValue: ".env",
         Usage:    "File to write output to (`-` for stdout)",
         Order:    2,
+		Validator: valiDateNonEmpty,
     },
     {
         Name:     "remove-doubles",
@@ -102,17 +108,22 @@ var flagsMeta = []FlagMeta{
         Required: false,
         Usage:    "Remove duplicate variable entries, keeping the first",
         Order:    3,
+		Validator: valiDateNonEmpty,
     },
 	{
-		Name: "secret-type",
+		Name: "value-type",
 		Type: StringType,
 		Aliases: []string{},
 		Required: false,
 		Usage: "Indicates whether provided value upon `variable-value` needs to be resolved via a secret storage",
 		Order: 4,
+		Validator: secret.VerifyType,
 	},
 }
 
+func valiDateNonEmpty(value string) bool {
+	return value!=""
+}
 
 func initFlags() (*flag.FlagSet) {
 
@@ -155,6 +166,21 @@ func initFlags() (*flag.FlagSet) {
 	return flagSet
 }
 
+func getFlagMeta(name string) *FlagMeta {
+    for i := range flagsMeta {
+        if flagsMeta[i].Name == name {
+            return &flagsMeta[i]
+        }
+        for _, alias := range flagsMeta[i].Aliases {
+            if alias == name {
+                return &flagsMeta[i]
+            }
+        }
+    }
+    return nil
+}
+
+
 func GetParameters(osArguments []string) (error,Arguments) {
 	
 	if len(osArguments) < 1 {
@@ -185,20 +211,22 @@ func GetParameters(osArguments []string) (error,Arguments) {
 
 	flagSet.Visit(func(f *flag.Flag){
 
-		if (slices.Contains(FLAG_ARGUMENTS,f.Value.String())){
-			err=fmt.Errorf("Flag %s should not contain a param value",f.Name)
-			return
-		}
+		meta := getFlagMeta(f.Name)
 
-		if(err !=nil){
-			return
-		}
-		
 		value:=f.Value.String()
 
 		if(value == ""){
 			err=fmt.Errorf("Value should not be empty for param %s",f.Name)
 			return
+		}
+
+		if meta != nil && meta.Validator != nil {
+
+			if ! meta.Validator(value) {
+				// stop early with validation error
+				err = fmt.Errorf("invalid value for --%s: %w", f.Name, err)
+				return
+			}
 		}
 		
 		switch (f.Name){
@@ -235,7 +263,6 @@ func GetParameters(osArguments []string) (error,Arguments) {
 
 			case "variable-name":
 				args.VariableName=value
-
 			case "variable-value":
 				args.VariableValue=value
 			case "remove-doubles":
@@ -244,7 +271,7 @@ func GetParameters(osArguments []string) (error,Arguments) {
 				args.DisplayHelp = value=="true"
 			case "v","version":
 				args.DisplayVersion = value=="true"
-			case "secret-type":
+			case "value-type":
 				args.SecretType = value
 		}
 
@@ -263,3 +290,5 @@ func GetFlagsMeta() []FlagMeta {
     copy(out, flagsMeta)
     return out
 }
+
+

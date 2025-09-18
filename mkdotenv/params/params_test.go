@@ -1,6 +1,7 @@
 package params
 
 import "testing"
+import "fmt"
 
 func TestValidParams(t *testing.T){
 
@@ -25,6 +26,8 @@ func TestValidParams(t *testing.T){
 		t.Run(tc.args[1], func(t *testing.T) { // Creates subtests
 		 			
 			err,argumentStruct := GetParameters(tc.args)
+			
+			fmt.Println(err)
 
 			if err != nil {
 				t.Errorf("Error should be nil")
@@ -65,7 +68,7 @@ func TestMissingInputFileAndOutputFile(t *testing.T){
 	}
 
 	if(argumentStruct.ParseComplete == false){
-		t.Errorf("argument parsin is expected to be complete")
+		t.Errorf("argument parsing is expected to be complete")
 	}
 
 	expected_dotenv_filename:=".env"
@@ -109,8 +112,8 @@ func TestMissingParams(t *testing.T){
 		t.Run(tc.args[1], func(t *testing.T) { 
 
 			err,_ := GetParameters(tc.args)
-			
 			if err == nil {
+				fmt.Println(err)
 				t.Errorf("Error should not be nil")
 			}
 		})
