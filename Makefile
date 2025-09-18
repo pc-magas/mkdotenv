@@ -133,7 +133,7 @@ compile:
 	$(GO) build $(MODFLAG) -ldflags "-X github.com/pc-magas/mkdotenv/msg.version=$(VERSION)" -o $(COMPILED_BIN_PATH) . &&\
 	cd ../
 
-test_run:
+run:
 	cd ./mkdotenv &&\
 	$(GO) run mkdotenv.go $(ARGS)
 

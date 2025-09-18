@@ -37,6 +37,7 @@ type Arguments struct {
 	ParseComplete  bool
 	RemoveDoubles bool
 	ArgumentNum int
+	SecretType string
 }
 
 var FLAG_ARGUMENTS = []string{}
@@ -102,6 +103,14 @@ var flagsMeta = []FlagMeta{
         Usage:    "Remove duplicate variable entries, keeping the first",
         Order:    3,
     },
+	{
+		Name: "secret-type",
+		Type: StringType,
+		Aliases: []string{},
+		Required: false,
+		Usage: "Indicates whether provided value upon `variable-value` needs to be resolved via a secret storage",
+		Order: 4,
+	},
 }
 
 
@@ -235,6 +244,8 @@ func GetParameters(osArguments []string) (error,Arguments) {
 				args.DisplayHelp = value=="true"
 			case "v","version":
 				args.DisplayVersion = value=="true"
+			case "secret-type":
+				args.SecretType = value
 		}
 
 	})
