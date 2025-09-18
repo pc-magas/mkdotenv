@@ -1,6 +1,7 @@
 package params
 
 import(
+	"strings"
 	"errors"
 	"fmt"
 	"github.com/pc-magas/mkdotenv/secret"
@@ -70,7 +71,7 @@ var flagsMeta = []FlagMeta{
         Required: true,
         Usage:    "Name of the variable to be set",
         Order:    1,
-		Validator: valiDateNonEmpty,
+		Validator: valiDateCommon,
     },
     {
         Name:     "variable-value",
@@ -79,7 +80,7 @@ var flagsMeta = []FlagMeta{
         Required: true,
         Usage:    "Value to assign to the variable",
         Order:    1,
-		Validator: valiDateNonEmpty,
+		Validator: valiDateCommon,
     },
     {
         Name:     "env-file",
@@ -89,7 +90,7 @@ var flagsMeta = []FlagMeta{
 		DefaultValue: ".env",
         Usage:    "Input .env file path (default .env)",
         Order:    2,
-		Validator: valiDateNonEmpty,
+		Validator: valiDateCommon,
     },
     {
         Name:     "output-file",
@@ -99,7 +100,7 @@ var flagsMeta = []FlagMeta{
 		DefaultValue: ".env",
         Usage:    "File to write output to (`-` for stdout)",
         Order:    2,
-		Validator: valiDateNonEmpty,
+		Validator: valiDateCommon,
     },
     {
         Name:     "remove-doubles",
@@ -108,7 +109,7 @@ var flagsMeta = []FlagMeta{
         Required: false,
         Usage:    "Remove duplicate variable entries, keeping the first",
         Order:    3,
-		Validator: valiDateNonEmpty,
+		Validator: valiDateCommon,
     },
 	{
 		Name: "value-type",
@@ -121,8 +122,12 @@ var flagsMeta = []FlagMeta{
 	},
 }
 
-func valiDateNonEmpty(value string) bool {
-	return value!=""
+func valiDateCommon(value string) bool {
+	if(value == ""){
+		return false
+	}
+
+	return true
 }
 
 func initFlags() (*flag.FlagSet) {
@@ -166,19 +171,6 @@ func initFlags() (*flag.FlagSet) {
 	return flagSet
 }
 
-func getFlagMeta(name string) *FlagMeta {
-    for i := range flagsMeta {
-        if flagsMeta[i].Name == name {
-            return &flagsMeta[i]
-        }
-        for _, alias := range flagsMeta[i].Aliases {
-            if alias == name {
-                return &flagsMeta[i]
-            }
-        }
-    }
-    return nil
-}
 
 
 func GetParameters(osArguments []string) (error,Arguments) {
@@ -211,24 +203,25 @@ func GetParameters(osArguments []string) (error,Arguments) {
 
 	flagSet.Visit(func(f *flag.Flag){
 
-		meta := getFlagMeta(f.Name)
-
+		meta := SearchFlag(f.Name)
 		value:=f.Value.String()
 
-		if(value == ""){
-			err=fmt.Errorf("Value should not be empty for param %s",f.Name)
-			return
-		}
-
 		if meta != nil && meta.Validator != nil {
-
+			fmt.Println("Validate", meta.Name)
 			if ! meta.Validator(value) {
 				// stop early with validation error
-				err = fmt.Errorf("invalid value for --%s: %w", f.Name, err)
+				err = fmt.Errorf("invalid value for --%s", f.Name)
 				return
 			}
 		}
 		
+		// Argument Value also should not be a flag name as well
+		if(SearchFlag(value) != nil){
+			fmt.Println("Hello")
+			err = fmt.Errorf("Value should not be an argument value")
+			return
+		}
+
 		switch (f.Name){
 
 			case "input-file","env-file":
@@ -292,3 +285,17 @@ func GetFlagsMeta() []FlagMeta {
 }
 
 
+func SearchFlag(name string) *FlagMeta {
+	name = strings.Trim(name,"-")
+    for i := range flagsMeta {
+        if flagsMeta[i].Name == name {
+            return &flagsMeta[i]
+        }
+        for _, alias := range flagsMeta[i].Aliases {
+            if alias == name {
+                return &flagsMeta[i]
+            }
+        }
+    }
+    return nil
+}

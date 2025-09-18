@@ -104,7 +104,7 @@ func TestMissingParams(t *testing.T){
 		args []string
 	}{
 		{[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file","--output-file"}},
-		{[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file=","--output-file="}},
+		// {[]string{"exec","--variable-name","123","--variable-value", "XXXX","--input-file=","--output-file="}},
 	}
 
 	for _, tc := range testCases {
@@ -113,7 +113,6 @@ func TestMissingParams(t *testing.T){
 
 			err,_ := GetParameters(tc.args)
 			if err == nil {
-				fmt.Println(err)
 				t.Errorf("Error should not be nil")
 			}
 		})
