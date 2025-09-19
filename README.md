@@ -99,9 +99,10 @@ sudo rm -f /usr/local/share/man/man1/mkdotenv.1
 ### From Executable Binaries
 
 ```shell
+# Replace with your own release on https://github.com/pc-magas/mkdotenv/releases
 export VERSION=v0.3.2
 wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-linux-amd64 
-sudo cp mkdotenv /bin/mkdotenv
+sudo cp mkdotenv-linux-amd64  /bin/mkdotenv
 sudo chmod 755 /bin/mkdotenv
 
 mkdotenv --version
@@ -110,37 +111,11 @@ mkdotenv --version
 For environments that do not provide root access use these commands:
 
 ```bash
+# Replace with your own release on https://github.com/pc-magas/mkdotenv/releases
 export VERSION=v0.3.2
 wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-linux-amd64 
-sudo cp mkdotenv ~/.local/bin/mkdotenv
-sudo chmod 755 ~/.local/bin/mkdotenv
-
-mkdotenv --version
-```
-
-#### Detect latest Version
-
-In order to see the latest version check the https://github.com/pc-magas/mkdotenv/releases page once you found the desired release instead of:
-
-```bash
-# Replace with actual version number, e.g., v0.3.2
-export VERSION=v0.1.0
-```
-
-Do (replace `^found_version^` with the version you found upon releases page):
-
-```bash
-# Replace with actual version number, e.g., v0.3.2
-export VERSION=^found_version^
-```
-
-And execute the commands:
-
-```bash
-wget -O mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-linux-amd64 
-
-sudo cp mkdotenv /bin/mkdotenv
-sudo chmod 755 /bin/mkdotenv
+cp mkdotenv-linux-amd64  ~/.local/bin/mkdotenv
+chmod 755 ~/.local/bin/mkdotenv
 
 mkdotenv --version
 ```
@@ -151,7 +126,7 @@ mkdotenv --version
 rm -rf /bin/mkdotenv
 ```
 
-### Via PPA for Ubuntu & Linux Mint
+### Using PPA for Ubuntu & Linux Mint
 
 If running ubuntu or Linux mint you can use our PPA repository:
 
@@ -166,8 +141,8 @@ sudo apt-get install mkdotenv
 Works in Debian, Mint and Ubuntu (or any other Debian-compatible distros)
 
 ```shell
-# Replace with actual version number, e.g., v0.3.2
-export VERSION=^found_version^
+# Replace with your own release on https://github.com/pc-magas/mkdotenv/releases
+export VERSION=v0.3.2
 wget https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv_${VERSION}_amd64.deb
 sudo dpkg -i mkdotenv_${VERSION}_amd64.deb
 ```
@@ -180,13 +155,13 @@ Uninstalling the package is easy as:
 sudo apt-get remove mkdotenv
 ```
 
-#### From RPM package
+#### Using RPM package
 
 Tested on Fedora
 
 ```shell
-# Replace with actual version number, e.g., v0.3.2
-export VERSION=^found_version^
+# Replace with your own release on https://github.com/pc-magas/mkdotenv/releases
+export VERSION=v0.3.2
 wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}/mkdotenv.rpm
 sudo rpm -i mkdotenv-${VERSION}-1.fc41.x86_64.rpm
 ```
@@ -206,8 +181,8 @@ sudo dnf install mkdotenv
 ### In Alpine Linux
 
 ```shell
-# Replace with actual version number, e.g., v0.3.2
-export VERSION=^found_version^
+# Replace with your own release on https://github.com/pc-magas/mkdotenv/releases
+export VERSION=v0.3.2
 wget https://github.com/pc-magas/mkdotenv/releases/download/v${VERSION}/mkdotenv-${VERSION}-r0.apk
 ```
 
@@ -260,6 +235,7 @@ mkdotenv --help
 Statically-built binaries that can be converted into executable for M series macOS are also shipped as well.
 
 ```shell
+# Replace with your own release on https://github.com/pc-magas/mkdotenv/releases
 export VERSION=v0.3.2
 wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-darwin-arm64 
 sudo cp mkdotenv /usr/local/bin/mkdotenv
@@ -407,7 +383,7 @@ Or temporarily mounting it on a run command:
 RUN --mount=type=bind,from=pcmagas/mkdotenv:latest,source=/usr/bin/mkdotenv,target=/bin/mkdotenv
 ```
 
-## Run image into standalone container.
+## Run image into a standalone container.
 
 You can also run it as standalone image as well:
 
