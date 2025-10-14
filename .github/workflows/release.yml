@@ -5,7 +5,12 @@ on:
     branches:
       - dev
       - master
-
+    paths:
+      - mkdotenv/**
+      - Makefile
+      - debian/**
+      - alpinebuild/**
+      - fedora/**
 jobs:
   tag_git:
     runs-on: ubuntu-latest

@@ -4,7 +4,11 @@ on:
   push:
     branches:
       - master
-
+    paths:
+      - mkdotenv/**
+      - Makefile
+      - debian/**
+      - ppa/**
 jobs:
   upload_ppa:
     runs-on: ubuntu-latest
