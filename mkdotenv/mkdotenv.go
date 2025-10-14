@@ -26,6 +26,7 @@ import (
 	"github.com/pc-magas/mkdotenv/msg"
 	"github.com/pc-magas/mkdotenv/files"
 	"github.com/pc-magas/mkdotenv/core"
+	// "github.com/pc-magas/mkdotenv/secret"
 )
 
 func displayVersionOrHelp(paramStruct params.Arguments){
@@ -95,3 +96,17 @@ func main() {
 		}
 	}
 }
+
+// func main(){
+// 	resolver := &secret.KepassXResolver{
+// 		File:     "/home/pcmagas/Kwdikas/go/mkdotenv/mkdotenv_app/dev_data/Database.kdbx",
+// 		Password: "123",
+// 	}
+
+// 	val, err := resolver.Resolve("Database/General/Dummy 2")
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+
+// 	fmt.Println("Resolved:", val)
+// }
