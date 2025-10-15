@@ -10,7 +10,22 @@ type KepassXResolver struct {
 	Password string
 }
 
-func (r KepassXResolver) Resolve(secret_val string) (string, error) {
+func NewKeepassXResolver(file, password string) (*KepassXResolver, error) {
+	// Check if the file exists
+	if _, err := os.Stat(file); os.IsNotExist(err) {
+		return nil, fmt.Errorf("keepass file does not exist: %s", file)
+	} else if err != nil {
+		// Some other filesystem error (e.g., permission denied)
+		return nil, fmt.Errorf("error accessing file %s: %w", file, err)
+	}
+
+	return &KepassXResolver{
+		File:     file,
+		Password: password,
+	}, nil
+}
+
+func (r *KepassXResolver) Resolve(secret_val string) (string, error) {
 	return r.ResolveWithParam(secret_val,"PASSWORD");
 }
 
@@ -38,7 +53,7 @@ func findEntry(groups []gokeepasslib.Group, pathParts []string) *gokeepasslib.En
 	return nil
 }
 
-func (r KepassXResolver) ResolveWithParam(secretVal string,field string) (string, error) {
+func (r *KepassXResolver) ResolveWithParam(secretVal string,field string) (string, error) {
 
 	file,_:= os.Open(r.File)
 	db := gokeepasslib.NewDatabase()
