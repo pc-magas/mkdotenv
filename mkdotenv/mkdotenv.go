@@ -98,10 +98,7 @@ func main() {
 }
 
 // func main(){
-// 	resolver := &secret.KepassXResolver{
-// 		File:     "/home/pcmagas/Kwdikas/go/mkdotenv/mkdotenv_app/dev_data/Database.kdbx",
-// 		Password: "123",
-// 	}
+// 	resolver,_ := secret.NewKeepassXResolver("/home/pcmagas/Kwdikas/go/mkdotenv/mkdotenv_app/dev_data/Database.kdbx","123")
 
 // 	val, err := resolver.Resolve("Database/General/Dummy 2")
 // 	if err != nil {
@@ -109,4 +106,9 @@ func main() {
 // 	}
 
 // 	fmt.Println("Resolved:", val)
+
+// 	plaintextResolver:=secret.NewPlaintextResolver()
+
+// 	val, _ = plaintextResolver.Resolve("Hello")
+// 	fmt.Println(val)
 // }
