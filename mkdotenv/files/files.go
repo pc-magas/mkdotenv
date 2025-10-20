@@ -4,9 +4,6 @@ import (
     "os"
     "fmt"
     "bufio"
-	"strings"
-	"regexp"
-	"errors"
 	"io"
 )
 
