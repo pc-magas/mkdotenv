@@ -78,15 +78,15 @@ func main() {
 	}
 	defer writer.Flush()
 
-	_,err := core.AppendValueToDotenv(file,writer,paramStruct.VariableName,paramStruct.VariableValue,paramStruct.RemoveDoubles)
+	// _,err := core.AppendValueToDotenv(file,writer,paramStruct.VariableName,paramStruct.VariableValue,paramStruct.RemoveDoubles)
 
-    if(err!=nil){
-        fmt.Fprintln(os.Stderr, "Error:", err)
-		if(sameFileToReadAndWrite){
-			files.CopyFile(filenameCopy,paramStruct.DotenvFilename)
-		}
-        os.Exit(1)
-    }
+    // if(err!=nil){
+    //     fmt.Fprintln(os.Stderr, "Error:", err)
+	// 	if(sameFileToReadAndWrite){
+	// 		files.CopyFile(filenameCopy,paramStruct.DotenvFilename)
+	// 	}
+    //     os.Exit(1)
+    // }
 
 	if sameFileToReadAndWrite {
 		file.Close()
