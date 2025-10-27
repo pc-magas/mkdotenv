@@ -4,123 +4,10 @@ import(
 	"strings"
 	"errors"
 	"fmt"
-	"github.com/pc-magas/mkdotenv/secret"
 )
 
 import flag "github.com/spf13/pflag"
 
-type CLIArgType string
-
-const (
-	StringType CLIArgType = "string"
-	BoolType   CLIArgType = "bool"
-	IntType    CLIArgType = "int"
-)
-
-type FlagMeta struct {
-    Name        string   // canonical flag name
-	Type 		CLIArgType
-	DefaultValue string
-	Short 		string   // short value of the flag
-    Aliases     []string // e.g., "h" is alias for "help"
-    Required    bool     // whether the flag is required
-    Usage       string   // help message
-    Order       int      // display order
-	Validator    func(value string) bool
-}
-
-type Arguments struct {
-	DotenvFilename string
-	OutputFile string
-	VariableName string
-	VariableValue string
-	KeepFirst bool
-	DisplayHelp bool
-	DisplayVersion bool
-	ParseComplete  bool
-	RemoveDoubles bool
-	ArgumentNum int
-	SecretType string
-}
-
-var FLAG_ARGUMENTS = []string{}
-
-var flagsMeta = []FlagMeta{
-    {
-        Name:     "help",
-        Aliases:  []string{},
-		Short: "h",
-        Required: false,
-        Usage:    "Display help message and exit",
-		Type:  	BoolType,
-        Order:    0,
-    },
-    {
-        Name:     "version",
-        Aliases:  []string{},
-		Short: "v",
-        Required: false,
-		Type:  	BoolType,
-        Usage:    "Display version and exit",
-        Order:    0,
-    },
-    {
-        Name:     "variable-name",
-        Aliases:  []string{},
-		Type: StringType,
-        Required: true,
-        Usage:    "Name of the variable to be set",
-        Order:    1,
-		Validator: valiDateCommon,
-    },
-    {
-        Name:     "variable-value",
-        Aliases:  []string{},
-		Type: StringType,
-        Required: true,
-        Usage:    "Value to assign to the variable",
-        Order:    1,
-		Validator: valiDateCommon,
-    },
-    {
-        Name:     "env-file",
-        Aliases:  []string{"input-file"},
-		Type: StringType,
-        Required: false,
-		DefaultValue: ".env",
-        Usage:    "Input .env file path (default .env)",
-        Order:    2,
-		Validator: valiDateCommon,
-    },
-    {
-        Name:     "output-file",
-        Aliases:  []string{},
-		Type: StringType,
-        Required: false,
-		DefaultValue: ".env",
-        Usage:    "File to write output to (`-` for stdout)",
-        Order:    2,
-		Validator: valiDateCommon,
-    },
-    {
-        Name:     "remove-doubles",
-		Type: BoolType,
-        Aliases:  []string{},
-        Required: false,
-        Usage:    "Remove duplicate variable entries, keeping the first",
-        Order:    3,
-		Validator: valiDateCommon,
-    },
-	{
-		Name: "value-type",
-		Type: StringType,
-		Aliases: []string{},
-		Required: false,
-		Usage: "Indicates whether provided value upon `variable-value` needs to be resolved via a secret storage",
-		Order: 4,
-		Validator: secret.VerifyType,
-	},
-}
 
 func valiDateCommon(value string) bool {
 	if(value == ""){
@@ -171,8 +58,6 @@ func initFlags() (*flag.FlagSet) {
 	return flagSet
 }
 
-
-
 func GetParameters(osArguments []string) (error,Arguments) {
 	
 	if len(osArguments) < 1 {
@@ -184,7 +69,6 @@ func GetParameters(osArguments []string) (error,Arguments) {
 		VariableValue:  "",
 		OutputFile: ".env",
 		DotenvFilename: ".env",
-		RemoveDoubles: false,
 		DisplayHelp: false,
 		DisplayVersion: false,
 		ArgumentNum: len(osArguments),
@@ -224,15 +108,15 @@ func GetParameters(osArguments []string) (error,Arguments) {
 
 		switch (f.Name){
 
-			case "input-file","env-file":
+			case "template-file","template","t":
 				
 				if(inputFileSet){
-					err=fmt.Errorf("Only One of `--env-file` and `--input-file` should be provided")
+					err=fmt.Errorf("Only one of `--tempalte-file`, `--template`,`-t` values should be provided")
 					return
 				}
 				
 				if(value == ""){
-					err=fmt.Errorf("Only One of `--env-file` and `--input-file` should be provided")
+					err=fmt.Errorf("`--tempalte-file`, `--template`,`-t` should contain the template file that would be processed")
 					return
 				}
 
@@ -253,19 +137,14 @@ func GetParameters(osArguments []string) (error,Arguments) {
 
 				args.OutputFile=value
 				outputFileSet=true
-
 			case "variable-name":
 				args.VariableName=value
 			case "variable-value":
 				args.VariableValue=value
-			case "remove-doubles":
-				args.RemoveDoubles = value=="true"
 			case "h","help":
 				args.DisplayHelp = value=="true"
 			case "v","version":
 				args.DisplayVersion = value=="true"
-			case "value-type":
-				args.SecretType = value
 		}
 
 	})
