@@ -34,47 +34,42 @@ type ParamParser[T any] struct {
     OnAssign OnAssignCallback[T]
 }
 
-func (p *ParamParser[T]) initFlags() (*flag.FlagSet) {
-
-	flagSet := flag.NewFlagSet("params", flag.ContinueOnError)
-
+func (p *ParamParser[T]) initFlags() {
+    p.FlagSet=flag.NewFlagSet("params", flag.ContinueOnError)
 	for _, meta := range flagsMeta {
         switch meta.Type {
 			case StringType:
 				
 				if(meta.Short == ""){
-					flagSet.String(meta.Name, meta.DefaultValue, meta.Usage)
+					p.FlagSet.String(meta.Name, meta.DefaultValue, meta.Usage)
 				} else {
-					flagSet.StringP(meta.Name, meta.Short, meta.DefaultValue, meta.Usage)
+					p.FlagSet.StringP(meta.Name, meta.Short, meta.DefaultValue, meta.Usage)
 				}
 
 				for _, alias := range meta.Aliases {
-					flagSet.String(alias, meta.DefaultValue, "(alias of --"+meta.Name+") "+meta.Usage)
+					p.FlagSet.String(alias, meta.DefaultValue, "(alias of --"+meta.Name+") "+meta.Usage)
 				}
 
 			case BoolType:
 				def := meta.DefaultValue == "true"
 
 				if(meta.Short == ""){
-					flagSet.Bool(meta.Name, def, meta.Usage)
+					p.FlagSet.Bool(meta.Name, def, meta.Usage)
 				} else {
-					flagSet.BoolP(meta.Name,meta.Short, def, meta.Usage)
+					p.FlagSet.BoolP(meta.Name,meta.Short, def, meta.Usage)
 				}
 				
 				for _, alias := range meta.Aliases {
-					flagSet.Bool(alias, def, "(alias of --"+meta.Name+") "+meta.Usage)
+					p.FlagSet.Bool(alias, def, "(alias of --"+meta.Name+") "+meta.Usage)
 				}
         }
     }
-
-	return flagSet
 }
 
 func NewParamParser[T any](flags []FlagMeta) *ParamParser[T] {
     p := &ParamParser[T]{
         FlagsMeta: flags,
         ParsedFlags: make(map[string]int),
-        FlagSet: flag.NewFlagSet("params", flag.ContinueOnError),
     }
 
     p.initFlags()

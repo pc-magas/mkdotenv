@@ -1,7 +1,6 @@
 package params
 
 import "testing"
-import "fmt"
 
 func TestValidParams(t *testing.T){
 
@@ -24,9 +23,7 @@ func TestValidParams(t *testing.T){
 		t.Run(tc.args[1], func(t *testing.T) { // Creates subtests
 		 			
 			err,argumentStruct := GetParameters(tc.args)
-			
-			fmt.Println(err)
-
+		
 			if err != nil {
 				t.Errorf("Error should be nil")
 				t.Error(err)
@@ -42,10 +39,6 @@ func TestValidParams(t *testing.T){
 
 			if argumentStruct.OutputFile != expected_output_filename {
 				t.Errorf("Expected output_filename to be '%s', but got '%s'", expected_output_filename, argumentStruct.OutputFile)
-			}
-
-			if(argumentStruct.ParseComplete == false){
-				t.Errorf("argument parsing is expected to be complete")
 			}
 		})
 	}

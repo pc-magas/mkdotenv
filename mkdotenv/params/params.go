@@ -39,6 +39,8 @@ func GetParameters(osArguments []string) (error,Arguments) {
 			args.DisplayHelp=true
 		case "version":
 			args.DisplayVersion=true
+		case "environment":
+			args.Environment=value
 		case "template-file":
 			args.TemplateFile = value
 		case "output-file":
