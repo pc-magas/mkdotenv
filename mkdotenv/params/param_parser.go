@@ -12,7 +12,7 @@ type ParamParser[T any] struct {
     OnAssign OnAssignCallback[T]
 }
 
-func (p *ParamParser) initFlags() (*flag.FlagSet) {
+func (p *ParamParser[T]) initFlags() (*flag.FlagSet) {
 
 	flagSet := flag.NewFlagSet("params", flag.ContinueOnError)
 
@@ -54,7 +54,7 @@ func (p *ParamParser) initFlags() (*flag.FlagSet) {
 }
 
 func NewParamParser[T any](flags []FlagMeta) *ParamParser[T] {
-    p := &ParamParser{
+    p := &ParamParser[T]{
         FlagsMeta: flags,
         ParsedFlags: make(map[string]int),
         FlagSet: flag.NewFlagSet("params", flag.ContinueOnError),
@@ -64,7 +64,7 @@ func NewParamParser[T any](flags []FlagMeta) *ParamParser[T] {
     return p
 }
 
-func (p *ParamParser) Parse(osArgs []string,target *T) (bool,error) {
+func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
     err := p.FlagSet.Parse(osArgs)
     if err != nil {
         return false, err

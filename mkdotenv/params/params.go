@@ -48,7 +48,7 @@ func GetParameters(osArguments []string) (error,Arguments) {
         return nil
     }
 
-	parser.Parse(osArguments,args)
+	parser.Parse(osArguments,&args)
 
 
 	return nil,args
