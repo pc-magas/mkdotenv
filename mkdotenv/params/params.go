@@ -30,14 +30,14 @@ func GetParameters(osArguments []string) (error,Arguments) {
 		ParseComplete: false,
 	}
 
-    parser := NewParamParser(flagsMeta)
+    parser := NewParamParser[Arguments](flagsMeta)
 
-	args.ParseComplete=parser.OnAssign = func(meta FlagMeta, value string) error {
+	parser.OnAssign = func(meta FlagMeta, value string, args *Arguments) error {
         switch meta.Name {
 		case "help":
-			args.DisplayHelp
+			args.DisplayHelp=true
 		case "version":
-			args.DisplayVersion
+			args.DisplayVersion=true
 		case "template-file":
 			args.TemplateFile = value
 		case "output-file":
@@ -47,6 +47,9 @@ func GetParameters(osArguments []string) (error,Arguments) {
         }
         return nil
     }
+
+	parser.Parse(osArguments,args)
+
 
 	return nil,args
 }
