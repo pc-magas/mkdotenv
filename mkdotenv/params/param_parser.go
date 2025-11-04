@@ -6,6 +6,8 @@ import flag "github.com/spf13/pflag"
 
 type CLIArgType string
 
+type FlagList []FlagMeta
+
 const (
 	StringType CLIArgType = "string"
 	BoolType   CLIArgType = "bool"
@@ -28,7 +30,7 @@ type FlagMeta struct {
 type OnAssignCallback[T any] func(meta FlagMeta, value string,target *T) error
 
 type ParamParser[T any] struct {
-    FlagsMeta []FlagMeta
+    FlagsMeta FlagList
     ParsedFlags map[string]int
     FlagSet *flag.FlagSet
     OnAssign OnAssignCallback[T]

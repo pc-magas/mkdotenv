@@ -1,6 +1,6 @@
 package params
 
-var flagsMeta = []FlagMeta{
+var flagsMeta = FlagList{
     {
         Name:     "help",
         Aliases:  []string{},
