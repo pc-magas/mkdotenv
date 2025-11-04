@@ -6,6 +6,7 @@ import(
 )
 
 type Arguments struct {
+	Environment string
 	TemplateFile string 
 	OutputFile string
 	MiscArguments map[string]string
@@ -23,6 +24,7 @@ func GetParameters(osArguments []string) (error,Arguments) {
 	}
 
 	args := Arguments{
+		Environment: "default",
 		TemplateFile: ".env.dist",
 		OutputFile: ".env",
 		ArgumentNum: len(osArguments),

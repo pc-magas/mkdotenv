@@ -7,7 +7,7 @@ func TestValidParams(t *testing.T){
 
 	expected_template_file:="xxxx"
 	expected_output_filename:="zzzz"
-	expected_environment="124"
+	expected_environment:="124"
 	// Emulatins OS arguments first one is executable
 	testCases := []struct {
 		args []string
@@ -32,8 +32,12 @@ func TestValidParams(t *testing.T){
 				t.Error(err)
 			}
 
+			if argumentStruct.Environment != expected_environment {
+				t.Errorf("Expected Environment to be '%s', but got '%s'", expected_environment, argumentStruct.Environment)
+			}
+
 			if argumentStruct.TemplateFile != expected_template_file {
-				t.Errorf("Expected DotenvFilename to be '%s', but got '%s'", expected_dotenv_filename, argumentStruct.DotenvFilename)
+				t.Errorf("Expected Template to be '%s', but got '%s'", expected_template_file, argumentStruct.TemplateFile)
 			}
 
 			if argumentStruct.OutputFile != expected_output_filename {

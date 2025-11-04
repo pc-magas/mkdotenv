@@ -19,9 +19,9 @@ package main
 
 import (
     "os"
-    "fmt"
-	"time"
-	"strconv"
+    // "fmt"
+	// "time"
+	// "strconv"
 	"github.com/pc-magas/mkdotenv/params"
 	"github.com/pc-magas/mkdotenv/msg"
 	"github.com/pc-magas/mkdotenv/files"
@@ -56,14 +56,11 @@ func main() {
 
 	displayVersionOrHelp(paramStruct)
 
-	filenameToRead := paramStruct.DotenvFilename
-	filenameCopy:=paramStruct.DotenvFilename+"."+strconv.FormatInt(time.Now().UnixMilli(),10)
-	sameFileToReadAndWrite:=paramStruct.DotenvFilename == paramStruct.OutputFile 
+	filenameToRead := paramStruct.TemplateFile
 
 	// If inputfile is same as Outputfile copy the input file to a temporary one
-	if(sameFileToReadAndWrite){
-		files.CopyFile(paramStruct.DotenvFilename,filenameCopy)
-		filenameToRead=filenameCopy
+	if(paramStruct.TemplateFile == paramStruct.OutputFile){
+		msg.ExitError("Template file and output file should not be the same.")
 	}
 
 
@@ -86,14 +83,6 @@ func main() {
 	// 	}
     //     os.Exit(1)
     // }
-
-	if sameFileToReadAndWrite {
-		file.Close()
-		err := os.Remove(filenameCopy)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Warning: Failed to remove temp file %s: %v\n", filenameCopy, err)
-		}
-	}
 }
 
 // func main(){

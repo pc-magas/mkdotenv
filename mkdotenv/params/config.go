@@ -1,28 +1,5 @@
 package params
 
-type CLIArgType string
-
-const (
-	StringType CLIArgType = "string"
-	BoolType   CLIArgType = "bool"
-	IntType    CLIArgType = "int"
-)
-
-type FlagMeta struct {
-    Name        string   // canonical flag name
-	Type 		CLIArgType
-	DefaultValue string
-	Short 		string   // short value of the flag
-    Aliases     []string // e.g., "h" is alias for "help"
-    Required    bool     // whether the flag is required
-    Usage       string   // help message
-    Order       int      // display order
-    AllowMultiple bool
-	Validator   func(value string) bool
-}
-
-var FLAG_ARGUMENTS = []string{}
-
 var flagsMeta = []FlagMeta{
     {
         Name:     "help",
