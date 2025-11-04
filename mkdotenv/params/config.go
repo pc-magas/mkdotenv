@@ -1,3 +1,5 @@
+package params
+
 type CLIArgType string
 
 const (
@@ -15,19 +17,8 @@ type FlagMeta struct {
     Required    bool     // whether the flag is required
     Usage       string   // help message
     Order       int      // display order
-	Validator    func(value string) bool
-}
-
-type Arguments struct {
-	DotenvFilename string 
-	OutputFile string
-	VariableName string
-	VariableValue string
-	KeepFirst bool
-	DisplayHelp bool
-	DisplayVersion bool
-	ParseComplete  bool
-	ArgumentNum int
+    AllowMultiple bool
+	Validator   func(value string) bool
 }
 
 var FLAG_ARGUMENTS = []string{}
@@ -39,6 +30,7 @@ var flagsMeta = []FlagMeta{
 		Short: "h",
         Required: false,
         Usage:    "Display help message and exit",
+        AllowMultiple: false,
 		Type:  	BoolType,
         Order:    0,
     },
@@ -47,17 +39,31 @@ var flagsMeta = []FlagMeta{
         Aliases:  []string{},
 		Short: "v",
         Required: false,
+        AllowMultiple: false,
 		Type:  	BoolType,
         Usage:    "Display version and exit",
         Order:    0,
     },
     {
+        Name:     "environment",
+        Aliases:  []string{"env"},
+        AllowMultiple: false,
+		Short: "e",
+		Type: StringType,
+        Required: false,
+		DefaultValue: ".env,dist",
+        Usage:    "Environment in which secrets would be resolved",
+        Order:    1,
+		Validator: valiDateCommon,
+    },
+    {
         Name:     "template-file",
         Aliases:  []string{"template"},
 		Short: "t",
+        AllowMultiple: false,
 		Type: StringType,
         Required: false,
-		DefaultValue: ".env",
+		DefaultValue: ".env.dist",
         Usage:    "Template .env file containing commands on how .env file would be generated",
         Order:    2,
 		Validator: valiDateCommon,
@@ -65,11 +71,25 @@ var flagsMeta = []FlagMeta{
     {
         Name:     "output-file",
         Aliases:  []string{},
+        Short: "o",
 		Type: StringType,
+        AllowMultiple: false,
         Required: false,
 		DefaultValue: ".env",
-        Usage:    "File to write output to (`-` for stdout)",
+        Usage:    "File to write output to",
         Order:    2,
+		Validator: valiDateCommon,
+    },
+    {
+        Name:     "argument",
+        Aliases:  []string{"arg"},
+		Short: "a",
+        AllowMultiple: true,
+		Type: StringType,
+        Required: false,
+		DefaultValue: "",
+        Usage:    "Template .env file containing commands on how .env file would be generated",
+        Order:    3,
 		Validator: valiDateCommon,
     },
 }
