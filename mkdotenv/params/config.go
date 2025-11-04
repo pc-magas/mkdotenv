@@ -31,7 +31,7 @@ var flagsMeta = []FlagMeta{
 		DefaultValue: ".env,dist",
         Usage:    "Environment in which secrets would be resolved",
         Order:    1,
-		Validator: valiDateCommon,
+		Validator: ValiDateCommon,
     },
     {
         Name:     "template-file",
@@ -43,7 +43,7 @@ var flagsMeta = []FlagMeta{
 		DefaultValue: ".env.dist",
         Usage:    "Template .env file containing commands on how .env file would be generated",
         Order:    2,
-		Validator: valiDateCommon,
+		Validator: ValiDateCommon,
     },
     {
         Name:     "output-file",
@@ -55,7 +55,7 @@ var flagsMeta = []FlagMeta{
 		DefaultValue: ".env",
         Usage:    "File to write output to",
         Order:    2,
-		Validator: valiDateCommon,
+		Validator: ValiDateCommon,
     },
     {
         Name:     "argument",
@@ -67,6 +67,6 @@ var flagsMeta = []FlagMeta{
 		DefaultValue: "",
         Usage:    "Template .env file containing commands on how .env file would be generated",
         Order:    3,
-		Validator: valiDateCommon,
+		Validator: ValiDateCommon,
     },
 }

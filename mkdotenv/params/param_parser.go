@@ -137,7 +137,7 @@ func (p *ParamParser[T])SearchFlag(name string) *FlagMeta {
     return nil
 }
 
-func valiDateCommon(value string) bool {
+func ValiDateCommon(value string) bool {
 	if(value == ""){
 		return false
 	}
