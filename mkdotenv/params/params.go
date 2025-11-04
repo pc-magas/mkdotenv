@@ -61,18 +61,3 @@ func GetFlagsMeta() []FlagMeta {
     copy(out, flagsMeta)
     return out
 }
-
-func SearchFlag(name string) *FlagMeta {
-	name = strings.Trim(name,"-")
-    for i := range flagsMeta {
-        if flagsMeta[i].Name == name {
-            return &flagsMeta[i]
-        }
-        for _, alias := range flagsMeta[i].Aliases {
-            if alias == name {
-                return &flagsMeta[i]
-            }
-        }
-    }
-    return nil
-}

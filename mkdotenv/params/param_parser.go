@@ -1,6 +1,7 @@
 package params
 
 import "fmt"
+import "strings"
 import flag "github.com/spf13/pflag"
 
 type CLIArgType string
@@ -38,10 +39,6 @@ func (p *ParamParser[T]) initFlags() (*flag.FlagSet) {
 	flagSet := flag.NewFlagSet("params", flag.ContinueOnError)
 
 	for _, meta := range flagsMeta {
-
-		FLAG_ARGUMENTS=append(FLAG_ARGUMENTS,"--"+meta.Name)
-		FLAG_ARGUMENTS=append(FLAG_ARGUMENTS,"-"+meta.Name)
-
         switch meta.Type {
 			case StringType:
 				
@@ -52,7 +49,6 @@ func (p *ParamParser[T]) initFlags() (*flag.FlagSet) {
 				}
 
 				for _, alias := range meta.Aliases {
-					FLAG_ARGUMENTS=append(FLAG_ARGUMENTS,"--"+alias)
 					flagSet.String(alias, meta.DefaultValue, "(alias of --"+meta.Name+") "+meta.Usage)
 				}
 
@@ -94,7 +90,7 @@ func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
     var parseErr error
 
     p.FlagSet.Visit(func(f *flag.Flag) {
-        meta := SearchFlag(f.Name)
+        meta := p.SearchFlag(f.Name)
         if meta == nil {
             parseErr = fmt.Errorf("unknown flag: %s", f.Name)
             return
@@ -124,6 +120,21 @@ func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
     })
 
     return true, parseErr
+}
+
+func (p *ParamParser[T])SearchFlag(name string) *FlagMeta {
+	name = strings.Trim(name,"-")
+    for i := range p.FlagsMeta {
+        if p.FlagsMeta[i].Name == name {
+            return &flagsMeta[i]
+        }
+        for _, alias := range p.FlagsMeta[i].Aliases {
+            if alias == name {
+                return &p.FlagsMeta[i]
+            }
+        }
+    }
+    return nil
 }
 
 func valiDateCommon(value string) bool {
