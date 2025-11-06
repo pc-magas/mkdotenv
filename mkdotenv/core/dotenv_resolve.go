@@ -28,7 +28,7 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment
 	
 	scanner := bufio.NewScanner(manipulator.template)
 
-	var lastCommand *parser.MkDotenvCommand = nil
+	var commandToExecute *parser.MkDotenvCommand = nil
 
 	for scanner.Scan() {
 		line:=scanner.Text()
@@ -38,13 +38,13 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment
 
 		if(command != nil){
 			if(command.Environment == "*" || command.Environment == environtment){
-				lastCommand=command
+				commandToExecute=command
 			}
 			output.WriteString(line_to_write)
 			continue;
 		}
 
-		if(lastCommand != nil){
+		if(commandToExecute != nil){
 			// TODO: Resolve Secret from command
 			// TODO: write line with secret
 			continue
