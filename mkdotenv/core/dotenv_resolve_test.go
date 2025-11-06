@@ -5,7 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestMkdotenvCommentIsParsedCorrecly(t *testing.T) {
+func TestParseMkdotenvCommentIsParsedCorrecly(t *testing.T) {
 	line:="#mkdotenv()::plain(value=\"value\")"
 	value,err:=ParseMkDotenvComment(line)
 
@@ -19,7 +19,7 @@ func TestMkdotenvCommentIsParsedCorrecly(t *testing.T) {
 	assert.Equal(t,value.Params, map[string]string{"value":"\"value\""},"Item should be an empry String")
 }
 
-func TestMkdotenvCommentWithItem(t *testing.T){
+func TestParseMkdotenvCommentWithItem(t *testing.T){
 	line:="#mkdotenv()::plain(value=\"value\").item"
 
 	value,err:=ParseMkDotenvComment(line)
@@ -34,7 +34,7 @@ func TestMkdotenvCommentWithItem(t *testing.T){
 	assert.Equal(t,value.Params, map[string]string{"value":"\"value\""},"Item should be an empry String")
 }
 
-func TestMkDotenvExtractsEnvironment(t *testing.T){
+func TestParseMkdotenvExtractsEnvironment(t *testing.T){
 	line:="#mkdotenv(prod)::plain(value=\"value\").item"
 
 	value,err:=ParseMkDotenvComment(line)
@@ -50,7 +50,7 @@ func TestMkDotenvExtractsEnvironment(t *testing.T){
 
 }
 
-func TestMkDotenvMultipleArguments(t *testing.T){
+func TestParseMkdotenvMultipleArguments(t *testing.T){
 	line:="#mkdotenv(prod)::plain(value=\"value\",value1='value',value2=value).item"
 	
 	value,err:=ParseMkDotenvComment(line)
@@ -63,4 +63,67 @@ func TestMkDotenvMultipleArguments(t *testing.T){
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
 	assert.Equal(t,"item",value.Item,"Item should equal with item")
 	assert.Equal(t,value.Params, map[string]string{"value":"\"value\"","value1":"'value'","value2":"value"})
+}
+
+func TestParseMkdotenvParseNormalLines(t *testing.T){
+	line:="hello"
+	value,err:=ParseMkDotenvComment(line)
+
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	if(value != nil){
+		t.Fatalf("expected value to be nil, got %v", err)
+	}
+}
+
+func TestParseMkdotenvParseNormalArg(t *testing.T){
+	line:="# hello"
+	value,err:=ParseMkDotenvComment(line)
+
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	if(value != nil){
+		t.Fatalf("expected value to be nil, got %v", err)
+	}
+}
+
+func TestParseInvalidMkdotenv(t *testing.T){
+	// Emulatins OS arguments first one is executable
+	testCases := []string{
+		"#mkdotenv(sadsadsada)",
+		"#mkdotenv(sadsadsada):dsadsadsadsa:dsadada.dsa",
+		"",                                   // empty line
+		"#mkdotenv",                         // missing parentheses
+		"#mkdotenv()",                       // missing resolver (::...)
+		"#mkdotenv()::",                     // missing resolver name
+		"#mkdotenv(prod)::vault",            // missing parentheses after resolver
+		"#mkdotenv(prod)::vault(",           // unclosed parentheses
+		"#mkdotenv(prod)::vault)(",          // parentheses mismatch
+		"#mkdotenv(prod)::vault(access_key=foo", // unclosed arg list
+		"mkdotenv(prod)::vault()",           // missing leading '#'
+		"#mkdotnev(prod)::vault()",          // misspelled command
+		"#MKDOTENV(prod)::vault()",          // uppercase should fail (regex is case-sensitive)
+		"#mkdotenv(prod)::vault(access_key=foo).", // dot but no item
+		"#mkdotenv(prod)::vault(access_key=foo)..secret", // double dots
+		"#mkdotenv(prod)::vault(access_key=foo).secret.extra", // extra dot section
+	}
+
+
+	for _,line := range testCases {
+		t.Run(line, func(t *testing.T) {
+			value,err:=ParseMkDotenvComment(line)
+
+			if err != nil {
+				t.Fatalf("expected no error, got %v", err)
+			}
+
+			if(value != nil){
+				t.Fatalf("expected value to be nil, got %v", value)
+			}
+		})
+	}
 }

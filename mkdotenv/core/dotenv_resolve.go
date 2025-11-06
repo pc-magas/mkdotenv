@@ -34,7 +34,9 @@ func NewDotEnvManipulator(template io.Reader, logger *log.Logger) *DotenvManipul
 
 func ParseMkDotenvComment(readline string) (*MkDotenvCommand,error) {
 
-	re := regexp.MustCompile(`#mkdotenv\(([^)]*)\)::([a-zA-Z0-9_]+)\(([^)]*)\)\.?([A-Za-z0-9_]*)`)
+	re := regexp.MustCompile(
+		`^#mkdotenv\(([^)]*)\)::([a-zA-Z0-9_]+)\(([^)]*)\)(?:\.([A-Za-z0-9_]+))?$`,
+	)
 	matches := re.FindStringSubmatch(readline)
 
 	if len(matches) == 0 {
