@@ -1,4 +1,4 @@
-package secret
+ackage secret
 
 const (
     ValueTypeNone  = ""

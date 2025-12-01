@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"github.com/pc-magas/mkdotenv/core/parser"
+	"github.com/pc-magas/mkdotenv/secret"
 )
 
 type DotenvManipulator struct{
@@ -23,6 +24,23 @@ func NewDotEnvManipulator(template io.Reader, logger *log.Logger) *DotenvManipul
 	}
 }
 
+func (manipulator *DotenvManipulator) secretResolver(command *parser.MkDotenvCommand ) (string,error) {
+	
+	secret_val:=""
+
+	switch command.SecretResolverType{
+		case "keppassx":
+			resolver:=secret.KepassXResolver(command.Params["file"],command.Params["password"])
+			secret_val=resolver['']
+		case "plain":
+			return secret.PlaintextResolver(),nil
+		default:
+			return nil,"Resolver "+command.SecretResolverType+"is Not found"
+	}
+
+}
+
+func(manipulator *DotenvManipulator) extractVariableName
 
 func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment string) error {
 	
@@ -47,6 +65,22 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment
 		if(commandToExecute != nil){
 			// TODO: Resolve Secret from command
 			// TODO: write line with secret
+
+
+
+			resolver,error := manipulator.secretResolverFactory(commandToExecute)
+			
+			if(error){
+				return error
+			}
+
+			if(command.Item != nil){
+				value = resolver.ResolveWithParam()
+			} else {
+				value = resolver.Resolve()
+			}
+
+			commandToExecute = nil
 			continue
 		}
 

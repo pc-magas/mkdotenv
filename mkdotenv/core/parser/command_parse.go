@@ -8,6 +8,7 @@ import(
 type MkDotenvCommand struct {
 	Environment string
 	SecretResolverType string
+	SecretPath string
 	Params map[string]string
 	Item string
 }
@@ -15,7 +16,7 @@ type MkDotenvCommand struct {
 func ParseMkDotenvComment(readline string) (*MkDotenvCommand) {
 
 	re := regexp.MustCompile(
-		`^#mkdotenv\(([^)]*)\)::([a-zA-Z0-9_]+)\(([^)]*)\)(?:\.([A-Za-z0-9_]+))?$`,
+		`^#mkdotenv\(([^)]*)\):resolve\(([^)]*)\):([A-Za-z0-9_]+)\(([^)]*)\)(?:\.([A-Za-z0-9_]+))?$`,
 	)
 	matches := re.FindStringSubmatch(readline)
 
@@ -24,9 +25,10 @@ func ParseMkDotenvComment(readline string) (*MkDotenvCommand) {
 	}
 
 	env := matches[1]
-	resolver := matches[2]
-	argString := matches[3]
-	item := matches[4]
+	secretPath:=matches[2]
+	resolver := matches[3]
+	argString := matches[4]
+	item := matches[5]
 
 	// We assume empty environment is named default
 	if(env == ""){
@@ -45,6 +47,7 @@ func ParseMkDotenvComment(readline string) (*MkDotenvCommand) {
 
 	cmd := &MkDotenvCommand{
 		Environment:        env,
+		SecretPath : secretPath,
 		SecretResolverType: resolver,
 		Params:             params,
 	}
