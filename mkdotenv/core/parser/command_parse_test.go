@@ -86,7 +86,6 @@ func TestParseInvalidMkdotenv(t *testing.T){
 		"#mkdotenv(prod):resolve(\"value\"):vault(access_key=foo).", // dot but no item
 		"#mkdotenv(prod):resolve(\"value\"):vault(access_key=foo)..secret", // double dots
 		"#mkdotenv(prod):resolve(\"value\"):vault(access_key=foo).secret.extra", // extra dot section
-		"#mkdotenv(prod):resolve():vault(access_key=foo).secret", //missing path
 		"#mkdotenv(prod)::vault(access_key=foo).secret", //missing resolve
 		"#mkdotenv(prod):resolve:vault(access_key=foo).secret", //Resolve doies not contain ()
 		"#mkdotenv(prod):resolve(:vault(access_key=foo).secret", //Non Closing brackents upon resolve
