@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"io"
 	"log"
+	"fmt"
 	"github.com/pc-magas/mkdotenv/core/parser"
 	"github.com/pc-magas/mkdotenv/secret"
 )
@@ -24,7 +25,7 @@ func NewDotEnvManipulator(template io.Reader, logger *log.Logger) *DotenvManipul
 	}
 }
 
-func (manipulator *DotenvManipulator) secretResolver(command *parser.MkDotenvCommand ) (string,error) {
+func (manipulator *DotenvManipulator) secretResolve(command *parser.MkDotenvCommand ) (string,error) {
 	
 	secret_val:=""
 
@@ -35,12 +36,29 @@ func (manipulator *DotenvManipulator) secretResolver(command *parser.MkDotenvCom
 		case "plain":
 			return secret.PlaintextResolver(),nil
 		default:
-			return nil,"Resolver "+command.SecretResolverType+"is Not found"
+			return nil,fmt.Errorf("resolver %s not found", command.SecretResolverType)
 	}
 
+	if(command.Item != nil){
+		return resolver.ResolveWithParam(command.SecretPath,command.Item)
+	} 
+		
+	return resolver.Resolve(command.SecretPath)
 }
 
-func(manipulator *DotenvManipulator) extractVariableName
+func (manipulator *DotenvManipulator) extractVariableName(line string) (string, error) {
+    re, err := regexp.Compile(`^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=.*`)
+    if err != nil {
+        return "", err
+    }
+
+    matches := re.FindStringSubmatch(line)
+    if len(matches) < 2 {
+        return "", fmt.Errorf("no variable found in line: %q", line)
+    }
+
+    return matches[1], nil
+}
 
 func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment string) error {
 	
@@ -63,23 +81,17 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment
 		}
 
 		if(commandToExecute != nil){
-			// TODO: Resolve Secret from command
-			// TODO: write line with secret
-
-
-
 			resolver,error := manipulator.secretResolverFactory(commandToExecute)
 			
 			if(error){
 				return error
 			}
 
-			if(command.Item != nil){
-				value = resolver.ResolveWithParam()
-			} else {
-				value = resolver.Resolve()
-			}
+			variable,error:=parser.ExtractVariableName(line_to_write)
+			value = manipulator.secretResolve(commandToExecute)
 
+			line_to_write = fmt.Sprintf("%s=%s",variable,value)
+			
 			commandToExecute = nil
 			continue
 		}

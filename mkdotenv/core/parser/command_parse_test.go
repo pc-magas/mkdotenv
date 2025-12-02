@@ -6,7 +6,7 @@ import (
 )
 
 func TestParseMkdotenvCommentIsParsedCorrecly(t *testing.T) {
-	line:="#mkdotenv()::plain(value=\"value\")"
+	line:="#mkdotenv():resolve(\"value\"):plain(value=\"value\")"
 	value:=ParseMkDotenvComment(line)
 
 	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
@@ -16,7 +16,7 @@ func TestParseMkdotenvCommentIsParsedCorrecly(t *testing.T) {
 }
 
 func TestParseMkdotenvCommentWithItem(t *testing.T){
-	line:="#mkdotenv()::plain(value=\"value\").item"
+	line:="#mkdotenv():resolve(\"value\"):plain(value=\"value\").item"
 
 	value:=ParseMkDotenvComment(line)
 
@@ -27,7 +27,7 @@ func TestParseMkdotenvCommentWithItem(t *testing.T){
 }
 
 func TestParseMkdotenvExtractsEnvironment(t *testing.T){
-	line:="#mkdotenv(prod)::plain(value=\"value\").item"
+	line:="#mkdotenv(prod):resolve(\"value\"):plain(value=\"value\").item"
 
 	value:=ParseMkDotenvComment(line)
 
@@ -39,7 +39,7 @@ func TestParseMkdotenvExtractsEnvironment(t *testing.T){
 }
 
 func TestParseMkdotenvMultipleArguments(t *testing.T){
-	line:="#mkdotenv(prod)::plain(value=\"value\",value1='value',value2=value).item"
+	line:="#mkdotenv(prod):resolve(\"value\"):plain(value=\"value\",value1='value',value2=value).item"
 	
 	value:=ParseMkDotenvComment(line)
 
@@ -75,17 +75,23 @@ func TestParseInvalidMkdotenv(t *testing.T){
 		"",                                   // empty line
 		"#mkdotenv",                         // missing parentheses
 		"#mkdotenv()",                       // missing resolver (::...)
-		"#mkdotenv()::",                     // missing resolver name
-		"#mkdotenv(prod)::vault",            // missing parentheses after resolver
-		"#mkdotenv(prod)::vault(",           // unclosed parentheses
-		"#mkdotenv(prod)::vault)(",          // parentheses mismatch
-		"#mkdotenv(prod)::vault(access_key=foo", // unclosed arg list
-		"mkdotenv(prod)::vault()",           // missing leading '#'
-		"#mkdotnev(prod)::vault()",          // misspelled command
-		"#MKDOTENV(prod)::vault()",          // uppercase should fail (regex is case-sensitive)
-		"#mkdotenv(prod)::vault(access_key=foo).", // dot but no item
-		"#mkdotenv(prod)::vault(access_key=foo)..secret", // double dots
-		"#mkdotenv(prod)::vault(access_key=foo).secret.extra", // extra dot section
+		"#mkdotenv():resolve(\"value\"):",                     // missing resolver name
+		"#mkdotenv(prod):resolve(\"value\"):vault",            // missing parentheses after resolver
+		"#mkdotenv(prod):resolve(\"value\"):vault(",           // unclosed parentheses
+		"#mkdotenv(prod):resolve(\"value\"):vault)(",          // parentheses mismatch
+		"#mkdotenv(prod):resolve(\"value\"):vault(access_key=foo", // unclosed arg list
+		"mkdotenv(prod):resolve(\"value\"):vault()",           // missing leading '#'
+		"#mkdotnev(prod):resolve(\"value\"):vault()",          // misspelled command
+		"#MKDOTENV(prod):resolve(\"value\"):vault()",          // uppercase should fail (regex is case-sensitive)
+		"#mkdotenv(prod):resolve(\"value\"):vault(access_key=foo).", // dot but no item
+		"#mkdotenv(prod):resolve(\"value\"):vault(access_key=foo)..secret", // double dots
+		"#mkdotenv(prod):resolve(\"value\"):vault(access_key=foo).secret.extra", // extra dot section
+		"#mkdotenv(prod):resolve():vault(access_key=foo).secret", //missing path
+		"#mkdotenv(prod)::vault(access_key=foo).secret", //missing resolve
+		"#mkdotenv(prod):resolve:vault(access_key=foo).secret", //Resolve doies not contain ()
+		"#mkdotenv(prod):resolve(:vault(access_key=foo).secret", //Non Closing brackents upon resolve
+		"#mkdotenv(prod):resolve(\"Value\":vault(access_key=foo).secret", //Non Closing brackents upon resolve
+		"#mkdotenv(prod):resolve\"Value\"):vault(access_key=foo).secret", //Non Closing brackents upon resolve
 	}
 
 
