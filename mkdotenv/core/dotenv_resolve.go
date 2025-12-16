@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"fmt"
+	"regexp"
 	"github.com/pc-magas/mkdotenv/core/parser"
 	"github.com/pc-magas/mkdotenv/secret"
 )
@@ -27,14 +28,12 @@ func NewDotEnvManipulator(template io.Reader, logger *log.Logger) *DotenvManipul
 
 func (manipulator *DotenvManipulator) secretResolve(command *parser.MkDotenvCommand ) (string,error) {
 	
-	secret_val:=""
-
+	resolver:=nil
 	switch command.SecretResolverType{
 		case "keppassx":
-			resolver:=secret.KepassXResolver(command.Params["file"],command.Params["password"])
-			secret_val=resolver['']
+			resolver = secret.KepassXResolver(command.Params["file"],command.Params["password"])
 		case "plain":
-			return secret.PlaintextResolver(),nil
+			resolver = secret.PlaintextResolver(),nil
 		default:
 			return nil,fmt.Errorf("resolver %s not found", command.SecretResolverType)
 	}
