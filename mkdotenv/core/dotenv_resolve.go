@@ -7,12 +7,14 @@ import (
 	"fmt"
 	"regexp"
 	"github.com/pc-magas/mkdotenv/core/parser"
+	"github.com/pc-magas/mkdotenv/core/executor"
 	"github.com/pc-magas/mkdotenv/secret"
 )
 
 type DotenvManipulator struct{
 	template io.Reader
 	logger   *log.Logger
+	executor *executor.Executor
 }
 
 type DotEnvSecretReplaceEngine  interface {
@@ -24,25 +26,6 @@ func NewDotEnvManipulator(template io.Reader, logger *log.Logger) *DotenvManipul
 		template: template,
 		logger:   logger,
 	}
-}
-
-func (manipulator *DotenvManipulator) secretResolve(command *parser.MkDotenvCommand ) (string,error) {
-	
-	resolver:=nil
-	switch command.SecretResolverType{
-		case "keppassx":
-			resolver = secret.KepassXResolver(command.Params["file"],command.Params["password"])
-		case "plain":
-			resolver = secret.PlaintextResolver(),nil
-		default:
-			return nil,fmt.Errorf("resolver %s not found", command.SecretResolverType)
-	}
-
-	if(command.Item != nil){
-		return resolver.ResolveWithParam(command.SecretPath,command.Item)
-	} 
-		
-	return resolver.Resolve(command.SecretPath)
 }
 
 func (manipulator *DotenvManipulator) extractVariableName(line string) (string, error) {
@@ -80,7 +63,7 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment
 		}
 
 		if(commandToExecute != nil){
-			resolver,error := manipulator.secretResolverFactory(commandToExecute)
+			resolver,error := manipulator.executor.Execute(commandToExecute)
 			
 			if(error){
 				return error

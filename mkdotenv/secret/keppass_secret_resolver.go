@@ -1,9 +1,11 @@
 package secret
 
-import "github.com/tobischo/gokeepasslib/v3"
-import "os"
-import "fmt"
-import "strings"
+import (
+	"github.com/tobischo/gokeepasslib/v3"
+	"os"
+	"fmt"
+	"strings"
+)
 
 type KepassXResolver struct {
 	File string
