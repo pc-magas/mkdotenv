@@ -8,7 +8,6 @@ import (
 	"regexp"
 	"github.com/pc-magas/mkdotenv/core/parser"
 	"github.com/pc-magas/mkdotenv/core/executor"
-	"github.com/pc-magas/mkdotenv/secret"
 )
 
 type DotenvManipulator struct{

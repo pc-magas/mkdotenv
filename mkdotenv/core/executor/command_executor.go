@@ -2,6 +2,7 @@ package executor
 
 import(
 	"github.com/pc-magas/mkdotenv/core/parser"
+	"github.com/pc-magas/mkdotenv/secret"
 )
 
 type Executor interface {
