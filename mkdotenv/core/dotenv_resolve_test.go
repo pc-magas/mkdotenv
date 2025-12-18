@@ -53,7 +53,7 @@ API_KEY=default_secret
 `
 	var output bytes.Buffer
 
-	m := NewDotEnvManipulator(strings.NewReader(input), log.Default())
+	m := NewDotEnvManipulator(strings.NewReader(input))
 	m.executor = &fakeExecutor{
 		value:"key",
 		error:nil,
