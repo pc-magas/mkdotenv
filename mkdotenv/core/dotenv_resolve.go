@@ -13,7 +13,7 @@ import (
 type DotenvManipulator struct{
 	template io.Reader
 	logger   *log.Logger
-	executor *executor.Executor
+	executor executor.Executor
 }
 
 type DotEnvSecretReplaceEngine  interface {
