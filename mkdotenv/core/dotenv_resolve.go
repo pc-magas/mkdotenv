@@ -3,7 +3,6 @@ package core
 import (
 	"bufio"
 	"io"
-	"log"
 	"fmt"
 	"regexp"
 	"github.com/pc-magas/mkdotenv/core/parser"
@@ -12,7 +11,6 @@ import (
 
 type DotenvManipulator struct{
 	template io.Reader
-	logger   *log.Logger
 	executor executor.Executor
 }
 
@@ -20,10 +18,9 @@ type DotEnvSecretReplaceEngine  interface {
 	Replace(output *bufio.Writer) error
 }
 
-func NewDotEnvManipulator(template io.Reader, logger *log.Logger) *DotenvManipulator {
+func NewDotEnvManipulator(template io.Reader,) *DotenvManipulator {
 	return &DotenvManipulator{
 		template: template,
-		logger:   logger,
 	}
 }
 
