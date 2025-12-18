@@ -1,6 +1,7 @@
 package executor
 
 import(
+	"fmt"
 	"github.com/pc-magas/mkdotenv/core/parser"
 	"github.com/pc-magas/mkdotenv/secret"
 )
@@ -9,26 +10,32 @@ type Executor interface {
 	Execute(command *parser.MkDotenvCommand ) (string,error)
 }
 
-type Executor stuct {
+type CommandExecutor struct{}
+
+
+func NewExecutor() Executor {
+	return &CommandExecutor{}
 }
 
-func NewExecuter()(*Executor,error){
-	return &Executor{}
-}
-
-func (executer *Executor) Execute(command *parser.MkDotenvCommand ) (string,error) {
+func (executer *CommandExecutor) Execute(command *parser.MkDotenvCommand ) (string,error) {
 	
-	resolver:=nil
+    var resolver secret.Resolver
+	var err error
+
 	switch command.SecretResolverType{
 		case "keppassx":
-			resolver = secret.KepassXResolver(command.Params["file"],command.Params["password"])
+			resolver,err = secret.NewKeepassXResolver(command.Params["file"],command.Params["password"])
 		case "plain":
-			resolver = secret.PlaintextResolver(),nil
+			resolver = secret.NewPlaintextResolver()
 		default:
-			return nil,fmt.Errorf("resolver %s not found", command.SecretResolverType)
+			return "",fmt.Errorf("resolver %s not found", command.SecretResolverType)
 	}
 
-	if(command.Item != nil){
+	if(err!=nil){
+		return "",err
+	}
+
+	if(command.Item != ""){
 		return resolver.ResolveWithParam(command.SecretPath,command.Item)
 	} 
 		
