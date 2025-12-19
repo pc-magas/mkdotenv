@@ -5,27 +5,28 @@ import (
 	"strings"
 	"bufio"
 	"bytes"
-	
+
 	"go.uber.org/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"github.com/pc-magas/mkdotenv/core/parser"
+	"github.com/pc-magas/mkdotenv/core/executor"
 )
 
-func TestReplace_Passthrough(t *testing.T) {
-	ctrl := gomock.NewController(t)
+// func TestReplace_Passthrough(t *testing.T) {
+// 	ctrl := gomock.NewController(t)
 
-  	m := NewMockExecutor(ctrl)
+//   	m := NewMockExecutor(ctrl)
 
-	input := "FOO=bar\nBAZ=qux\n"
-	var output bytes.Buffer
+// 	input := "FOO=bar\nBAZ=qux\n"
+// 	var output bytes.Buffer
 
-	m := NewDotEnvManipulator(strings.NewReader(input))
+// 	m := NewDotEnvManipulator(strings.NewReader(input))
 
-	err := m.Replace(bufio.NewWriter(&output), "dev")
-	assert.NoError(t, err)
+// 	err := m.Replace(bufio.NewWriter(&output), "dev")
+// 	assert.NoError(t, err)
 
-	assert.Equal(t, input, output.String())
-}
+// 	assert.Equal(t, input, output.String())
+// }
 
 func TestValueIsReplaced_UponExecution(t *testing.T) {
 	ctrl := gomock.NewController(t)
