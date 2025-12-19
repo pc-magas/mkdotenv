@@ -51,12 +51,6 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment
 		
 		command := parser.ParseMkDotenvComment(line_to_write)
 
-		if(line_to_write=="\n"){
-			fmt.Println("Newline")
-		} else {
-			fmt.Println(line_to_write)
-		}
-		
 		if(command != nil){
 			if(command.Environment == "*" || command.Environment == environtment){
 				commandToExecute=command
@@ -80,11 +74,13 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment
 				return err
 			}
 
-			line_to_write = fmt.Sprintf("%s=%s\n",variable,value)
+			line_to_write = fmt.Sprintf("%s=%s",variable,value)
 			
 			commandToExecute = nil
 		}
+
 		output.WriteString(line_to_write)
+		output.WriteString("\n")
 	}
 
 

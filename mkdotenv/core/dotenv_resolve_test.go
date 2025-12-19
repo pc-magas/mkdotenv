@@ -12,24 +12,51 @@ import (
 	"github.com/pc-magas/mkdotenv/core/executor"
 )
 
-// func TestReplace_Passthrough(t *testing.T) {
-// 	ctrl := gomock.NewController(t)
-// 	defer ctrl.Finish()
+func TestReplace_Passthrough(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 
-//   	m := NewMockExecutor(ctrl)
+	mockExec := executor.NewMockExecutor(ctrl)
 
-// 	input := "FOO=bar\nBAZ=qux\n"
-// 	var output bytes.Buffer
+	input := "# Hello\nFOO=bar\nBAZ=qux\n"
+	var output bytes.Buffer
 
-// 	m := NewDotEnvManipulator(strings.NewReader(input))
+	writer := bufio.NewWriter(&output)
+
+	m := NewDotEnvManipulator(strings.NewReader(input),mockExec)
 	
-// 	mockExec.EXPECT().Execute(gomock.Any()).Times(0)
+	mockExec.EXPECT().Execute(gomock.Any()).Times(0)
 
-// 	err := m.Replace(bufio.NewWriter(&output), "dev")
-// 	assert.NoError(t, err)
+	err := m.Replace(writer, "dev")
+	writer.Flush()
+	assert.NoError(t, err)
 
-// 	assert.Equal(t, input, output.String())
-// }
+	assert.Equal(t, input, output.String())
+}
+
+func TestReplace_IncalidMkdotencCommand_Passthrough(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockExec := executor.NewMockExecutor(ctrl)
+
+	input := `# mkdotenv(*):resolve("path_to_secret"):secret_resolver()
+API_KEY=old
+`
+	var output bytes.Buffer
+
+	writer := bufio.NewWriter(&output)
+
+	m := NewDotEnvManipulator(strings.NewReader(input),mockExec)
+	
+	mockExec.EXPECT().Execute(gomock.Any()).Times(0)
+
+	err := m.Replace(writer, "dev")
+	writer.Flush()
+	assert.NoError(t, err)
+
+	assert.Equal(t, input, output.String())
+}
 
 func TestValueIsReplaced_UponExecution(t *testing.T) {
 	ctrl := gomock.NewController(t)
