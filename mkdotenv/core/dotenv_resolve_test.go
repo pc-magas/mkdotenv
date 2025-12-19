@@ -12,21 +12,24 @@ import (
 	"github.com/pc-magas/mkdotenv/core/executor"
 )
 
-// func TestReplace_Passthrough(t *testing.T) {
-// 	ctrl := gomock.NewController(t)
+func TestReplace_Passthrough(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 
-//   	m := NewMockExecutor(ctrl)
+  	m := NewMockExecutor(ctrl)
 
-// 	input := "FOO=bar\nBAZ=qux\n"
-// 	var output bytes.Buffer
+	input := "FOO=bar\nBAZ=qux\n"
+	var output bytes.Buffer
 
-// 	m := NewDotEnvManipulator(strings.NewReader(input))
+	m := NewDotEnvManipulator(strings.NewReader(input))
+	
+	mockExec.EXPECT().Execute(gomock.Any()).Times(0)
 
-// 	err := m.Replace(bufio.NewWriter(&output), "dev")
-// 	assert.NoError(t, err)
+	err := m.Replace(bufio.NewWriter(&output), "dev")
+	assert.NoError(t, err)
 
-// 	assert.Equal(t, input, output.String())
-// }
+	assert.Equal(t, input, output.String())
+}
 
 func TestValueIsReplaced_UponExecution(t *testing.T) {
 	ctrl := gomock.NewController(t)
