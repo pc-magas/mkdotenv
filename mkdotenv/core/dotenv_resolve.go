@@ -18,9 +18,10 @@ type DotEnvSecretReplaceEngine  interface {
 	Replace(output *bufio.Writer) error
 }
 
-func NewDotEnvManipulator(template io.Reader,) *DotenvManipulator {
+func NewDotEnvManipulator(template io.Reader, commandExecutor executor.Executor) *DotenvManipulator {
 	return &DotenvManipulator{
 		template: template,
+		executor: commandExecutor,
 	}
 }
 
@@ -59,14 +60,19 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment
 		}
 
 		if(commandToExecute != nil){
-			resolver,error := manipulator.executor.Execute(commandToExecute)
+
+			variable,err:=parser.ExtractVariableName(line_to_write)
 			
-			if(error){
-				return error
+			if(err!=nil){
+				return err
 			}
 
-			variable,error:=parser.ExtractVariableName(line_to_write)
-			value = manipulator.secretResolve(commandToExecute)
+			value,err := manipulator.executor.Execute(commandToExecute)
+			
+			// Unsure if return err
+			if(err!=nil){
+				return err
+			}
 
 			line_to_write = fmt.Sprintf("%s=%s",variable,value)
 			
