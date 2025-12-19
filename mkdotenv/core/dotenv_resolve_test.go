@@ -34,12 +34,10 @@ func TestValueIsReplaced_UponExecution(t *testing.T) {
 
 	mockExec := executor.NewMockExecutor(ctrl)
 
-	input := `
-#mkdotenv(*):resolve("path_to_secret"):secret_resolver()
+	input := `#mkdotenv(*):resolve("path_to_secret"):secret_resolver()
 API_KEY=old
 `
-	expected := `
-#mkdotenv(*):resolve("path_to_secret"):secret_resolver()
+	expected := `#mkdotenv(*):resolve("path_to_secret"):secret_resolver()
 API_KEY=default_secret
 `
 
