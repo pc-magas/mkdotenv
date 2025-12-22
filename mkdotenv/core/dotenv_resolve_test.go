@@ -136,3 +136,96 @@ API_KEY=default_secret
 	assert.NoError(t, err)
 	assert.Equal(t, expected, output.String())
 }
+
+func TestValueIsReplaced_UponExecutionWithDefaultEnvironment(t *testing.T) {
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockExec := executor.NewMockExecutor(ctrl)
+
+	input := `#mkdotenv(*):resolve("path_to_secret"):secret_resolver()
+#mkdotenv(default):resolve("path_to_secret_default"):secret_resolver()
+#mkdotenv(*):resolve("path_to_secret_wild"):secret_resolver()
+#mkdotenv(default):resolve("path_to_secret_default1"):secret_resolver()
+#mkdotenv(prod):resolve("path_to_secret_prod"):secret_resolver()
+#mkdotenv(dev):resolve("path_to_secret_dev"):secret_resolver()
+#mkdotenv(test):resolve("path_to_secret"):secret_resolver()
+API_KEY=old
+`
+	expected := `#mkdotenv(*):resolve("path_to_secret"):secret_resolver()
+#mkdotenv(default):resolve("path_to_secret_default"):secret_resolver()
+#mkdotenv(*):resolve("path_to_secret_wild"):secret_resolver()
+#mkdotenv(default):resolve("path_to_secret_default1"):secret_resolver()
+#mkdotenv(prod):resolve("path_to_secret_prod"):secret_resolver()
+#mkdotenv(dev):resolve("path_to_secret_dev"):secret_resolver()
+#mkdotenv(test):resolve("path_to_secret"):secret_resolver()
+API_KEY=default_secret
+`
+	mockExec.
+		EXPECT().
+		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{})).
+		DoAndReturn(func(cmd *parser.MkDotenvCommand) (string, error) {
+			// Here you can assert details about the command
+			assert.Equal(t, "default", cmd.Environment)
+			assert.Equal(t, "\"path_to_secret_default1\"", cmd.SecretPath)
+			return "default_secret", nil
+		}).
+		Times(1)
+
+	var output bytes.Buffer
+	writer := bufio.NewWriter(&output)
+
+	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
+
+	err := m.Replace(writer, "default")
+	writer.Flush()
+
+	assert.NoError(t, err)
+	assert.Equal(t, expected, output.String())
+}
+
+func TestValueIsReplaced_UponExecutionWithWildcardEnvironment(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockExec := executor.NewMockExecutor(ctrl)
+
+	input := `#mkdotenv(*):resolve("path_to_secret"):secret_resolver()
+#mkdotenv(default):resolve("path_to_secret_default"):secret_resolver()
+#mkdotenv(*):resolve("path_to_secret_wild"):secret_resolver()
+#mkdotenv(prod):resolve("path_to_secret_prod"):secret_resolver()
+#mkdotenv(dev):resolve("path_to_secret_dev"):secret_resolver()
+#mkdotenv(test):resolve("path_to_secret"):secret_resolver()
+API_KEY=old
+`
+	expected := `#mkdotenv(*):resolve("path_to_secret"):secret_resolver()
+#mkdotenv(default):resolve("path_to_secret_default"):secret_resolver()
+#mkdotenv(*):resolve("path_to_secret_wild"):secret_resolver()
+#mkdotenv(prod):resolve("path_to_secret_prod"):secret_resolver()
+#mkdotenv(dev):resolve("path_to_secret_dev"):secret_resolver()
+#mkdotenv(test):resolve("path_to_secret"):secret_resolver()
+API_KEY=default_secret
+`
+	mockExec.
+		EXPECT().
+		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{})).
+		DoAndReturn(func(cmd *parser.MkDotenvCommand) (string, error) {
+			// Here you can assert details about the command
+			assert.Equal(t, "*", cmd.Environment)
+			assert.Equal(t, "\"path_to_secret_wild\"", cmd.SecretPath)
+			return "default_secret", nil
+		}).
+		Times(1)
+
+	var output bytes.Buffer
+	writer := bufio.NewWriter(&output)
+
+	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
+
+	err := m.Replace(writer, "default")
+	writer.Flush()
+
+	assert.NoError(t, err)
+	assert.Equal(t, expected, output.String())
+}
