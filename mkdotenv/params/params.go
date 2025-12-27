@@ -15,6 +15,14 @@ type Arguments struct {
     ParseComplete bool
 }
 
+func getDefault(name string) any {
+	for _, f := range flagsMeta {
+		if f.Name == name {
+			return f.DefaultValue
+		}
+	}
+	return nil
+}
 
 func GetParameters(osArguments []string) (error,Arguments) {
 	
@@ -23,12 +31,14 @@ func GetParameters(osArguments []string) (error,Arguments) {
 	}
 
 	args := Arguments{
-		Environment: "default",
-		TemplateFile: ".env.dist",
-		OutputFile: ".env",
-		ArgumentNum: len(osArguments),
-		MiscArguments: make(map[string]string),
-		ParseComplete: false,
+		Environment:    getDefault("environment").(string),
+		TemplateFile:   getDefault("template-file").(string),
+		OutputFile:     getDefault("output-file").(string),
+		ArgumentNum:    len(osArguments),
+		MiscArguments:  make(map[string]string),
+		DisplayHelp:    false,
+		DisplayVersion: false,
+		ParseComplete:  false,
 	}
 
     parser := NewParamParser[Arguments](flagsMeta)
