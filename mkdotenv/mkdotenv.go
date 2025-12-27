@@ -19,13 +19,14 @@ package main
 
 import (
     "os"
-    // "fmt"
+    "fmt"
 	// "time"
 	// "strconv"
 	"github.com/pc-magas/mkdotenv/params"
 	"github.com/pc-magas/mkdotenv/msg"
 	"github.com/pc-magas/mkdotenv/files"
-	// "github.com/pc-magas/mkdotenv/core"
+	"github.com/pc-magas/mkdotenv/core"
+	"github.com/pc-magas/mkdotenv/core/executor"
 )
 
 func displayVersionOrHelp(paramStruct params.Arguments){
@@ -58,15 +59,12 @@ func main() {
 
 	filenameToRead := paramStruct.TemplateFile
 
-	// If inputfile is same as Outputfile copy the input file to a temporary one
 	if(paramStruct.TemplateFile == paramStruct.OutputFile){
 		msg.ExitError("Template file and output file should not be the same.")
 	}
 
-
 	file:=files.GetFileToRead(filenameToRead)
 	defer file.Close()
-	
 
 	writer,outfile := files.CreateWriter(paramStruct.OutputFile)
 	if(outfile!=nil){
@@ -74,29 +72,12 @@ func main() {
 	}
 	defer writer.Flush()
 
-	// _,err := core.AppendValueToDotenv(file,writer,paramStruct.VariableName,paramStruct.VariableValue,paramStruct.RemoveDoubles)
+	manipulator:= core.NewDotEnvManipulator(file,executor.NewExecutor())
 
-    // if(err!=nil){
-    //     fmt.Fprintln(os.Stderr, "Error:", err)
-	// 	if(sameFileToReadAndWrite){
-	// 		files.CopyFile(filenameCopy,paramStruct.DotenvFilename)
-	// 	}
-    //     os.Exit(1)
-    // }
+	err := manipulator.Replace(writer,paramStruct.Environment)
+
+    if(err!=nil){
+        fmt.Fprintln(os.Stderr, "Error:", err)
+        os.Exit(1)
+    }
 }
-
-// func main(){
-// 	resolver,_ := secret.NewKeepassXResolver("/home/pcmagas/Kwdikas/go/mkdotenv/mkdotenv_app/dev_data/Database.kdbx","123")
-
-// 	val, err := resolver.Resolve("Database/General/Dummy 2")
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-
-// 	fmt.Println("Resolved:", val)
-
-// 	plaintextResolver:=secret.NewPlaintextResolver()
-
-// 	val, _ = plaintextResolver.Resolve("Hello")
-// 	fmt.Println(val)
-// }
