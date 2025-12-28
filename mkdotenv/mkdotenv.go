@@ -46,11 +46,6 @@ func main() {
 
 	paramErr,paramStruct := params.GetParameters(os.Args)
 
-	if (paramStruct.ArgumentNum == 1 ){
-		msg.PrintHelp()
-		os.Exit(0)
-	}
-
 	if(paramErr != nil){
 		msg.ExitError(paramErr.Error())
 	}
