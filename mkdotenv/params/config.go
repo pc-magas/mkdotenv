@@ -43,7 +43,7 @@ var flagsMeta = FlagList{
 		DefaultValue: ".env.dist",
         Usage:    "Template .env file containing commands on how .env file would be generated. If no vanue provided .env.dist assumed.",
         Order:    2,
-		Validator: ValidateCommon,
+		Validator: ValidateExistingFile,
     },
     {
         Name:     "output-file",

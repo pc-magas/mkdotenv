@@ -19,7 +19,7 @@ func ValidateExistingFile(value string) bool {
 	}
 
 	info, err := os.Stat(value)
-    if err == nil {
+    if err != nil {
         return false
     }
 

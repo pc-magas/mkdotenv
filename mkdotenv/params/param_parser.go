@@ -97,7 +97,7 @@ func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
         p.ParsedFlags[meta.Name]++
         if p.ParsedFlags[meta.Name] > 1 && !meta.AllowMultiple {
             parseErr = fmt.Errorf("flag --%s provided multiple times", meta.Name)
-            return
+            return 
         }
 
         value := f.Value.String()
@@ -113,7 +113,7 @@ func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
 
         // --- assign to Arguments ---
         if p.OnAssign != nil {
-            if err := p.OnAssign(*meta, f.Value.String(),target); err != nil {
+            if err := p.OnAssign(*meta, value,target); err != nil {
                 parseErr = err
                 return
             }
