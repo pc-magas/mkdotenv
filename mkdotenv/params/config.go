@@ -31,7 +31,7 @@ var flagsMeta = FlagList{
 		DefaultValue: "default",
         Usage:    "Environment in which secrets would be resolved",
         Order:    1,
-		Validator: ValiDateCommon,
+		Validator: ValidateCommon,
     },
     {
         Name:     "template-file",
@@ -43,7 +43,7 @@ var flagsMeta = FlagList{
 		DefaultValue: ".env.dist",
         Usage:    "Template .env file containing commands on how .env file would be generated. If no vanue provided .env.dist assumed.",
         Order:    2,
-		Validator: ValiDateCommon,
+		Validator: ValidateCommon,
     },
     {
         Name:     "output-file",
@@ -55,7 +55,7 @@ var flagsMeta = FlagList{
 		DefaultValue: ".env",
         Usage:    "File to write output to",
         Order:    2,
-		Validator: ValiDateCommon,
+		Validator: ValidateCommon,
     },
     {
         Name:     "argument",
@@ -67,6 +67,6 @@ var flagsMeta = FlagList{
 		DefaultValue: "",
         Usage:    "Argument provided as $_ARG upon template file.",
         Order:    3,
-		Validator: ValiDateCommon,
+		Validator: ValidateCommon,
     },
 }

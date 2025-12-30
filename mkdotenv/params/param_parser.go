@@ -100,8 +100,13 @@ func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
             return
         }
 
-        // --- validate value ---
-        if meta.Validator != nil && !meta.Validator(f.Value.String()) {
+        value := f.Value.String()
+        
+        if(value == ""){
+            value = meta.DefaultValue
+        }
+
+        if meta.Validator != nil && !meta.Validator(value) {
             parseErr = fmt.Errorf("invalid value for --%s", meta.Name)
             return
         }
@@ -132,12 +137,4 @@ func (p *ParamParser[T])SearchFlag(name string) *FlagMeta {
         }
     }
     return nil
-}
-
-func ValiDateCommon(value string) bool {
-	if(value == ""){
-		return false
-	}
-
-	return true
 }
