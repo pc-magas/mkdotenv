@@ -2,7 +2,6 @@ package params
 
 import(
 	"errors"
-	"fmt"
 )
 
 type Arguments struct {
@@ -45,8 +44,6 @@ func GetParameters(osArguments []string) (error,Arguments) {
     parser := NewParamParser[Arguments](flagsMeta)
 
 	parser.OnAssign = func(meta FlagMeta, value string, args *Arguments) error {
-		fmt.Println(meta.Name)
-		fmt.Println(value)
         switch meta.Name {
 		case "help":
 			args.DisplayHelp=true

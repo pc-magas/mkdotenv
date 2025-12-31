@@ -1,0 +1,51 @@
+package params
+
+import (
+	"fmt"
+	"testing"
+	"github.com/stretchr/testify/assert"
+)
+
+// test target struct that flags will populate
+type testArgs struct {
+	Name  string
+}
+
+func TestParamParser_Parse(t *testing.T) {
+	flags := FlagList{
+		{
+			Name:     "name",
+			Aliases:  []string{},
+			Short: "n",
+			AllowMultiple: false,
+			Type: StringType,
+			Required: false,
+			DefaultValue: "",
+			Usage:    "TestUsage",
+			Order:    2,
+			Validator: ValidateCommon,
+		},
+	}
+
+	values:=testArgs{
+		Name:"wrong",
+	}
+
+	expectedValue:="David"
+
+	parser := NewParamParser[testArgs](flags)
+	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
+		fmt.Println(meta.Name,value)
+		switch meta.Name {
+			case "name":
+				args.Name=value
+		}
+		return nil
+	}
+
+	complete,err:=parser.Parse([]string{"--name", expectedValue},&values);
+
+	assert.NoError(t,err)
+	assert.True(t,complete)
+	assert.Equal(t,values.Name,expectedValue)
+}

@@ -68,7 +68,7 @@ func (p *ParamParser[T]) initFlags() {
     }
 }
 
-func NewParamParser[T any](flags []FlagMeta) *ParamParser[T] {
+func NewParamParser[T any](flags FlagList) *ParamParser[T] {
     p := &ParamParser[T]{
         FlagsMeta: flags,
         ParsedFlags: make(map[string]int),
