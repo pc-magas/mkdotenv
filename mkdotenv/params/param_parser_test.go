@@ -43,7 +43,9 @@ func TestParamParser_Parse(t *testing.T) {
 		return nil
 	}
 
-	complete,err:=parser.Parse([]string{"--name", expectedValue},&values);
+	args := []string{"executable","--name", expectedValue}
+	fmt.Println(args)
+	complete,err:=parser.Parse([]string{"executable","--name", expectedValue},&values);
 
 	assert.NoError(t,err)
 	assert.True(t,complete)

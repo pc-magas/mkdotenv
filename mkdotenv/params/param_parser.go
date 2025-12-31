@@ -38,7 +38,7 @@ type ParamParser[T any] struct {
 
 func (p *ParamParser[T]) initFlags() {
     p.FlagSet=flag.NewFlagSet("params", flag.ContinueOnError)
-	for _, meta := range flagsMeta {
+	for _, meta := range p.FlagsMeta {
         switch meta.Type {
 			case StringType:
 				
@@ -128,7 +128,7 @@ func (p *ParamParser[T])SearchFlag(name string) *FlagMeta {
 	name = strings.Trim(name,"-")
     for i := range p.FlagsMeta {
         if p.FlagsMeta[i].Name == name {
-            return &flagsMeta[i]
+            return &p.FlagsMeta[i]
         }
         for _, alias := range p.FlagsMeta[i].Aliases {
             if alias == name {
