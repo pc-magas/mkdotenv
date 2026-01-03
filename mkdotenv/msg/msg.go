@@ -6,6 +6,7 @@ import(
 	"slices"
 	"strings"
 	"github.com/pc-magas/mkdotenv/params"
+	"github.com/pc-magas/mkdotenv/parser"
 )
 
 // This is changed upon runtime.
@@ -47,7 +48,7 @@ func buildArgumentUsage() string {
 }
 
 func buildCommandUsage() string {
-	groups := make(map[int][]params.FlagMeta)
+	groups := make(map[int][]parser.FlagMeta)
 	orders := []int{}
 
 	for _, meta := range params.GetFlagsMeta() {
@@ -78,7 +79,7 @@ func buildCommandUsage() string {
 					part+= fmt.Sprintf(" | --%s",alias)
 			}
 
-			if meta.Type == params.StringType {
+			if meta.Type == parser.StringType {
 				part+= fmt.Sprintf(" <%s>", strings.ReplaceAll(meta.Name, "-", "_"))
 			}
 
