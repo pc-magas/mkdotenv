@@ -6,7 +6,7 @@ import(
 	"slices"
 	"strings"
 	"github.com/pc-magas/mkdotenv/params"
-	"github.com/pc-magas/mkdotenv/parser"
+	"github.com/pc-magas/mkdotenv/params/parser"
 )
 
 // This is changed upon runtime.
