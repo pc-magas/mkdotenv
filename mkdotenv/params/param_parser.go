@@ -1,8 +1,9 @@
 package params
 
-import "fmt"
-import "strings"
-import flag "github.com/spf13/pflag"
+import (
+    "fmt"
+    "strings"
+)
 
 type CLIArgType string
 
@@ -10,8 +11,7 @@ type FlagList []FlagMeta
 
 const (
 	StringType CLIArgType = "string"
-	BoolType   CLIArgType = "bool"
-	IntType    CLIArgType = "int"
+	NoValType   CLIArgType = "noval"
 )
 
 type FlagMeta struct {
@@ -32,81 +32,7 @@ type OnAssignCallback[T any] func(meta FlagMeta, value string,target *T) error
 type ParamParser[T any] struct {
     FlagsMeta FlagList
     ParsedFlags map[string]int
-    FlagSet *flag.FlagSet
     OnAssign OnAssignCallback[T]
-}
-
-func (p *ParamParser[T]) initFlagsMultiple(meta FlagMeta) {
-
-    switch meta.Type {
-
-		case StringType:
-
-			if meta.Short == "" {
-                p.FlagSet.StringArray(meta.Name, []string{}, meta.Usage)
-            } else {
-                p.FlagSet.StringArrayP(meta.Name, meta.Short, []string{}, meta.Usage)
-            }
-            for _, alias := range meta.Aliases {
-                p.FlagSet.StringArray(alias, []string{}, "(alias of --"+meta.Name+") "+meta.Usage)
-            }
-
-		case BoolType:
-			var count int
-            if meta.Short == "" {
-                p.FlagSet.CountVar(&count, meta.Name, meta.Usage)
-            } else {
-                p.FlagSet.CountVarP(&count, meta.Name, meta.Short, meta.Usage)
-            }
-
-            for _, alias := range meta.Aliases {
-                p.FlagSet.CountVar(&count, alias, "(alias of --"+meta.Name+") "+meta.Usage)
-            }
-    }
-
-}
-
-
-func (p *ParamParser[T]) initFlagsSingle(meta FlagMeta) {
-
-    switch meta.Type {
-
-		case StringType:
-			if(meta.Short == ""){
-				p.FlagSet.String(meta.Name, meta.DefaultValue, meta.Usage)
-			} else {
-				p.FlagSet.StringP(meta.Name, meta.Short, meta.DefaultValue, meta.Usage)
-			}
-
-			for _, alias := range meta.Aliases {
-				p.FlagSet.String(alias, meta.DefaultValue, "(alias of --"+meta.Name+") "+meta.Usage)
-			}
-
-		case BoolType:
-			def := meta.DefaultValue == "true"
-
-			if(meta.Short == ""){
-				p.FlagSet.Bool(meta.Name, def, meta.Usage)
-			} else {
-				p.FlagSet.BoolP(meta.Name,meta.Short, def, meta.Usage)
-			}
-				
-			for _, alias := range meta.Aliases {
-				p.FlagSet.Bool(alias, def, "(alias of --"+meta.Name+") "+meta.Usage)
-			}
-    }
-
-}
-
-func (p *ParamParser[T]) initFlags() {
-    p.FlagSet=flag.NewFlagSet("params", flag.ContinueOnError)
-	for _, meta := range p.FlagsMeta {
-        if(meta.AllowMultiple){
-            p.initFlagsMultiple(meta)
-        } else {
-            p.initFlagsSingle(meta)
-        }
-    }
 }
 
 func NewParamParser[T any](flags FlagList) *ParamParser[T] {
@@ -115,97 +41,93 @@ func NewParamParser[T any](flags FlagList) *ParamParser[T] {
         ParsedFlags: make(map[string]int),
     }
 
-    p.initFlags()
     return p
 }
 
-func (p *ParamParser[T])assignValueMultiple(meta *FlagMeta, f *flag.Flag, target *T) error {
+func (p *ParamParser[T]) extractArgumentAndValue(argument string) (string,string) {
 
-    if(meta.Type == StringType){
-        vals, _ := p.FlagSet.GetStringArray(meta.Name)
-        for _, value := range vals {
+    var value string
 
-            if meta.Validator != nil && !meta.Validator(value) {
-                return fmt.Errorf("invalid value for --%s: %s", meta.Name, value)
-            }
-
-            if p.OnAssign == nil {
-                return nil    
-            }
-
-            if err := p.OnAssign(*meta, value, target); err != nil {
-                return err
-            }
-        }
-
-    } else if(meta.Type == BoolType) {
-        count, _ := p.FlagSet.GetCount(meta.Name)
-        fmt.Println(count)
-        for i := 0; i < count; i++ {
-
-            if p.OnAssign == nil {
-              return nil
-            }
-
-            if err := p.OnAssign(*meta, "true", target); err != nil {
-                return err
-            }
-        }
+    if strings.Contains(argument, "=") {
+        parts := strings.SplitN(argument, "=", 2)
+        argument = parts[0]
+        value = parts[1]
     }
 
-    return nil
+    argument = strings.TrimLeft(argument, "-")
+
+    return argument,value
+
 }
 
-func (p *ParamParser[T])assignValueSingle(meta *FlagMeta, f *flag.Flag, target *T) error {
+func (p *ParamParser[T]) extractValueFromNext(i int, osArgs []string) string {
 
-    value := f.Value.String()
-        
-    if(value == ""){
-        value = meta.DefaultValue
+    length := len(osArgs)
+    next := i+1;
+
+    if(next > length){
+        return ""
     }
 
-    if meta.Validator != nil && !meta.Validator(value) {
-        return fmt.Errorf("invalid value for --%s", meta.Name)
-    }
+    return osArgs[next]
 
-    // --- assign to Arguments ---
-    if p.OnAssign != nil {
-        if err := p.OnAssign(*meta, value,target); err != nil {
-            return err
-        }
-    }
-
-    return nil
 }
 
 func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
-    err := p.FlagSet.Parse(osArgs)
-    if err != nil {
-        return false, err
+    
+    if(p.OnAssign == nil){
+        return false,fmt.Errorf("No callback has been provided to assign the values")
     }
 
     var parseErr error
 
-    p.FlagSet.Visit(func(f *flag.Flag) {
-        meta := p.SearchFlag(f.Name)
-        if meta == nil {
-            parseErr = fmt.Errorf("unknown flag: %s", f.Name)
-            return
+    for i, arg := range osArgs {
+        
+        if(i==0){
+            continue;
         }
 
-        // --- count occurrences ---
+        if !strings.HasPrefix(arg, "-") {
+            continue
+        }
+
+        name,value := p.extractArgumentAndValue(arg)
+        meta := p.SearchFlag(name)
+
+        if meta == nil {
+            parseErr = fmt.Errorf("unknown flag: %s", arg)
+            return false, parseErr
+        }
+
         p.ParsedFlags[meta.Name]++
         if p.ParsedFlags[meta.Name] > 1 && !meta.AllowMultiple {
             parseErr = fmt.Errorf("flag --%s provided multiple times", meta.Name)
-            return 
+            return false, parseErr
         }
 
-        if(meta.AllowMultiple){
-            parseErr = p.assignValueMultiple(meta,f,target)
-        } else {
-            parseErr = p.assignValueSingle(meta,f,target)
+        if(meta.Type == StringType){
+            if(value == ""){
+                value = p.extractValueFromNext(i,osArgs)
+            }
+        } else if (meta.Type == NoValType){
+            
+            if(value != ""){
+               parseErr = fmt.Errorf("flag --%s does not require value to be provided upon. %s provided", meta.Name,value)
+                return false, parseErr
+            }
+
+            value="true"
         }
-    })
+        
+        if(meta.Validator!=nil && !meta.Validator(value)){
+            parseErr = fmt.Errorf("flag --%s contains Invalid value. %s provided", meta.Name,value)
+            return false,parseErr
+        }
+
+        if err := p.OnAssign(*meta, value, target); err != nil {
+            return false,err
+        }
+    }
 
     return true, parseErr
 }
@@ -213,7 +135,7 @@ func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
 func (p *ParamParser[T])SearchFlag(name string) *FlagMeta {
 	name = strings.Trim(name,"-")
     for i := range p.FlagsMeta {
-        if p.FlagsMeta[i].Name == name {
+        if p.FlagsMeta[i].Name == name || p.FlagsMeta[i].Short == name  {
             return &p.FlagsMeta[i]
         }
         for _, alias := range p.FlagsMeta[i].Aliases {

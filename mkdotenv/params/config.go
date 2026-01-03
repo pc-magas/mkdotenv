@@ -8,7 +8,7 @@ var flagsMeta = FlagList{
         Required: false,
         Usage:    "Display help message and exit",
         AllowMultiple: false,
-		Type:  	BoolType,
+		Type:  	NoValType,
         Order:    0,
     },
     {
@@ -17,7 +17,7 @@ var flagsMeta = FlagList{
 		Short: "v",
         Required: false,
         AllowMultiple: false,
-		Type:  	BoolType,
+		Type:  	NoValType,
         Usage:    "Display version and exit",
         Order:    0,
     },

@@ -1,7 +1,6 @@
 package params
 
 import (
-	"fmt"
 	"testing"
 	"github.com/stretchr/testify/assert"
 )
@@ -38,7 +37,6 @@ func TestParamParser_Parse(t *testing.T) {
 
 	parser := NewParamParser[testArgs](flags)
 	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
-		fmt.Println(meta.Name,value)
 		switch meta.Name {
 			case "name":
 				args.Name=value
@@ -77,7 +75,6 @@ func TestParamParser_ParseShort(t *testing.T) {
 
 	parser := NewParamParser[testArgs](flags)
 	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
-		fmt.Println(meta.Name,value)
 		switch meta.Name {
 			case "name":
 				args.Name=value
@@ -86,6 +83,82 @@ func TestParamParser_ParseShort(t *testing.T) {
 	}
 
 	complete,err:=parser.Parse([]string{"executable","-n", expectedValue},&values);
+
+	assert.NoError(t,err)
+	assert.True(t,complete)
+	assert.Equal(t,values.Name,expectedValue)
+}
+
+func TestParamParser_ParseValueSeperatedWithIson(t *testing.T) {
+	flags := FlagList{
+		{
+			Name:     "name",
+			Aliases:  []string{},
+			Short: "n",
+			AllowMultiple: false,
+			Type: StringType,
+			Required: false,
+			DefaultValue: "",
+			Usage:    "TestUsage",
+			Order:    2,
+			Validator: ValidateCommon,
+		},
+	}
+
+	values:=testArgs{
+		Name:"wrong",
+	}
+
+	expectedValue:="David"
+
+	parser := NewParamParser[testArgs](flags)
+	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
+		switch meta.Name {
+			case "name":
+				args.Name=value
+		}
+		return nil
+	}
+
+	complete,err:=parser.Parse([]string{"executable","-name="+expectedValue},&values);
+
+	assert.NoError(t,err)
+	assert.True(t,complete)
+	assert.Equal(t,values.Name,expectedValue)
+}
+
+func TestParamParser_ParseValueSeperatedWithIsonShort(t *testing.T) {
+	flags := FlagList{
+		{
+			Name:     "name",
+			Aliases:  []string{},
+			Short: "n",
+			AllowMultiple: false,
+			Type: StringType,
+			Required: false,
+			DefaultValue: "",
+			Usage:    "TestUsage",
+			Order:    2,
+			Validator: ValidateCommon,
+		},
+	}
+
+	values:=testArgs{
+		Name:"wrong",
+	}
+
+	expectedValue:="David"
+
+	parser := NewParamParser[testArgs](flags)
+	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
+		switch meta.Name {
+			case "name":
+				args.Name=value
+		}
+		return nil
+	}
+
+	complete,err:=parser.Parse([]string{"executable","-name="+expectedValue},&values);
 
 	assert.NoError(t,err)
 	assert.True(t,complete)
@@ -116,7 +189,6 @@ func TestParamParser_ParseAlias(t *testing.T) {
 
 	parser := NewParamParser[testArgs](flags)
 	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
-		fmt.Println(meta.Name,value)
 		switch meta.Name {
 			case "name":
 				args.Name=value
@@ -132,6 +204,44 @@ func TestParamParser_ParseAlias(t *testing.T) {
 }
 
 
+func TestParamParser_ParseAliasIson(t *testing.T) {
+	flags := FlagList{
+		{
+			Name:     "name",
+			Aliases:  []string{"onoma"},
+			Short: "n",
+			AllowMultiple: false,
+			Type: StringType,
+			Required: false,
+			DefaultValue: "",
+			Usage:    "TestUsage",
+			Order:    2,
+			Validator: ValidateCommon,
+		},
+	}
+
+	values:=testArgs{
+		Name:"wrong",
+	}
+
+	expectedValue:="David"
+
+	parser := NewParamParser[testArgs](flags)
+	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
+		switch meta.Name {
+			case "name":
+				args.Name=value
+		}
+		return nil
+	}
+
+	complete,err:=parser.Parse([]string{"executable","--onoma="+expectedValue},&values);
+
+	assert.NoError(t,err)
+	assert.True(t,complete)
+	assert.Equal(t,values.Name,expectedValue)
+}
+
 func TestParamParser_ParseFlag(t *testing.T) {
 
 	flags := FlagList{
@@ -140,7 +250,7 @@ func TestParamParser_ParseFlag(t *testing.T) {
 			Aliases:  []string{},
 			Short: "h",
 			AllowMultiple: false,
-			Type: BoolType,
+			Type: NoValType,
 			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
@@ -155,7 +265,6 @@ func TestParamParser_ParseFlag(t *testing.T) {
 
 	parser := NewParamParser[testArgs](flags)
 	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
-		fmt.Println(meta.Name,value)
 		switch meta.Name {
 			case "help":
 				args.Flag=true
@@ -179,7 +288,7 @@ func TestParamParser_ParseFlagShort(t *testing.T) {
 			Aliases:  []string{},
 			Short: "h",
 			AllowMultiple: false,
-			Type: BoolType,
+			Type: NoValType,
 			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
@@ -194,7 +303,6 @@ func TestParamParser_ParseFlagShort(t *testing.T) {
 
 	parser := NewParamParser[testArgs](flags)
 	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
-		fmt.Println(meta.Name,value)
 		switch meta.Name {
 			case "help":
 				args.Flag=true
@@ -218,7 +326,7 @@ func TestParamParser_ParseFlagAlias(t *testing.T) {
 			Aliases:  []string{"voithia"},
 			Short: "h",
 			AllowMultiple: false,
-			Type: BoolType,
+			Type: NoValType,
 			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
@@ -248,6 +356,43 @@ func TestParamParser_ParseFlagAlias(t *testing.T) {
 	assert.True(t,values.Flag)
 }
 
+func TestParamParser_ParseFlagWithValueFails(t *testing.T) {
+
+	flags := FlagList{
+		{
+			Name:     "help",
+			Aliases:  []string{"voithia"},
+			Short: "h",
+			AllowMultiple: false,
+			Type: NoValType,
+			Required: false,
+			DefaultValue: "",
+			Usage:    "TestUsage",
+			Order:    2,
+			Validator: ValidateCommon,
+		},
+	}
+
+	values:=testArgs{
+		Flag:false,
+	}
+
+	parser := NewParamParser[testArgs](flags)
+	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
+		switch meta.Name {
+			case "help":
+				args.Flag=true
+		}
+		return nil
+	}
+
+	args := []string{"executable","--help=someval"}
+	complete,err:=parser.Parse(args,&values);
+
+	assert.Error(t,err)
+	assert.False(t,complete)
+	assert.False(t,values.Flag)
+}
 
 func TestParamParser_TestMultiple(t *testing.T) {
 	flags := FlagList{
@@ -256,7 +401,7 @@ func TestParamParser_TestMultiple(t *testing.T) {
 			Aliases:  []string{"voithia"},
 			Short: "h",
 			AllowMultiple: true,
-			Type: BoolType,
+			Type: NoValType,
 			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
@@ -271,7 +416,6 @@ func TestParamParser_TestMultiple(t *testing.T) {
 
 	parser := NewParamParser[testArgs](flags)
 	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
-		fmt.Println(meta.Name,value)
 		switch meta.Name {
 			case "help":
 				args.ArgCount=args.ArgCount+1
