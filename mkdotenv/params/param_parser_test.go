@@ -10,6 +10,8 @@ import (
 type testArgs struct {
 	Name  string
 	Flag bool
+	ArgCount int
+	Args []string
 }
 
 func TestParamParser_Parse(t *testing.T) {
@@ -231,7 +233,6 @@ func TestParamParser_ParseFlagAlias(t *testing.T) {
 
 	parser := NewParamParser[testArgs](flags)
 	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
-		fmt.Println(meta.Name,value)
 		switch meta.Name {
 			case "help":
 				args.Flag=true
@@ -245,4 +246,82 @@ func TestParamParser_ParseFlagAlias(t *testing.T) {
 	assert.NoError(t,err)
 	assert.True(t,complete)
 	assert.True(t,values.Flag)
+}
+
+
+func TestParamParser_TestMultiple(t *testing.T) {
+	flags := FlagList{
+		{
+			Name:     "help",
+			Aliases:  []string{"voithia"},
+			Short: "h",
+			AllowMultiple: true,
+			Type: BoolType,
+			Required: false,
+			DefaultValue: "",
+			Usage:    "TestUsage",
+			Order:    2,
+			Validator: ValidateCommon,
+		},
+	}
+
+	values:=testArgs{
+		ArgCount:0,
+	}
+
+	parser := NewParamParser[testArgs](flags)
+	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
+		fmt.Println(meta.Name,value)
+		switch meta.Name {
+			case "help":
+				args.ArgCount=args.ArgCount+1
+		}
+		return nil
+	}
+
+	args := []string{"executable","--help","-h","--voithia","-h"}
+	complete,err:=parser.Parse(args,&values);
+
+	assert.NoError(t,err)
+	assert.True(t,complete)
+	assert.Equal(t,4,values.ArgCount)
+}
+
+func TestParamParser_TestMultipleString(t *testing.T) {
+	flags := FlagList{
+		{
+			Name:     "help",
+			Aliases:  []string{"voithia"},
+			Short: "h",
+			AllowMultiple: true,
+			Type: StringType,
+			Required: false,
+			DefaultValue: "",
+			Usage:    "TestUsage",
+			Order:    2,
+			Validator: ValidateCommon,
+		},
+	}
+
+	values:=testArgs{
+		Args:[]string{},
+	}
+
+	expectedArgs:=[]string{"1","2","3","4"}
+
+	parser := NewParamParser[testArgs](flags)
+	parser.OnAssign = func(meta FlagMeta, value string, args *testArgs) error {
+		switch meta.Name {
+			case "help":
+				args.Args=append(args.Args,value)
+		}
+		return nil
+	}
+
+	args := []string{"executable","--help","1","-h","2","--voithia","3","-h","4"}
+	complete,err:=parser.Parse(args,&values);
+
+	assert.NoError(t,err)
+	assert.True(t,complete)
+	assert.Equal(t,expectedArgs,values.Args)
 }

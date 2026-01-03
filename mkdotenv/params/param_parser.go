@@ -36,34 +36,75 @@ type ParamParser[T any] struct {
     OnAssign OnAssignCallback[T]
 }
 
+func (p *ParamParser[T]) initFlagsMultiple(meta FlagMeta) {
+
+    switch meta.Type {
+
+		case StringType:
+
+			if meta.Short == "" {
+                p.FlagSet.StringArray(meta.Name, []string{}, meta.Usage)
+            } else {
+                p.FlagSet.StringArrayP(meta.Name, meta.Short, []string{}, meta.Usage)
+            }
+            for _, alias := range meta.Aliases {
+                p.FlagSet.StringArray(alias, []string{}, "(alias of --"+meta.Name+") "+meta.Usage)
+            }
+
+		case BoolType:
+			var count int
+            if meta.Short == "" {
+                p.FlagSet.CountVar(&count, meta.Name, meta.Usage)
+            } else {
+                p.FlagSet.CountVarP(&count, meta.Name, meta.Short, meta.Usage)
+            }
+
+            for _, alias := range meta.Aliases {
+                p.FlagSet.CountVar(&count, alias, "(alias of --"+meta.Name+") "+meta.Usage)
+            }
+    }
+
+}
+
+
+func (p *ParamParser[T]) initFlagsSingle(meta FlagMeta) {
+
+    switch meta.Type {
+
+		case StringType:
+			if(meta.Short == ""){
+				p.FlagSet.String(meta.Name, meta.DefaultValue, meta.Usage)
+			} else {
+				p.FlagSet.StringP(meta.Name, meta.Short, meta.DefaultValue, meta.Usage)
+			}
+
+			for _, alias := range meta.Aliases {
+				p.FlagSet.String(alias, meta.DefaultValue, "(alias of --"+meta.Name+") "+meta.Usage)
+			}
+
+		case BoolType:
+			def := meta.DefaultValue == "true"
+
+			if(meta.Short == ""){
+				p.FlagSet.Bool(meta.Name, def, meta.Usage)
+			} else {
+				p.FlagSet.BoolP(meta.Name,meta.Short, def, meta.Usage)
+			}
+				
+			for _, alias := range meta.Aliases {
+				p.FlagSet.Bool(alias, def, "(alias of --"+meta.Name+") "+meta.Usage)
+			}
+    }
+
+}
+
 func (p *ParamParser[T]) initFlags() {
     p.FlagSet=flag.NewFlagSet("params", flag.ContinueOnError)
 	for _, meta := range p.FlagsMeta {
-        switch meta.Type {
-			case StringType:
-				
-				if(meta.Short == ""){
-					p.FlagSet.String(meta.Name, meta.DefaultValue, meta.Usage)
-				} else {
-					p.FlagSet.StringP(meta.Name, meta.Short, meta.DefaultValue, meta.Usage)
-				}
-
-				for _, alias := range meta.Aliases {
-					p.FlagSet.String(alias, meta.DefaultValue, "(alias of --"+meta.Name+") "+meta.Usage)
-				}
-
-			case BoolType:
-				def := meta.DefaultValue == "true"
-
-				if(meta.Short == ""){
-					p.FlagSet.Bool(meta.Name, def, meta.Usage)
-				} else {
-					p.FlagSet.BoolP(meta.Name,meta.Short, def, meta.Usage)
-				}
-				
-				for _, alias := range meta.Aliases {
-					p.FlagSet.Bool(alias, def, "(alias of --"+meta.Name+") "+meta.Usage)
-				}
+        if(meta.AllowMultiple){
+            p.initFlagsMultiple(meta)
+        } else {
+            p.initFlagsSingle(meta)
         }
     }
 }
@@ -76,6 +117,65 @@ func NewParamParser[T any](flags FlagList) *ParamParser[T] {
 
     p.initFlags()
     return p
+}
+
+func (p *ParamParser[T])assignValueMultiple(meta *FlagMeta, f *flag.Flag, target *T) error {
+
+    if(meta.Type == StringType){
+        vals, _ := p.FlagSet.GetStringArray(meta.Name)
+        for _, value := range vals {
+
+            if meta.Validator != nil && !meta.Validator(value) {
+                return fmt.Errorf("invalid value for --%s: %s", meta.Name, value)
+            }
+
+            if p.OnAssign == nil {
+                return nil    
+            }
+
+            if err := p.OnAssign(*meta, value, target); err != nil {
+                return err
+            }
+        }
+
+    } else if(meta.Type == BoolType) {
+        count, _ := p.FlagSet.GetCount(meta.Name)
+        fmt.Println(count)
+        for i := 0; i < count; i++ {
+
+            if p.OnAssign == nil {
+              return nil
+            }
+
+            if err := p.OnAssign(*meta, "true", target); err != nil {
+                return err
+            }
+        }
+    }
+
+    return nil
+}
+
+func (p *ParamParser[T])assignValueSingle(meta *FlagMeta, f *flag.Flag, target *T) error {
+
+    value := f.Value.String()
+        
+    if(value == ""){
+        value = meta.DefaultValue
+    }
+
+    if meta.Validator != nil && !meta.Validator(value) {
+        return fmt.Errorf("invalid value for --%s", meta.Name)
+    }
+
+    // --- assign to Arguments ---
+    if p.OnAssign != nil {
+        if err := p.OnAssign(*meta, value,target); err != nil {
+            return err
+        }
+    }
+
+    return nil
 }
 
 func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
@@ -100,25 +200,11 @@ func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
             return 
         }
 
-        value := f.Value.String()
-        
-        if(value == ""){
-            value = meta.DefaultValue
+        if(meta.AllowMultiple){
+            parseErr = p.assignValueMultiple(meta,f,target)
+        } else {
+            parseErr = p.assignValueSingle(meta,f,target)
         }
-
-        if meta.Validator != nil && !meta.Validator(value) {
-            parseErr = fmt.Errorf("invalid value for --%s", meta.Name)
-            return
-        }
-
-        // --- assign to Arguments ---
-        if p.OnAssign != nil {
-            if err := p.OnAssign(*meta, value,target); err != nil {
-                parseErr = err
-                return
-            }
-        }
-
     })
 
     return true, parseErr
