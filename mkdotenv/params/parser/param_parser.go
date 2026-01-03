@@ -1,4 +1,4 @@
-package params
+package parser
 
 import (
     "fmt"
@@ -20,9 +20,9 @@ type FlagMeta struct {
 	DefaultValue string
 	Short 		string   // short value of the flag
     Aliases     []string // e.g., "h" is alias for "help"
-    Required    bool     // whether the flag is required
     Usage       string   // help message
     Order       int      // display order
+    Required bool // [DISPLAY ONLY] indicate whether an argument is required
     AllowMultiple bool
 	Validator   func(value string) bool
 }

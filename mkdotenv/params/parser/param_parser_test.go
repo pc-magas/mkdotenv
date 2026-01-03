@@ -1,8 +1,9 @@
-package params
+package parser
 
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
+	"github.com/pc-magas/mkdotenv/params/validate"
 )
 
 // test target struct that flags will populate
@@ -21,11 +22,10 @@ func TestParamParser_Parse(t *testing.T) {
 			Short: "n",
 			AllowMultiple: false,
 			Type: StringType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -59,11 +59,10 @@ func TestParamParser_ParseShort(t *testing.T) {
 			Short: "n",
 			AllowMultiple: false,
 			Type: StringType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -97,11 +96,10 @@ func TestParamParser_ParseValueSeperatedWithIson(t *testing.T) {
 			Short: "n",
 			AllowMultiple: false,
 			Type: StringType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -135,11 +133,10 @@ func TestParamParser_ParseValueSeperatedWithIsonShort(t *testing.T) {
 			Short: "n",
 			AllowMultiple: false,
 			Type: StringType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -173,11 +170,10 @@ func TestParamParser_ParseAlias(t *testing.T) {
 			Short: "n",
 			AllowMultiple: false,
 			Type: StringType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -212,11 +208,10 @@ func TestParamParser_ParseAliasIson(t *testing.T) {
 			Short: "n",
 			AllowMultiple: false,
 			Type: StringType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -251,11 +246,10 @@ func TestParamParser_ParseFlag(t *testing.T) {
 			Short: "h",
 			AllowMultiple: false,
 			Type: NoValType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -289,11 +283,10 @@ func TestParamParser_ParseFlagShort(t *testing.T) {
 			Short: "h",
 			AllowMultiple: false,
 			Type: NoValType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -327,11 +320,10 @@ func TestParamParser_ParseFlagAlias(t *testing.T) {
 			Short: "h",
 			AllowMultiple: false,
 			Type: NoValType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -365,11 +357,10 @@ func TestParamParser_ParseFlagWithValueFails(t *testing.T) {
 			Short: "h",
 			AllowMultiple: false,
 			Type: NoValType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -402,11 +393,10 @@ func TestParamParser_TestMultiple(t *testing.T) {
 			Short: "h",
 			AllowMultiple: true,
 			Type: NoValType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -439,11 +429,10 @@ func TestParamParser_TestMultipleString(t *testing.T) {
 			Short: "h",
 			AllowMultiple: true,
 			Type: StringType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -478,11 +467,10 @@ func TestParamParser_TestMultipleStringWithOtherflags(t *testing.T) {
 			Short: "a",
 			AllowMultiple: true,
 			Type: StringType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 		{
 			Name:     "name",
@@ -490,11 +478,10 @@ func TestParamParser_TestMultipleStringWithOtherflags(t *testing.T) {
 			Short: "n",
 			AllowMultiple: true,
 			Type: StringType,
-			Required: true,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,
-			Validator: ValidateCommon,
+			Validator: validate.ValidateCommon,
 		},
 	}
 
@@ -529,7 +516,6 @@ func TestParamParser_ValidatorFails(t *testing.T) {
 			Short: "a",
 			AllowMultiple: false,
 			Type: StringType,
-			Required: false,
 			DefaultValue: "",
 			Usage:    "TestUsage",
 			Order:    2,

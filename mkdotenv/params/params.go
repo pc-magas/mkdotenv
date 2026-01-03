@@ -2,6 +2,7 @@ package params
 
 import(
 	"errors"
+	"github.com/pc-magas/mkdotenv/params/parser"
 )
 
 type Arguments struct {
@@ -41,9 +42,9 @@ func GetParameters(osArguments []string) (error,Arguments) {
 		ParseComplete:  false,
 	}
 
-    parser := NewParamParser[Arguments](flagsMeta)
+    paramParser := parser.NewParamParser[Arguments](flagsMeta)
 
-	parser.OnAssign = func(meta FlagMeta, value string, args *Arguments) error {
+	paramParser.OnAssign = func(meta parser.FlagMeta, value string, args *Arguments) error {
         switch meta.Name {
 		case "help":
 			args.DisplayHelp=true
@@ -61,7 +62,7 @@ func GetParameters(osArguments []string) (error,Arguments) {
         return nil
     }
 
-	_,error:=parser.Parse(osArguments,&args)
+	_,error:=paramParser.Parse(osArguments,&args)
 	
 	if(error!=nil){
 		return error,args
@@ -70,8 +71,8 @@ func GetParameters(osArguments []string) (error,Arguments) {
 	return nil,args
 }
 
-func GetFlagsMeta() []FlagMeta {
-    out := make([]FlagMeta, len(flagsMeta))
+func GetFlagsMeta() []parser.FlagMeta {
+    out := make([]parser.FlagMeta, len(flagsMeta))
     copy(out, flagsMeta)
     return out
 }
