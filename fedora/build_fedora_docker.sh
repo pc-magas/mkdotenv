@@ -13,8 +13,9 @@ mkdir -p ${RPM_SRC}
 
 GENERATED_TAR=$(bash ${SCRIPTPATH}/make_tar.sh)
 
-echo "TAR Contents"
+echo "TAR Contents of ${GENERATED_TAR}"
 tar tzf ${GENERATED_TAR} | head -n 1
+
 
 echo "Recreating RPM Storage folder"
 rm -rf ${SOURCEPATH}rpmbuild/RPMS/x86_64
