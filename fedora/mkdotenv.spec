@@ -88,13 +88,6 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 - Improvement upon debian building
 - Fixing ppa release
 
-* Thu Jun 26 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.3-3
-- Improved README (fixing typos and improve clarification).
-- Arch package does installs oficial golang and does not requires it as dependency.
-- Using ./fedora folder for rpm building.
-- Improvement upon debian building
-- Fixing ppa release
-
 * Tue Jul 01 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.3.4-1
 - Add release number upon ppa build.
 - Fix alpine build
