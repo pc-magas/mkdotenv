@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        0.4.9
+Version:        1.0.0
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -141,3 +141,9 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 
 * Sun Sep 14 2025 Dimitrios Desyllas <pcmagas@disroot.org> - 0.4.9-1
 - Enable GCO on some architectures, fine tuning unmapped architectures as well upon MAKEFILE.
+
+* Mon Jan 05 2026 Dimitrios Desyllas <pcmagas@disroot.org> - 1.0.0-1
+- 1. Introduce secret resolvers
+- 2. [Breaking Change] Restructure cli command line arguments
+- 3. [Breaking change] Use template file and a Description Language on it in order to resolve secrets.
+- 4. Tool to generate manpage from Arguments
