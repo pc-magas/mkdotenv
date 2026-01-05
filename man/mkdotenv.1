@@ -2,12 +2,34 @@
 .SH NAME
 mkdotenv \- A command-line tool that populates secrets upon a .env file from a template.
 .SH DESCRIPTION
-The \fmkdotenv\fR command allows users to poopulate environmental variables from a template file by placing appropriate markup upon the file..SH SYNOPSIS
+The \fmkdotenv\fR command allows users to poopulate environmental variables from a template file by placing appropriate markup upon the file.
+.SH SYNOPSIS
 .B mkdotenv
-[\fI--help\fR|\fI-h\fR][\fI--version\fR|\fI-v\fR]
-[\fI--environment\fR|\fI-e\fR |\fI--env\fR]
-[\fI--template-file\fR|\fI-t\fR |\fI--template\fR][\fI--output-file\fR|\fI-o\fR]
-[\fI--argument\fR|\fI-a\fR |\fI--arg\fR]
+[\fI--help\fR| \fI-h\fR][\fI--version\fR| \fI-v\fR]
+[\fI--environment\fR| \fI-e\fR | \fI--env\fR <\fIENVIRONMENT\fR>]
+[\fI--template-file\fR| \fI-t\fR | \fI--template\fR <\fITEMPLATE-FILE\fR>][\fI--output-file\fR| \fI-o\fR <\fIOUTPUT-FILE\fR>]
+[\fI--argument\fR| \fI-a\fR | \fI--arg\fR <\fIARGUMENT\fR>]
+
+.SH Optional ARGUMENTS
+
+.TP
+.B --help,\fI-h\fR
+Display help message and exit
+.TP
+.B --version,\fI-v\fR
+Display version and exit
+.TP
+.B --environment,\fI-e\fR ,\fI--env\fR
+Environment in which secrets would be resolved
+.TP
+.B --template-file,\fI-t\fR ,\fI--template\fR
+Template .env file containing commands on how .env file would be generated. If no vanue provided .env.dist assumed.
+.TP
+.B --output-file,\fI-o\fR
+File to write output to
+.TP
+.B --argument,\fI-a\fR ,\fI--arg\fR
+Argument provided as $_ARG upon template file.
 .SH AUTHOR
 Written by Desyllas Dimitrios.
 
