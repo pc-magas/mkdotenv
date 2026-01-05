@@ -1,130 +1,121 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"path/filepath"
+	"runtime"
+	"path"
 	"os"
+	"bufio"
 	"time"
-
+	"strings"
+	"slices"
 	"github.com/pc-magas/mkdotenv/params"
+	"github.com/pc-magas/mkdotenv/params/parser"
 )
 
-func main() {
-	out := flag.String("o", "docs/mkdotenv.1", "Output manpage file")
-	version := flag.String("v", "0.4.3", "Application version")
-	flag.Parse()
-
-	f, err := os.Create(*out)
+func GetVersion(version_file string) string {
+	file, err := os.Open(version_file)
 	if err != nil {
 		panic(err)
 	}
-	defer f.Close()
+	defer file.Close()
 
-	w := f
-
-	// Header
-	fmt.Fprintf(w, ".TH MKDOTENV 1 \"%s\" \"mkdotenv %s\"\n",
-	time.Now().Format("January 2006"), *version)
-
-	// NAME
-	fmt.Fprintln(w, ".SH NAME")
-	fmt.Fprintln(w, "mkdotenv \\- A command-line tool to add or update environment variables in a .env file.")
-
-	// SYNOPSIS
-	fmt.Fprintln(w, ".SH SYNOPSIS")
-	fmt.Fprintln(w, ".B mkdotenv")
-    
-	for _, flagMeta := range params.GetFlagsMeta() {
-		line := "\\fI--" + flagMeta.Name + "\\fR"
-		if flagMeta.Type != "" {
-			line = line+" <fI" + flagMeta.Type + "fR>"
-		}
-		fmt.Fprintln(w, line)
-	}
-	fmt.Fprintln(w)
-
-	// DESCRIPTION
-	fmt.Fprintln(w, ".SH DESCRIPTION")
-	fmt.Fprintln(w, "The \\fBmkdotenv\\fR command allows users to add or update environment variables in a .env file.")
-	fmt.Fprintln(w, "By default, it modifies the current \\fB.env\\fR file. You can optionally specify input and output files.")
-	fmt.Fprintln(w)
-	fmt.Fprintln(w, "It supports removing duplicate variable declarations while preserving the first occurrence.")
-
-	// PIPE SUPPORT
-	fmt.Fprintln(w, ".SH PIPE SUPPORT")
-	fmt.Fprintln(w, "To apply multiple updates or transformations sequentially, \\fBmkdotenv\\fR supports reading from standard input and writing to standard output.")
-	fmt.Fprintln(w, "Use \\fB--output-file=-\\fR to stream to stdout, and pipe the result into another \\fBmkdotenv\\fR invocation. This enables flexible, chainable modification workflows.")
-
-	// REQUIRED ARGUMENTS
-	fmt.Fprintln(w, ".SH REQUIRED ARGUMENTS")
-	for _, flagMeta := range params.GetFlagsMeta() {
-		if flagMeta.Required {
-			fmt.Fprintln(w, ".TP")
-			fmt.Fprintf(w, ".B --%s, -%s\n", flagMeta.Name, flagMeta.Name)
-			fmt.Fprintf(w, "%s\n", flagMeta.Usage)
-		}
+	scanner := bufio.NewScanner(file)
+	if scanner.Scan() {
+		firstLine := scanner.Text()
+		return firstLine
 	}
 
-	// OPTIONAL OPTIONS
-	fmt.Fprintln(w, ".SH OPTIONAL OPTIONS")
+	if err := scanner.Err(); err != nil {
+		panic(err)
+	}
+
+	return ""
+}
+
+func GenerateOptionExplanation(meta parser.FlagMeta ) string {
+
+	explanation = ".TP.B "
+
+	explanation+=fmt.Sprintf("--%s",meta.Name)
+
 	
-	for _, flagMeta := range  params.GetFlagsMeta() {
-		if !flagMeta.Required {
-			fmt.Fprintln(w, ".TP")
-			fmt.Fprintf(w, ".B --%s", flagMeta.Name)
-			if flagMeta.Type != "" {
-				fmt.Fprintf(w, " <%s>", flagMeta.Type)
-			}
-			fmt.Fprintln(w, "")
-			fmt.Fprintf(w, "%s\n", flagMeta.Usage)
+
+}
+
+func GenerateSynopsisPart(meta parser.FlagMeta ) string {
+	synopsis_part:=fmt.Sprintf("\\fI--%s\\fR",meta.Name)
+			
+	if(meta.Short != ""){
+		synopsis_part+=fmt.Sprintf("|\\fI-%s\\fR",meta.Short)
+	}
+
+	for _,alias := range meta.Aliases {
+		synopsis_part+= fmt.Sprintf(" |\\fI--%s\\fR",alias)
+	}
+
+	if !meta.Required {
+		synopsis_part="["+synopsis_part+"]"	
+	}
+
+	return synopsis_part
+}
+
+func main() {
+
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		panic("cannot get caller info")
+	}
+
+	man_file := path.Join(filepath.Dir(filename),"..","..","man","mkdotenv.1")
+	version_file := path.Join(filepath.Dir(filename),"..","..","VERSION")
+
+	version := GetVersion(version_file)
+	year, month, _ := time.Now().Date()
+	
+	file, _ := os.Create(man_file)
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+
+	writer.WriteString(fmt.Sprintf(".TH MKDOTENV 1 \"%s %d\" \"mkdotenv %s\"\n",month,year,version))
+	writer.WriteString(".SH NAME\nmkdotenv \\- A command-line tool that populates secrets upon a .env file from a template.\n")
+
+	writer.WriteString(".SH DESCRIPTION\nThe \\fmkdotenv\\fR command allows users to poopulate environmental variables from a template file by placing appropriate markup upon the file.")
+
+	
+	groups := make(map[int][]parser.FlagMeta)
+	orders := []int{}
+
+	for _, meta := range params.GetFlagsMeta() {
+		order := meta.Order
+		groups[order] = append(groups[order], meta)
+
+		if !slices.Contains(orders, order) {
+			orders = append(orders, order)
 		}
 	}
 
-	// EXAMPLES
-	fmt.Fprintln(w, ".SH EXAMPLES")
-	fmt.Fprintln(w, ".TP")
-	fmt.Fprintln(w, "Add a variable to the default .env file:")
-	fmt.Fprintln(w, ".RS")
-	fmt.Fprintln(w, "$ mkdotenv --variable-name API_KEY --variable-value 123456")
-	fmt.Fprintln(w, ".RE")
+	slices.Sort(orders)
 
-	fmt.Fprintln(w, ".TP")
-	fmt.Fprintln(w, "Add a variable to a specific file:")
-	fmt.Fprintln(w, ".RS")
-	fmt.Fprintln(w, "$ mkdotenv --variable-name API_KEY --variable-value 123456 --env-file config.env")
-	fmt.Fprintln(w, ".RE")
+	var synopsis_build strings.Builder
+	// var required_build strings.Builder
+	// var optional_build strings.Builder
 
-	fmt.Fprintln(w, ".TP")
-	fmt.Fprintln(w, "Write the result to a different file:")
-	fmt.Fprintln(w, ".RS")
-	fmt.Fprintln(w, "$ mkdotenv --variable-name API_KEY --variable-value 123456 --output-file output.env")
-	fmt.Fprintln(w, ".RE")
+	synopsis_build.WriteString(".SH SYNOPSIS\n.B mkdotenv\n")
+	for _, order := range orders {
+		flags := groups[order]
+		for _, meta := range flags {
+			synopsis_part:=GenerateSynopsisPart(meta)
+			synopsis_build.WriteString(synopsis_part)
+		}
+		synopsis_build.WriteString("\n")
+	}
 
-	fmt.Fprintln(w, ".TP")
-	fmt.Fprintln(w, "Remove duplicates while writing:")
-	fmt.Fprintln(w, ".RS")
-	fmt.Fprintln(w, "$ mkdotenv --variable-name API_KEY --variable-value 123456 --remove-doubles")
-	fmt.Fprintln(w, ".RE")
+	writer.WriteString(synopsis_build.String())
+	writer.WriteString(".SH AUTHOR\nWritten by Desyllas Dimitrios.\n\n.SH BUGS\nReport issues at https://github.com/pc-magas/mkdotenv/issues\n\n.SH SEE ALSO\n.BR dotenv (1)\n")
 
-	fmt.Fprintln(w, ".TP")
-	fmt.Fprintln(w, "Chain multiple updates using pipes (stream between commands with \\fB--output-file=-\\fR):")
-	fmt.Fprintln(w, ".RS")
-	fmt.Fprintln(w, ".nf")
-	fmt.Fprintln(w, "$ mkdotenv --variable-name DB_HOST --variable-value 127.0.0.1 --output-file=- \\")
-	fmt.Fprintln(w, "  | mkdotenv --variable-name DB_USER --variable-value maiuser --output-file=- \\")
-	fmt.Fprintln(w, "  | mkdotenv --variable-name DB_PASSWORD --variable-value XXXX --output-file=.env.production")
-	fmt.Fprintln(w, ".fi")
-	fmt.Fprintln(w, ".RE")
-
-	// AUTHOR
-	fmt.Fprintln(w, ".SH AUTHOR")
-	fmt.Fprintln(w, "Written by Desyllas Dimitrios.")
-
-	// BUGS
-	fmt.Fprintln(w, ".SH BUGS")
-	fmt.Fprintln(w, "Report issues at https://github.com/pc-magas/mkdotenv/issues")
-
-	// SEE ALSO
-	fmt.Fprintln(w, ".SH SEE ALSO")
-	fmt.Fprintln(w, ".BR dotenv (1)")
+	writer.Flush() 
 }
