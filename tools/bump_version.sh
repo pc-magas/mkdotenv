@@ -114,3 +114,8 @@ git add ${SOURCEPATH}/aur/PKGBUILD
 git add ${SOURCEPATH}/macos/mkdotenv.rb
 
 git commit -m "[Autotool] Bump version and fix into nessesary files"
+
+echo "GENERATING MANPAGES"
+
+cd ${SOURCEPATH}
+make man
