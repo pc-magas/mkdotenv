@@ -109,6 +109,23 @@ func TestGetArg(t *testing.T){
 	expected_value:="test"
 
 	result:=GetArg(value)
-
 	assert.Equal(t,expected_value,result)
+}
+
+func TestGetArgInvalid(t *testing.T){
+	value:="$ARG[test]"
+	expected_value:=""
+
+	result:=GetArg(value)
+	assert.Equal(t,expected_value,result)
+}
+
+func TestParseMkdotenvCommentResolvedArg(t *testing.T) {
+	line:="#mkdotenv():resolve(\"value\"):plain(value=$_ARG[test])"
+	value:=ParseMkDotenvComment(line, map[string]string{"test":"value"})
+
+	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
+	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
+	assert.Equal(t,"",value.Item,"Item should be an empry String")
+	assert.Equal(t,value.Params, map[string]string{"value":"value"},"Item should be an empry String")
 }

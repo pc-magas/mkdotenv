@@ -17,6 +17,10 @@ func GetArg(value string) string {
 	re := regexp.MustCompile(`\$_ARG\[([\w]+)\]`)
 	matches :=re.FindStringSubmatch(value)
 
+	if(len(matches) == 0){
+		return ""
+	}
+
 	return matches[1]
 }
 
@@ -48,9 +52,11 @@ func ParseMkDotenvComment(readline string, arguments map[string]string) *MkDoten
 			pair := strings.SplitN(kv, "=", 2)
 			if len(pair) == 2 {
 				value:=strings.TrimSpace(pair[1])
-				// if(){
-
-				// }
+				arg:=GetArg(value)
+				val, ok := arguments[arg]
+				if arg != "" && ok {
+					value = val
+				}
 				params[strings.TrimSpace(pair[0])] = value
 			}
 		}
@@ -63,7 +69,6 @@ func ParseMkDotenvComment(readline string, arguments map[string]string) *MkDoten
 		Params:             params,
 	}
 
-	// Optionally store the item if you want:
 	if item != "" {
 		cmd.Item = item
 	}
