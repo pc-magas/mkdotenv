@@ -15,7 +15,7 @@ type DotenvManipulator struct{
 }
 
 type DotEnvSecretReplaceEngine  interface {
-	Replace(output *bufio.Writer) error
+	Replace(output *bufio.Writer,environment string,arguments map[string]string) error
 }
 
 func NewDotEnvManipulator(template io.Reader, commandExecutor executor.Executor) *DotenvManipulator {
@@ -39,7 +39,7 @@ func (manipulator *DotenvManipulator) extractVariableName(line string) (string, 
     return matches[1], nil
 }
 
-func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment string) error {
+func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environment string, arguments map[string]string) error {
 	
 	scanner := bufio.NewScanner(manipulator.template)
 
@@ -49,10 +49,10 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environtment
 		line:=scanner.Text()
 		line_to_write:=line
 		
-		command := parser.ParseMkDotenvComment(line_to_write)
+		command := parser.ParseMkDotenvComment(line_to_write,arguments)
 
 		if(command != nil){
-			if(command.Environment == "*" || command.Environment == environtment){
+			if(command.Environment == "*" || command.Environment == environment){
 				commandToExecute=command
 			}
 			output.WriteString(line_to_write)

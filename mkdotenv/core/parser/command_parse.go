@@ -13,7 +13,14 @@ type MkDotenvCommand struct {
 	Item string
 }
 
-func ParseMkDotenvComment(readline string) (*MkDotenvCommand) {
+func GetArg(value string) string {
+	re := regexp.MustCompile(`\$_ARG\[([\w]+)\]`)
+	matches :=re.FindStringSubmatch(value)
+
+	return matches[1]
+}
+
+func ParseMkDotenvComment(readline string, arguments map[string]string) *MkDotenvCommand {
 
 	re := regexp.MustCompile(
 		`^#mkdotenv\(([^)]*)\):resolve\(([^)]*)\):([A-Za-z0-9_]+)\(([^)]*)\)(?:\.([A-Za-z0-9_]+))?$`,
@@ -40,7 +47,11 @@ func ParseMkDotenvComment(readline string) (*MkDotenvCommand) {
 		for _, kv := range strings.Split(argString, ",") {
 			pair := strings.SplitN(kv, "=", 2)
 			if len(pair) == 2 {
-				params[strings.TrimSpace(pair[0])] = strings.TrimSpace(pair[1])
+				value:=strings.TrimSpace(pair[1])
+				// if(){
+
+				// }
+				params[strings.TrimSpace(pair[0])] = value
 			}
 		}
 	}

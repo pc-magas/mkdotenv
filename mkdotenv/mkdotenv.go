@@ -69,7 +69,7 @@ func main() {
 
 	manipulator:= core.NewDotEnvManipulator(file,executor.NewExecutor())
 
-	err := manipulator.Replace(writer,paramStruct.Environment)
+	err := manipulator.Replace(writer,paramStruct.Environment,paramStruct.MiscArguments)
 
     if(err!=nil){
         fmt.Fprintln(os.Stderr, "Error:", err)

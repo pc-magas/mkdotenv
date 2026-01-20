@@ -7,7 +7,7 @@ import (
 
 func TestParseMkdotenvCommentIsParsedCorrecly(t *testing.T) {
 	line:="#mkdotenv():resolve(\"value\"):plain(value=\"value\")"
-	value:=ParseMkDotenvComment(line)
+	value:=ParseMkDotenvComment(line, map[string]string{})
 
 	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
@@ -18,7 +18,7 @@ func TestParseMkdotenvCommentIsParsedCorrecly(t *testing.T) {
 func TestParseMkdotenvCommentWithItem(t *testing.T){
 	line:="#mkdotenv():resolve(\"value\"):plain(value=\"value\").item"
 
-	value:=ParseMkDotenvComment(line)
+	value:=ParseMkDotenvComment(line, map[string]string{})
 
 	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
@@ -29,7 +29,7 @@ func TestParseMkdotenvCommentWithItem(t *testing.T){
 func TestParseMkdotenvExtractsEnvironment(t *testing.T){
 	line:="#mkdotenv(prod):resolve(\"value\"):plain(value=\"value\").item"
 
-	value:=ParseMkDotenvComment(line)
+	value:=ParseMkDotenvComment(line, map[string]string{})
 
 	assert.Equal(t,"prod",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
@@ -41,7 +41,7 @@ func TestParseMkdotenvExtractsEnvironment(t *testing.T){
 func TestParseMkdotenvMultipleArguments(t *testing.T){
 	line:="#mkdotenv(prod):resolve(\"value\"):plain(value=\"value\",value1='value',value2=value).item"
 	
-	value:=ParseMkDotenvComment(line)
+	value:=ParseMkDotenvComment(line, map[string]string{})
 
 	assert.Equal(t,"prod",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
@@ -51,7 +51,7 @@ func TestParseMkdotenvMultipleArguments(t *testing.T){
 
 func TestParseMkdotenvParseNormalLines(t *testing.T){
 	line:="hello"
-	value:=ParseMkDotenvComment(line)
+	value:=ParseMkDotenvComment(line, map[string]string{})
 
 	if(value != nil){
 		t.Fatalf("expected value to be nil, got %v", value)
@@ -60,7 +60,7 @@ func TestParseMkdotenvParseNormalLines(t *testing.T){
 
 func TestParseMkdotenvParseNormalArg(t *testing.T){
 	line:="# hello"
-	value:=ParseMkDotenvComment(line)
+	value:=ParseMkDotenvComment(line, map[string]string{})
 
 	if(value != nil){
 		t.Fatalf("expected value to be nil, got %v", value)
@@ -96,10 +96,19 @@ func TestParseInvalidMkdotenv(t *testing.T){
 
 	for _,line := range testCases {
 		t.Run(line, func(t *testing.T) {
-			value:=ParseMkDotenvComment(line)
+			value:=ParseMkDotenvComment(line,map[string]string{})
 			if(value != nil){
 				t.Fatalf("expected value to be nil, got %v", value)
 			}
 		})
 	}
+}
+
+func TestGetArg(t *testing.T){
+	value:="$_ARG[test]"
+	expected_value:="test"
+
+	result:=GetArg(value)
+
+	assert.Equal(t,expected_value,result)
 }

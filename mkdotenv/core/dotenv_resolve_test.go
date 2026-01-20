@@ -27,7 +27,7 @@ func TestReplace_Passthrough(t *testing.T) {
 	
 	mockExec.EXPECT().Execute(gomock.Any()).Times(0)
 
-	err := m.Replace(writer, "dev")
+	err := m.Replace(writer, "dev",map[string]string{})
 	writer.Flush()
 	assert.NoError(t, err)
 
@@ -51,7 +51,7 @@ API_KEY=old
 	
 	mockExec.EXPECT().Execute(gomock.Any()).Times(0)
 
-	err := m.Replace(writer, "dev")
+	err := m.Replace(writer, "dev",map[string]string{})
 	writer.Flush()
 	assert.NoError(t, err)
 
@@ -83,7 +83,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "dev")
+	err := m.Replace(writer, "dev",map[string]string{})
 	writer.Flush()
 
 	assert.NoError(t, err)
@@ -130,7 +130,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "prod")
+	err := m.Replace(writer, "prod",map[string]string{})
 	writer.Flush()
 
 	assert.NoError(t, err)
@@ -178,7 +178,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "default")
+	err := m.Replace(writer, "default",map[string]string{})
 	writer.Flush()
 
 	assert.NoError(t, err)
@@ -223,7 +223,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "default")
+	err := m.Replace(writer, "default",map[string]string{})
 	writer.Flush()
 
 	assert.NoError(t, err)
