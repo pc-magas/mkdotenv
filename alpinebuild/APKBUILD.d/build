@@ -1,1 +1,1 @@
-make VERSION="$pkgver" GOARCH=$CARCH
+make bin VERSION="$pkgver" GOARCH=$CARCH
