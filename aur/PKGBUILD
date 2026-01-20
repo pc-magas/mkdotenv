@@ -19,7 +19,7 @@ prepare() {
 
 build() {
   export PATH="$srcdir/go/bin:$PATH"
-  make VERSION="${pkgver}"
+  make bin VERSION="${pkgver}"
 }
 
 package() {

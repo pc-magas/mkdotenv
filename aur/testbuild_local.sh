@@ -14,9 +14,10 @@ TARGZ_NAME=mkdotenv-${VERSION}.tar.gz
 TARGZ=${VOLUME_DIR}/${TARGZ_NAME}
 PKGBUILD_LOCAL=${VOLUME_DIR}/PKGBUILD
 
+bash ${SCRIPT_DIR}/make_man.sh
 ORIG_TAR=$(bash ${SCRIPT_DIR}/../alpinebuild/make_tar.sh)
 
-cp ${SCRIPT_DIR}/../alpinebuild/${ORIG_TAR} ${TARGZ}
+cp ${ORIG_TAR} ${TARGZ}
 
 ls -l ${VOLUME_DIR}
 
