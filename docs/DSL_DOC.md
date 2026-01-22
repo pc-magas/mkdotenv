@@ -30,4 +30,12 @@ Each annotation is expressed as a comment using the following format:
 - **item**  
   The specific key or sub-value within the resolved output that should be used to populate the corresponding environment variable. For example upon keppasx it is defined whether we need the password or the username of an entry.
 
- 
+# Magic Variables
+
+This functionality is heavilty inspired from php. Currently the one supported is:
+
+```
+$_ARG[^argument^]
+```
+
+Where `^argument^` is an argument name rovided from user as cli argument.
