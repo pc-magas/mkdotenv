@@ -1,0 +1,91 @@
+package usage
+
+import (
+	"fmt"
+	"slices"
+	"strings"
+	"github.com/pc-magas/mkdotenv/params"
+	"github.com/pc-magas/mkdotenv/params/parser"
+)
+
+func BuildArgumentUsage() string {
+	var paramUsage strings.Builder
+
+	for _, meta := range params.GetFlagsMeta() {
+		line := fmt.Sprintf("  --%s", meta.Name)
+
+		if(meta.Short != ""){
+			line+= fmt.Sprintf(", -%s",meta.Short)
+		}
+
+		for _,alias := range meta.Aliases {
+			line+= fmt.Sprintf(", --%s",alias)
+		}
+		
+		line+="\t"
+		if meta.Required {
+			line+="REQUIRED"
+		} else {
+			line+="OPTIONAL"
+		}
+
+		line+=" "+meta.Usage
+		line+="\n"
+		paramUsage.WriteString(line)
+	}
+
+	return paramUsage.String()
+}
+
+func BuildCommandUsage() string {
+	groups := make(map[int][]parser.FlagMeta)
+	orders := []int{}
+
+	for _, meta := range params.GetFlagsMeta() {
+		order := meta.Order
+		groups[order] = append(groups[order], meta)
+
+		if !slices.Contains(orders, order) {
+			orders = append(orders, order)
+		}
+	}
+
+	slices.Sort(orders)
+
+	var builder strings.Builder
+
+	for _, order := range orders {
+		flags := groups[order]
+		builder.WriteString("\n\t  ")
+		for _, meta := range flags {
+			// Start with canonical flag
+			part := fmt.Sprintf("--%s", meta.Name)
+			
+			if(meta.Short != ""){
+				part+=fmt.Sprintf(" | -%s",meta.Short)
+			}
+
+			for _,alias := range meta.Aliases {
+					part+= fmt.Sprintf(" | --%s",alias)
+			}
+
+			if meta.Type == parser.StringType {
+				part+= fmt.Sprintf(" <%s>", strings.ReplaceAll(meta.Name, "-", "_"))
+			}
+
+			// Wrap optional flags in []
+			if !meta.Required {
+				part = "[ " + part + " ]"
+			}
+
+			// Append with a space
+			builder.WriteString(" ")
+			builder.WriteString(part)
+		}
+
+		builder.WriteString(" \\")
+	}
+
+	usage := strings.TrimSuffix(builder.String(), " \\")
+	return usage
+}

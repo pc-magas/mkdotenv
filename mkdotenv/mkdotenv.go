@@ -20,12 +20,57 @@ package main
 import (
     "os"
     "fmt"
+	"bufio"
 	"github.com/pc-magas/mkdotenv/params"
 	"github.com/pc-magas/mkdotenv/msg"
-	"github.com/pc-magas/mkdotenv/files"
 	"github.com/pc-magas/mkdotenv/core"
 	"github.com/pc-magas/mkdotenv/core/executor"
 )
+
+func readTemplateFile(dotenv_filename string) *os.File {
+
+	var file *os.File
+	var err error
+
+	stat, _ := os.Stdin.Stat()
+	hasPipeInput := (stat.Mode() & os.ModeCharDevice) == 0
+
+	// Input is piped through STDIN
+	if(hasPipeInput){
+		return os.Stdin
+	}
+
+	if(dotenv_filename == ""){
+		dotenv_filename = ".env"
+	}
+	
+	msg.HandleFileError(err, dotenv_filename)
+	
+	file,err = os.Open(dotenv_filename)
+	msg.HandleFileError(err,dotenv_filename)
+
+	return file
+}
+
+
+func createWriter(filename string) (*bufio.Writer,*os.File) {
+	
+	if(filename == "-"){
+		return bufio.NewWriter(os.Stdout),nil
+	}
+
+	if(filename == ""){
+		filename=".env"
+	}
+
+	outfile,err := os.OpenFile(filename,os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
+	if err != nil {
+		msg.HandleFileError(err,filename)
+	}
+		
+	return bufio.NewWriter(outfile),outfile
+}
+
 
 func main() {
 
@@ -49,10 +94,10 @@ func main() {
 		msg.ExitError("Template file and output file should not be the same.")
 	}
 
-	templateFile:=files.GetFileToRead(paramStruct.TemplateFile)
-	defer file.Close()
+	templateFile:=readTemplateFile(paramStruct.TemplateFile)
+	defer templateFile.Close()
 
-	writer,outfile := files.CreateWriter(paramStruct.OutputFile)
+	writer,outfile := createWriter(paramStruct.OutputFile)
 	if(outfile!=nil){
 		defer outfile.Close()
 	}
