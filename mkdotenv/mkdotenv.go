@@ -20,8 +20,6 @@ package main
 import (
     "os"
     "fmt"
-	// "time"
-	// "strconv"
 	"github.com/pc-magas/mkdotenv/params"
 	"github.com/pc-magas/mkdotenv/msg"
 	"github.com/pc-magas/mkdotenv/files"
@@ -29,7 +27,13 @@ import (
 	"github.com/pc-magas/mkdotenv/core/executor"
 )
 
-func displayVersionOrHelp(paramStruct params.Arguments){
+func main() {
+
+	paramErr,paramStruct := params.GetParameters(os.Args)
+
+	if(paramErr != nil){
+		msg.ExitError(paramErr.Error())
+	}
 
 	if(paramStruct.DisplayHelp){
 		msg.PrintHelp()
@@ -40,25 +44,12 @@ func displayVersionOrHelp(paramStruct params.Arguments){
 		msg.PrintVersion()
 		os.Exit(0)
 	}
-}
-
-func main() {
-
-	paramErr,paramStruct := params.GetParameters(os.Args)
-
-	if(paramErr != nil){
-		msg.ExitError(paramErr.Error())
-	}
-
-	displayVersionOrHelp(paramStruct)
-
-	filenameToRead := paramStruct.TemplateFile
 
 	if(paramStruct.TemplateFile == paramStruct.OutputFile){
 		msg.ExitError("Template file and output file should not be the same.")
 	}
 
-	file:=files.GetFileToRead(filenameToRead)
+	templateFile:=files.GetFileToRead(paramStruct.TemplateFile)
 	defer file.Close()
 
 	writer,outfile := files.CreateWriter(paramStruct.OutputFile)
@@ -67,7 +58,7 @@ func main() {
 	}
 	defer writer.Flush()
 
-	manipulator:= core.NewDotEnvManipulator(file,executor.NewExecutor())
+	manipulator:= core.NewDotEnvManipulator(templateFile,executor.NewExecutor())
 
 	err := manipulator.Replace(writer,paramStruct.Environment,paramStruct.MiscArguments)
 
