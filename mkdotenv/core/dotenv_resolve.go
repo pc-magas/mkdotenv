@@ -39,7 +39,7 @@ func (manipulator *DotenvManipulator) extractVariableName(line string) (string, 
     return matches[1], nil
 }
 
-func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environment string, arguments map[string]string) error {
+func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environment string, context Exec) error {
 	
 	scanner := bufio.NewScanner(manipulator.template)
 

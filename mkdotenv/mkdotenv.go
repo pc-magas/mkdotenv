@@ -25,6 +25,7 @@ import (
 	"github.com/pc-magas/mkdotenv/msg"
 	"github.com/pc-magas/mkdotenv/core"
 	"github.com/pc-magas/mkdotenv/core/executor"
+	"github.com/pc-magas/mkdotenv/core/resolution"
 )
 
 func readTemplateFile(dotenv_filename string) *os.File {
@@ -40,9 +41,10 @@ func readTemplateFile(dotenv_filename string) *os.File {
 		return os.Stdin
 	}
 
-	if(dotenv_filename == ""){
-		dotenv_filename = ".env"
-	}
+	// TODO Raise Error
+	// if(dotenv_filename == ""){
+	// 	dotenv_filename = ".env"
+	// }
 	
 	msg.HandleFileError(err, dotenv_filename)
 	
@@ -59,9 +61,10 @@ func createWriter(filename string) (*bufio.Writer,*os.File) {
 		return bufio.NewWriter(os.Stdout),nil
 	}
 
-	if(filename == ""){
-		filename=".env"
-	}
+	// TODO Raise error initialization happens outside
+	// if(filename == ""){
+	// 	filename=".env"
+	// }
 
 	outfile,err := os.OpenFile(filename,os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
@@ -104,6 +107,8 @@ func main() {
 	defer writer.Flush()
 
 	manipulator:= core.NewDotEnvManipulator(templateFile,executor.NewExecutor())
+
+	resolutionContext:=context.NewResolutionContext(paramStruct.TemplateFile,paramStruct.MiscArguments)
 
 	err := manipulator.Replace(writer,paramStruct.Environment,paramStruct.MiscArguments)
 

@@ -9,7 +9,7 @@ type MkDotenvCommand struct {
 	Environment string
 	SecretResolverType string
 	SecretPath string
-	Params map[string]string
+	UserParams map[string]string
 	Item string
 }
 
@@ -63,10 +63,10 @@ func ParseMkDotenvComment(readline string, arguments map[string]string) *MkDoten
 	}
 
 	cmd := &MkDotenvCommand{
-		Environment:        env,
+		Environment: env,
 		SecretPath : secretPath,
 		SecretResolverType: resolver,
-		Params:             params,
+		UserParams: params,
 	}
 
 	if item != "" {
