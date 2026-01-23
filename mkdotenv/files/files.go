@@ -25,24 +25,6 @@ func HandleFileError(err error, filename string) {
 }
 
 
-func CopyFile(dotenv_filename string,dest_filename string) {
-
-	file, err:= os.Open(dotenv_filename)
-	HandleFileError(err, dotenv_filename)
-
-	newFile,err:= os.Create(dest_filename)
-	HandleFileError(err, dest_filename)
-
-	_,err=io.Copy(newFile,file)
-	HandleFileError(err,dest_filename)
-	
-	err = newFile.Sync()
-	HandleFileError(err,dest_filename)
-
-	file.Close()
-	newFile.Close()
-}
-
 func GetFileToRead(dotenv_filename string) *os.File {
 
 	var file *os.File
