@@ -25,8 +25,10 @@ func (executer *CommandExecutor) Execute(command *parser.MkDotenvCommand,ctx con
 
 	switch command.SecretResolverType{
 		case "keppassx":
-			path:=context.NewContextPath(command.Params["file"],ctx.TemplateDir)
-			resolver,err = secret.NewKeepassXResolver(path,command.Params["password"])
+			resolver,err = secret.NewKeepassXResolver(
+				context.NewContextPath(command.Params["file"],ctx.TemplateDir),
+				command.Params["password"]
+			)
 		case "plain":
 			resolver = secret.NewPlaintextResolver()
 		default:
