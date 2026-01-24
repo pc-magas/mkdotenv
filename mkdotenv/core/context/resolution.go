@@ -13,11 +13,11 @@ type ResolutionContext struct {
     Args        map[string]string // User provided arguments
 }
 
-func NewResolutionContext(templatePath string, userArgs map[string]string) (context.ResolutionContext, error) {
+func NewResolutionContext(templatePath string, userArgs map[string]string) (ResolutionContext, error) {
     
     cwd, err := os.Getwd()
 	if err != nil {
-		return core.ResolutionContext{}, err
+		return ResolutionContext{}, err
 	}
 
 	var templateDir string
@@ -38,7 +38,7 @@ func NewResolutionContext(templatePath string, userArgs map[string]string) (cont
 		}
 	}
 
-	return core.ResolutionContext{
+	return ResolutionContext{
 		TemplateDir: templateDir,
 		CWD:         cwd,
 		EnvVars:     envVars,

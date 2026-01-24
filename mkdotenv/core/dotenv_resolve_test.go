@@ -13,8 +13,8 @@ import (
 	"github.com/pc-magas/mkdotenv/core/context"
 )
 
-func dummyResolutionContext() ResolutionContext {
-	return ResolutionContext{
+func dummyResolutionContext() context.ResolutionContext {
+	return context.ResolutionContext{
 		TemplateDir: "/tmp/templates",
 		CWD:         "/tmp/project",
 		EnvVars: map[string]string{
