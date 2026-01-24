@@ -12,6 +12,7 @@ package executor
 import (
 	reflect "reflect"
 
+	context "github.com/pc-magas/mkdotenv/core/context"
 	parser "github.com/pc-magas/mkdotenv/core/parser"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -41,16 +42,16 @@ func (m *MockExecutor) EXPECT() *MockExecutorMockRecorder {
 }
 
 // Execute mocks base method.
-func (m *MockExecutor) Execute(command *parser.MkDotenvCommand) (string, error) {
+func (m *MockExecutor) Execute(command *parser.MkDotenvCommand, ctx context.ResolutionContext) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Execute", command)
+	ret := m.ctrl.Call(m, "Execute", command, ctx)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Execute indicates an expected call of Execute.
-func (mr *MockExecutorMockRecorder) Execute(command any) *gomock.Call {
+func (mr *MockExecutorMockRecorder) Execute(command, ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockExecutor)(nil).Execute), command)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockExecutor)(nil).Execute), command, ctx)
 }
