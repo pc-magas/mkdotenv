@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"github.com/tobischo/gokeepasslib/v3"
-	"github.com/pc-magas/mkdotenv/context/types"
+	"github.com/pc-magas/mkdotenv/core/context/types"
 	"github.com/pc-magas/mkdotenv/msg"
 )
 

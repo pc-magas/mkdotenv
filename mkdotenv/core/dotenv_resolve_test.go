@@ -10,7 +10,23 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/pc-magas/mkdotenv/core/parser"
 	"github.com/pc-magas/mkdotenv/core/executor"
+	"github.com/pc-magas/mkdotenv/core/context"
 )
+
+func dummyResolutionContext() ResolutionContext {
+	return ResolutionContext{
+		TemplateDir: "/tmp/templates",
+		CWD:         "/tmp/project",
+		EnvVars: map[string]string{
+			"ENV":      "test",
+			"LOG_LEVEL": "debug",
+		},
+		Args: map[string]string{
+			"service": "example",
+			"version": "v1.0.0",
+		},
+	}
+}
 
 func TestReplace_Passthrough(t *testing.T) {
 	ctrl := gomock.NewController(t)
@@ -27,7 +43,7 @@ func TestReplace_Passthrough(t *testing.T) {
 	
 	mockExec.EXPECT().Execute(gomock.Any()).Times(0)
 
-	err := m.Replace(writer, "dev",map[string]string{})
+	err := m.Replace(writer, "dev",dummyResolutionContext())
 	writer.Flush()
 	assert.NoError(t, err)
 
@@ -51,7 +67,7 @@ API_KEY=old
 	
 	mockExec.EXPECT().Execute(gomock.Any()).Times(0)
 
-	err := m.Replace(writer, "dev",map[string]string{})
+	err := m.Replace(writer, "dev",dummyResolutionContext())
 	writer.Flush()
 	assert.NoError(t, err)
 
@@ -83,7 +99,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "dev",map[string]string{})
+	err := m.Replace(writer, "dev",dummyResolutionContext())
 	writer.Flush()
 
 	assert.NoError(t, err)
@@ -130,7 +146,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "prod",map[string]string{})
+	err := m.Replace(writer, "prod",dummyResolutionContext())
 	writer.Flush()
 
 	assert.NoError(t, err)
@@ -178,7 +194,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "default",map[string]string{})
+	err := m.Replace(writer, "default",dummyResolutionContext())
 	writer.Flush()
 
 	assert.NoError(t, err)
@@ -223,7 +239,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "default",map[string]string{})
+	err := m.Replace(writer, "default",dummyResolutionContext())
 	writer.Flush()
 
 	assert.NoError(t, err)
