@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"github.com/pc-magas/mkdotenv/core/parser"
 	"github.com/pc-magas/mkdotenv/core/executor"
+	"github.com/pc-magas/mkdotenv/core/context"
 )
 
 type DotenvManipulator struct{
@@ -39,7 +40,7 @@ func (manipulator *DotenvManipulator) extractVariableName(line string) (string, 
     return matches[1], nil
 }
 
-func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environment string, context Exec) error {
+func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environment string, ctx context.ResolutionContext) error {
 	
 	scanner := bufio.NewScanner(manipulator.template)
 
@@ -49,7 +50,7 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environment 
 		line:=scanner.Text()
 		line_to_write:=line
 		
-		command := parser.ParseMkDotenvComment(line_to_write,arguments)
+		command := parser.ParseMkDotenvComment(line_to_write,arguments,ctx)
 
 		if(command != nil){
 			if(command.Environment == "*" || command.Environment == environment){
@@ -67,7 +68,7 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environment 
 				return err
 			}
 
-			value,err := manipulator.executor.Execute(commandToExecute)
+			value,err := manipulator.executor.Execute(commandToExecute,ctx)
 
 			// Unsure if return err
 			if(err!=nil){

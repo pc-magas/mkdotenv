@@ -26,6 +26,7 @@ import (
 	"github.com/pc-magas/mkdotenv/core"
 	"github.com/pc-magas/mkdotenv/core/executor"
 	"github.com/pc-magas/mkdotenv/core/resolution"
+	"github.com/pc-magas/mkdotenv/core/context"
 )
 
 func readTemplateFile(dotenv_filename string) *os.File {

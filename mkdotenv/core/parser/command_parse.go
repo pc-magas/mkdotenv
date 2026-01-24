@@ -3,6 +3,7 @@ package parser
 import( 
 	"regexp"
 	"strings"
+	"github.com/pc-magas/mkdotenv/core/context"
 )
 
 type MkDotenvCommand struct {
@@ -24,7 +25,7 @@ func GetArg(value string) string {
 	return matches[1]
 }
 
-func ParseMkDotenvComment(readline string, arguments map[string]string) *MkDotenvCommand {
+func ParseMkDotenvComment(readline string, arguments map[string]string,ctx context.ResolutionContext) *MkDotenvCommand {
 
 	re := regexp.MustCompile(
 		`^#mkdotenv\(([^)]*)\):resolve\(([^)]*)\):([A-Za-z0-9_]+)\(([^)]*)\)(?:\.([A-Za-z0-9_]+))?$`,

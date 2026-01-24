@@ -4,10 +4,11 @@ import(
 	"fmt"
 	"github.com/pc-magas/mkdotenv/core/parser"
 	"github.com/pc-magas/mkdotenv/secret"
+	"github.com/pc-magas/mkdotenv/core/context"
 )
 
 type Executor interface {
-	Execute(command *parser.MkDotenvCommand ) (string,error)
+	Execute(command *parser.MkDotenvCommand, ctx context.ResolutionContext) (string,error)
 }
 
 type CommandExecutor struct{}
@@ -17,7 +18,7 @@ func NewExecutor() Executor {
 	return &CommandExecutor{}
 }
 
-func (executer *CommandExecutor) Execute(command *parser.MkDotenvCommand ) (string,error) {
+func (executer *CommandExecutor) Execute(command *parser.MkDotenvCommand,ctx context.ResolutionContext) (string,error) {
 	
     var resolver secret.Resolver
 	var err error
