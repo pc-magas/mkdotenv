@@ -1,10 +1,12 @@
 package secret
 
 import (
-	"github.com/tobischo/gokeepasslib/v3"
 	"os"
 	"fmt"
 	"strings"
+
+	"github.com/tobischo/gokeepasslib/v3"
+	"github.com/pc-magas/mkdotenv/context/types"
 )
 
 type KepassXResolver struct {
@@ -12,17 +14,10 @@ type KepassXResolver struct {
 	Password string
 }
 
-func NewKeepassXResolver(file, password string) (*KepassXResolver, error) {
-	// Check if the file exists
-	if _, err := os.Stat(file); os.IsNotExist(err) {
-		return nil, fmt.Errorf("keepass file does not exist: %s", file)
-	} else if err != nil {
-		// Some other filesystem error (e.g., permission denied)
-		return nil, fmt.Errorf("error accessing file %s: %w", file, err)
-	}
+func NewKeepassXResolver(file types.ContextPath, password string) (*KepassXResolver, error) {
 
 	return &KepassXResolver{
-		File:     file,
+		File:     file.Value(),
 		Password: password,
 	}, nil
 }
