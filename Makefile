@@ -142,7 +142,7 @@ run:
 	cd ./mkdotenv &&\
 	$(GO) run mkdotenv.go $(ARGS)
 
-test:
+test: vendor-clean
 	cd ./mkdotenv &&\
 	mkdir -p /tmp/go-mod-cache &&\
 	GOCACHE=/tmp/go-build-cache \
