@@ -1,24 +1,26 @@
 package types
 
-import("filepath")
+import (
+	"path" 
+)
 
-struct ContextPath {
-	path string, // User provided path
+type ContextPath struct {
+	providedPath string // User provided path
 	workingDirectory string // Directory where path related upon
 }
 
-func NewContextPath(path string, workingDirectory String) ContextPath {
-	return ContextPath{path: path,workingDirectory:workingDirectory}
+func NewContextPath(providedPath string, workingDirectory string) ContextPath {
+	return ContextPath{providedPath: providedPath,workingDirectory:workingDirectory}
 }
 
-func (p ContextPath) Value() (string, error) {
-	if p.path == "" {
-		return "", fmt.Errorf("empty path")
+func (p ContextPath) Value() string {
+	if p.providedPath == "" {
+		return ""
 	}
 
-	if filepath.IsAbs(p.path) {
-		return p.path, nil
+	if path.IsAbs(p.providedPath) {
+		return p.providedPath
 	}
 
-	return filepath.Join(ctx.workingDirectory, p.path), nil
+	return path.Join(p.workingDirectory, p.providedPath)
 }
