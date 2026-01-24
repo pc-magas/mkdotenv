@@ -4,9 +4,9 @@ import (
 	"os"
 	"fmt"
 	"strings"
-
 	"github.com/tobischo/gokeepasslib/v3"
 	"github.com/pc-magas/mkdotenv/context/types"
+	"github.com/pc-magas/mkdotenv/msg"
 )
 
 type KepassXResolver struct {
@@ -16,8 +16,13 @@ type KepassXResolver struct {
 
 func NewKeepassXResolver(file types.ContextPath, password string) (*KepassXResolver, error) {
 
+	dbfile := file.Value()
+
+	_,err = os.Stat(dbfile)
+	msg.HandleFileError(err,dbfile)
+
 	return &KepassXResolver{
-		File:     file.Value(),
+		File:     dbfile,
 		Password: password,
 	}, nil
 }
