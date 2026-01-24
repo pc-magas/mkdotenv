@@ -25,7 +25,7 @@ func GetArg(value string) string {
 	return matches[1]
 }
 
-func ParseMkDotenvComment(readline string, arguments map[string]string,ctx context.ResolutionContext) *MkDotenvCommand {
+func ParseMkDotenvComment(readline string, ctx context.ResolutionContext) *MkDotenvCommand {
 
 	re := regexp.MustCompile(
 		`^#mkdotenv\(([^)]*)\):resolve\(([^)]*)\):([A-Za-z0-9_]+)\(([^)]*)\)(?:\.([A-Za-z0-9_]+))?$`,
@@ -47,6 +47,7 @@ func ParseMkDotenvComment(readline string, arguments map[string]string,ctx conte
 		env="default"
 	}
 
+	arguments:=ctx.Args
 	params := make(map[string]string)
 	if argString != "" {
 		for _, kv := range strings.Split(argString, ",") {

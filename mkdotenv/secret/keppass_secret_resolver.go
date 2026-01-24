@@ -18,7 +18,7 @@ func NewKeepassXResolver(file types.ContextPath, password string) (*KepassXResol
 
 	dbfile := file.Value()
 
-	_,err = os.Stat(dbfile)
+	_,err := os.Stat(dbfile)
 	msg.HandleFileError(err,dbfile)
 
 	return &KepassXResolver{

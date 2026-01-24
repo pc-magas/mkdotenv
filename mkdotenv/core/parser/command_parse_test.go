@@ -7,7 +7,7 @@ import (
 
 )
 
-func dummyResolutionContext() context.ResolutionContext {
+func dummyResolutionContext(args map[string]string) context.ResolutionContext {
 	return context.ResolutionContext{
 		TemplateDir: "/tmp/templates",
 		CWD:         "/tmp/project",
@@ -15,16 +15,13 @@ func dummyResolutionContext() context.ResolutionContext {
 			"ENV":      "test",
 			"LOG_LEVEL": "debug",
 		},
-		Args: map[string]string{
-			"service": "example",
-			"version": "v1.0.0",
-		},
+		Args:args,
 	}
 }
 
 func TestParseMkdotenvCommentIsParsedCorrecly(t *testing.T) {
 	line:="#mkdotenv():resolve(\"value\"):plain(value=\"value\")"
-	value:=ParseMkDotenvComment(line, map[string]string{},dummyResolutionContext())
+	value:=ParseMkDotenvComment(line, dummyResolutionContext(map[string]string{}))
 
 	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
@@ -35,7 +32,7 @@ func TestParseMkdotenvCommentIsParsedCorrecly(t *testing.T) {
 func TestParseMkdotenvCommentWithItem(t *testing.T){
 	line:="#mkdotenv():resolve(\"value\"):plain(value=\"value\").item"
 
-	value:=ParseMkDotenvComment(line, map[string]string{},dummyResolutionContext())
+	value:=ParseMkDotenvComment(line, dummyResolutionContext(map[string]string{}))
 
 	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
@@ -46,7 +43,7 @@ func TestParseMkdotenvCommentWithItem(t *testing.T){
 func TestParseMkdotenvExtractsEnvironment(t *testing.T){
 	line:="#mkdotenv(prod):resolve(\"value\"):plain(value=\"value\").item"
 
-	value:=ParseMkDotenvComment(line, map[string]string{},dummyResolutionContext())
+	value:=ParseMkDotenvComment(line, dummyResolutionContext(map[string]string{}))
 
 	assert.Equal(t,"prod",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
@@ -58,7 +55,7 @@ func TestParseMkdotenvExtractsEnvironment(t *testing.T){
 func TestParseMkdotenvMultipleArguments(t *testing.T){
 	line:="#mkdotenv(prod):resolve(\"value\"):plain(value=\"value\",value1='value',value2=value).item"
 	
-	value:=ParseMkDotenvComment(line, map[string]string{},dummyResolutionContext())
+	value:=ParseMkDotenvComment(line, dummyResolutionContext(map[string]string{}))
 
 	assert.Equal(t,"prod",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
@@ -68,7 +65,7 @@ func TestParseMkdotenvMultipleArguments(t *testing.T){
 
 func TestParseMkdotenvParseNormalLines(t *testing.T){
 	line:="hello"
-	value:=ParseMkDotenvComment(line, map[string]string{},dummyResolutionContext())
+	value:=ParseMkDotenvComment(line, dummyResolutionContext(map[string]string{}))
 
 	if(value != nil){
 		t.Fatalf("expected value to be nil, got %v", value)
@@ -77,7 +74,7 @@ func TestParseMkdotenvParseNormalLines(t *testing.T){
 
 func TestParseMkdotenvParseNormalArg(t *testing.T){
 	line:="# hello"
-	value:=ParseMkDotenvComment(line, map[string]string{},dummyResolutionContext())
+	value:=ParseMkDotenvComment(line, dummyResolutionContext(map[string]string{}))
 
 	if(value != nil){
 		t.Fatalf("expected value to be nil, got %v", value)
@@ -113,7 +110,7 @@ func TestParseInvalidMkdotenv(t *testing.T){
 
 	for _,line := range testCases {
 		t.Run(line, func(t *testing.T) {
-			value:=ParseMkDotenvComment(line,map[string]string{},dummyResolutionContext())
+			value:=ParseMkDotenvComment(line,dummyResolutionContext(map[string]string{}))
 			if(value != nil){
 				t.Fatalf("expected value to be nil, got %v", value)
 			}
@@ -139,7 +136,7 @@ func TestGetArgInvalid(t *testing.T){
 
 func TestParseMkdotenvCommentResolvedArg(t *testing.T) {
 	line:="#mkdotenv():resolve(\"value\"):plain(value=$_ARG[test])"
-	value:=ParseMkDotenvComment(line, map[string]string{"test":"value"},dummyResolutionContext())
+	value:=ParseMkDotenvComment(line,dummyResolutionContext(map[string]string{"test":"value"}))
 
 	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")

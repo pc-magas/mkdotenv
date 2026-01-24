@@ -50,7 +50,7 @@ func (manipulator *DotenvManipulator) Replace(output *bufio.Writer, environment 
 		line:=scanner.Text()
 		line_to_write:=line
 		
-		command := parser.ParseMkDotenvComment(line_to_write,arguments,ctx)
+		command := parser.ParseMkDotenvComment(line_to_write,ctx)
 
 		if(command != nil){
 			if(command.Environment == "*" || command.Environment == environment){

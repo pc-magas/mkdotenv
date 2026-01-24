@@ -3,6 +3,7 @@ package executor
 import (
 	"fmt"
 	"github.com/pc-magas/mkdotenv/core/context"
+	"github.com/pc-magas/mkdotenv/core/context/types"
 	"github.com/pc-magas/mkdotenv/core/parser"
 	"github.com/pc-magas/mkdotenv/secret"
 )
@@ -24,8 +25,8 @@ func (executer *CommandExecutor) Execute(command *parser.MkDotenvCommand, ctx co
 
 	switch command.SecretResolverType {
 	case "keppassx":
-		path := context.NewContextPath(command.Params["file"], ctx.TemplateDir)
-		resolver, err = secret.NewKeepassXResolver(path, command.Params["password"])
+		path := types.NewContextPath(command.UserParams["file"], ctx.TemplateDir)
+		resolver, err = secret.NewKeepassXResolver(path, command.UserParams["password"])
 	case "plain":
 		resolver = secret.NewPlaintextResolver()
 	default:
