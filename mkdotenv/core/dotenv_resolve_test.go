@@ -51,7 +51,7 @@ func TestReplace_Passthrough(t *testing.T) {
 	assert.Equal(t, input, output.String())
 }
 
-func TestReplace_IncalidMkdotencCommand_Passthrough(t *testing.T) {
+func TestReplace_InvalidMkdotencCommand_Passthrough(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
@@ -67,7 +67,7 @@ API_KEY=old
 	m := NewDotEnvManipulator(strings.NewReader(input),mockExec)
 	resolutionContext :=dummyResolutionContext()
 
-	mockExec.EXPECT().Execute(gomock.Any(),resolutionContext).Times(0)
+	mockExec.EXPECT().Execute(gomock.Any(),	gomock.Any()).Times(0)
 
 	err := m.Replace(writer, "dev",resolutionContext)
 	writer.Flush()
@@ -136,8 +136,8 @@ API_KEY=default_secret
 	// EXPECTATION
 	mockExec.
 		EXPECT().
-		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{}),resolutionContext).
-		DoAndReturn(func(cmd *parser.MkDotenvCommand) (string, error) {
+		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{}),gomock.Eq(resolutionContext)).
+		DoAndReturn(func(cmd *parser.MkDotenvCommand, resolutionContext context.ResolutionContext) (string, error) {
 			// Here you can assert details about the command
 			assert.Equal(t, "prod", cmd.Environment)
 			assert.Equal(t, "\"path_to_secret_prod\"", cmd.SecretPath)
@@ -186,8 +186,8 @@ API_KEY=default_secret
 
 	mockExec.
 		EXPECT().
-		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{}),resolutionContext).
-		DoAndReturn(func(cmd *parser.MkDotenvCommand) (string, error) {
+		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{}),gomock.Eq(resolutionContext)).
+		DoAndReturn(func(cmd *parser.MkDotenvCommand, resolutionContext context.ResolutionContext) (string, error) {
 			// Here you can assert details about the command
 			assert.Equal(t, "default", cmd.Environment)
 			assert.Equal(t, "\"path_to_secret_default1\"", cmd.SecretPath)
@@ -233,8 +233,8 @@ API_KEY=default_secret
 
 	mockExec.
 		EXPECT().
-		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{}),resolutionContext).
-		DoAndReturn(func(cmd *parser.MkDotenvCommand) (string, error) {
+		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{}),gomock.Eq(resolutionContext)).
+		DoAndReturn(func(cmd *parser.MkDotenvCommand,resolutionContext context.ResolutionContext) (string, error) {
 			// Here you can assert details about the command
 			assert.Equal(t, "*", cmd.Environment)
 			assert.Equal(t, "\"path_to_secret_wild\"", cmd.SecretPath)
