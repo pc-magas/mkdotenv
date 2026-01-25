@@ -25,6 +25,22 @@ func GetArg(value string) string {
 	return matches[1]
 }
 
+func ParseParamValue(value string,ctx context.ResolutionContext) string {
+
+	newValue := strings.TrimSpace(value)
+
+	arg:=GetArg(newValue)
+	val, ok := ctx.Args[arg]
+	if arg != "" && ok {
+		return val
+	}
+
+	newValue = strings.Trim(newValue, `"`)
+	newValue = strings.Trim(newValue, `'`)
+
+	return newValue
+}
+
 func ParseMkDotenvComment(readline string, ctx context.ResolutionContext) *MkDotenvCommand {
 
 	re := regexp.MustCompile(
@@ -47,18 +63,12 @@ func ParseMkDotenvComment(readline string, ctx context.ResolutionContext) *MkDot
 		env="default"
 	}
 
-	arguments:=ctx.Args
 	params := make(map[string]string)
 	if argString != "" {
 		for _, kv := range strings.Split(argString, ",") {
 			pair := strings.SplitN(kv, "=", 2)
 			if len(pair) == 2 {
-				value:=strings.TrimSpace(pair[1])
-				arg:=GetArg(value)
-				val, ok := arguments[arg]
-				if arg != "" && ok {
-					value = val
-				}
+				value:=ParseParamValue(pair[1],ctx)
 				params[strings.TrimSpace(pair[0])] = value
 			}
 		}

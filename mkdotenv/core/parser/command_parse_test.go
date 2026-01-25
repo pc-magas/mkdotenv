@@ -26,7 +26,7 @@ func TestParseMkdotenvCommentIsParsedCorrecly(t *testing.T) {
 	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
 	assert.Equal(t,"",value.Item,"Item should be an empry String")
-	assert.Equal(t,value.UserParams, map[string]string{"value":"\"value\""},"Item should be an empry String")
+	assert.Equal(t,value.UserParams, map[string]string{"value":"value"},"Item should be an empry String")
 }
 
 func TestParseMkdotenvCommentWithItem(t *testing.T){
@@ -37,7 +37,7 @@ func TestParseMkdotenvCommentWithItem(t *testing.T){
 	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
 	assert.Equal(t,"item",value.Item,"Item should equal with item")
-	assert.Equal(t,value.UserParams, map[string]string{"value":"\"value\""},"Item should be an empry String")
+	assert.Equal(t,value.UserParams, map[string]string{"value":"value"},"Item should be an empry String")
 }
 
 func TestParseMkdotenvExtractsEnvironment(t *testing.T){
@@ -48,7 +48,7 @@ func TestParseMkdotenvExtractsEnvironment(t *testing.T){
 	assert.Equal(t,"prod",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
 	assert.Equal(t,"item",value.Item,"Item should equal with item")
-	assert.Equal(t,value.UserParams, map[string]string{"value":"\"value\""},"Item should be an empry String")
+	assert.Equal(t,value.UserParams, map[string]string{"value":"value"},"Item should be an empry String")
 
 }
 
@@ -60,7 +60,7 @@ func TestParseMkdotenvMultipleArguments(t *testing.T){
 	assert.Equal(t,"prod",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
 	assert.Equal(t,"item",value.Item,"Item should equal with item")
-	assert.Equal(t,value.UserParams, map[string]string{"value":"\"value\"","value1":"'value'","value2":"value"})
+	assert.Equal(t,value.UserParams, map[string]string{"value":"value","value1":"value","value2":"value"})
 }
 
 func TestParseMkdotenvParseNormalLines(t *testing.T){
