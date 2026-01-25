@@ -19,7 +19,6 @@ package main
 
 import (
     "os"
-    "fmt"
 	"bufio"
 	"github.com/pc-magas/mkdotenv/params"
 	"github.com/pc-magas/mkdotenv/msg"
@@ -80,7 +79,7 @@ func main() {
 	paramErr,paramStruct := params.GetParameters(os.Args)
 
 	if(paramErr != nil){
-		msg.ExitError(paramErr.Error())
+		msg.ExitError(paramErr.Error(),true)
 	}
 
 	if(paramStruct.DisplayHelp){
@@ -94,7 +93,7 @@ func main() {
 	}
 
 	if(paramStruct.TemplateFile == paramStruct.OutputFile){
-		msg.ExitError("Template file and output file should not be the same.")
+		msg.ExitError("Template file and output file should not be the same.",false)
 	}
 
 	templateFile:=readTemplateFile(paramStruct.TemplateFile)
@@ -111,12 +110,12 @@ func main() {
 	resolutionContext,err:=context.NewResolutionContext(paramStruct.TemplateFile,paramStruct.MiscArguments)
 
 	if(err!=nil){
-		msg.ExitError(err)
+		msg.ExitError(err.Error(),false)
 	}
 
-	err := manipulator.Replace(writer,paramStruct.Environment,resolutionContext)
+	err = manipulator.Replace(writer,paramStruct.Environment,resolutionContext)
 
     if(err!=nil){
-       msg.ExitError(err)
+       msg.ExitError(err.Error(),false)
     }
 }

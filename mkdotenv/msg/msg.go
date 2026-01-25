@@ -9,9 +9,8 @@ import(
 // value changed upon compile do not remove this.
 var version = "dev"
 
-func ExitError(msg string){
+func ExitError(msg string, displayUsage bool){
 	fmt.Fprintln(os.Stderr,msg)
-	PrintHelp()
 	os.Exit(1)
 }
 
