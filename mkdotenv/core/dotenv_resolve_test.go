@@ -40,10 +40,11 @@ func TestReplace_Passthrough(t *testing.T) {
 	writer := bufio.NewWriter(&output)
 
 	m := NewDotEnvManipulator(strings.NewReader(input),mockExec)
-	
-	mockExec.EXPECT().Execute(gomock.Any()).Times(0)
+	resolutionContext :=dummyResolutionContext()
 
-	err := m.Replace(writer, "dev",dummyResolutionContext())
+	mockExec.EXPECT().Execute(gomock.Any(),resolutionContext).Times(0)
+
+	err := m.Replace(writer, "dev",resolutionContext)
 	writer.Flush()
 	assert.NoError(t, err)
 
@@ -64,10 +65,11 @@ API_KEY=old
 	writer := bufio.NewWriter(&output)
 
 	m := NewDotEnvManipulator(strings.NewReader(input),mockExec)
-	
-	mockExec.EXPECT().Execute(gomock.Any()).Times(0)
+	resolutionContext :=dummyResolutionContext()
 
-	err := m.Replace(writer, "dev",dummyResolutionContext())
+	mockExec.EXPECT().Execute(gomock.Any(),resolutionContext).Times(0)
+
+	err := m.Replace(writer, "dev",resolutionContext)
 	writer.Flush()
 	assert.NoError(t, err)
 
@@ -87,10 +89,11 @@ API_KEY=old
 API_KEY=default_secret
 `
 
+	resolutionContext:=dummyResolutionContext()
 	// EXPECTATION
 	mockExec.
 		EXPECT().
-		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{})).
+		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{}),resolutionContext).
 		Return("default_secret", nil).
 		Times(1)
 
@@ -99,7 +102,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "dev",dummyResolutionContext())
+	err := m.Replace(writer, "dev",resolutionContext)
 	writer.Flush()
 
 	assert.NoError(t, err)
@@ -128,11 +131,12 @@ API_KEY=old
 #mkdotenv(test):resolve("path_to_secret"):secret_resolver()
 API_KEY=default_secret
 `
+	resolutionContext :=dummyResolutionContext()
 
 	// EXPECTATION
 	mockExec.
 		EXPECT().
-		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{})).
+		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{}),resolutionContext).
 		DoAndReturn(func(cmd *parser.MkDotenvCommand) (string, error) {
 			// Here you can assert details about the command
 			assert.Equal(t, "prod", cmd.Environment)
@@ -146,7 +150,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "prod",dummyResolutionContext())
+	err := m.Replace(writer, "prod",resolutionContext)
 	writer.Flush()
 
 	assert.NoError(t, err)
@@ -178,9 +182,11 @@ API_KEY=old
 #mkdotenv(test):resolve("path_to_secret"):secret_resolver()
 API_KEY=default_secret
 `
+	resolutionContext :=dummyResolutionContext()
+
 	mockExec.
 		EXPECT().
-		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{})).
+		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{}),resolutionContext).
 		DoAndReturn(func(cmd *parser.MkDotenvCommand) (string, error) {
 			// Here you can assert details about the command
 			assert.Equal(t, "default", cmd.Environment)
@@ -194,7 +200,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "default",dummyResolutionContext())
+	err := m.Replace(writer, "default",resolutionContext)
 	writer.Flush()
 
 	assert.NoError(t, err)
@@ -223,9 +229,11 @@ API_KEY=old
 #mkdotenv(test):resolve("path_to_secret"):secret_resolver()
 API_KEY=default_secret
 `
+	resolutionContext:=dummyResolutionContext()
+
 	mockExec.
 		EXPECT().
-		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{})).
+		Execute(gomock.AssignableToTypeOf(&parser.MkDotenvCommand{}),resolutionContext).
 		DoAndReturn(func(cmd *parser.MkDotenvCommand) (string, error) {
 			// Here you can assert details about the command
 			assert.Equal(t, "*", cmd.Environment)
@@ -239,7 +247,7 @@ API_KEY=default_secret
 
 	m := NewDotEnvManipulator(strings.NewReader(input), mockExec)
 
-	err := m.Replace(writer, "default",dummyResolutionContext())
+	err := m.Replace(writer, "default",resolutionContext)
 	writer.Flush()
 
 	assert.NoError(t, err)
