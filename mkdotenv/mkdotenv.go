@@ -108,11 +108,15 @@ func main() {
 
 	manipulator:= core.NewDotEnvManipulator(templateFile,executor.NewExecutor())
 
-	resolutionContext,_:=context.NewResolutionContext(paramStruct.TemplateFile,paramStruct.MiscArguments)
+	resolutionContext,err:=context.NewResolutionContext(paramStruct.TemplateFile,paramStruct.MiscArguments)
+
+	if(err!=nil){
+		msg.ExitError(err)
+	}
+
 	err := manipulator.Replace(writer,paramStruct.Environment,resolutionContext)
 
     if(err!=nil){
-        fmt.Fprintln(os.Stderr, "Error:", err)
-        os.Exit(1)
+       msg.ExitError(err)
     }
 }
