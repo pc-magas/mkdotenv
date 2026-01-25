@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+
 func testExtractVariableNameExtractsVariableName(t *testing.T) {
 	expected_variable_name:="VARIABLE"
 	line:=expected_variable_name+"=VALUE"

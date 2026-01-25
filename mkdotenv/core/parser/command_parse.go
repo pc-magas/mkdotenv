@@ -35,8 +35,15 @@ func ParseParamValue(value string,ctx context.ResolutionContext) string {
 		return val
 	}
 
-	newValue = strings.Trim(newValue, `"`)
-	newValue = strings.Trim(newValue, `'`)
+	if strings.HasPrefix(newValue, `"`) && strings.HasSuffix(newValue, `"`) {
+        newValue = newValue[1:len(newValue)-1]
+        // Replace escaped quotes
+        newValue = strings.ReplaceAll(newValue, `\"`, `"`)
+    } else if strings.HasPrefix(newValue, `'`) && strings.HasSuffix(newValue, `'`) {
+        newValue = newValue[1:len(newValue)-1]
+        // Replace escaped quotes
+        newValue = strings.ReplaceAll(newValue, `\'`, `'`)
+    }
 
 	return newValue
 }

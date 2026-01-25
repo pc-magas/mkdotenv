@@ -141,5 +141,75 @@ func TestParseMkdotenvCommentResolvedArg(t *testing.T) {
 	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
 	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
 	assert.Equal(t,"",value.Item,"Item should be an empry String")
-	assert.Equal(t,value.UserParams, map[string]string{"value":"value"},"Item should be an empry String")
+	assert.Equal(t,value.UserParams, map[string]string{"value":"value"},"Item should be an empty String")
+}
+
+func testParseParamValueDoubleQuote(t *testing.T) {
+	value:="\"value\""
+	expectedReturnedValue:="value"
+
+	context:=dummyResolutionContext(map[string]string{})
+	returnedValue:=ParseParamValue(value,context)
+
+	assert.Equal(t,returnedValue,expectedReturnedValue)
+}
+
+func testParseParamValueSingleQuote(t *testing.T) {
+	value:="'value'"
+	expectedReturnedValue:="value"
+
+	context:=dummyResolutionContext(map[string]string{})
+	returnedValue:=ParseParamValue(value,context)
+
+	assert.Equal(t,returnedValue,expectedReturnedValue)
+}
+
+func testParseParamValueDoubleQuoteEscape(t *testing.T) {
+	value:="\"val\\\"ue\""
+	expectedReturnedValue:="val\"ue"
+
+	context:=dummyResolutionContext(map[string]string{})
+	returnedValue:=ParseParamValue(value,context)
+
+	assert.Equal(t,returnedValue,expectedReturnedValue)
+}
+
+func testParseParamValueSingleQuoteEscape(t *testing.T) {
+	value:="'val\\'ue'"
+	expectedReturnedValue:="val'ue"
+
+	context:=dummyResolutionContext(map[string]string{})
+	returnedValue:=ParseParamValue(value,context)
+
+	assert.Equal(t,returnedValue,expectedReturnedValue)
+}
+
+func testParseParamValueSingleQuoteWithDoubleQuote(t *testing.T) {
+	value:="'val\"ue'"
+	expectedReturnedValue:="val\"ue"
+
+	context:=dummyResolutionContext(map[string]string{})
+	returnedValue:=ParseParamValue(value,context)
+
+	assert.Equal(t,returnedValue,expectedReturnedValue)
+}
+
+func testParseParamValueSingleQuoteWithDoubleQuoteEscaped(t *testing.T) {
+	value:="'val\\\"ue'"
+	expectedReturnedValue:="val\\\"ue"
+
+	context:=dummyResolutionContext(map[string]string{})
+	returnedValue:=ParseParamValue(value,context)
+
+	assert.Equal(t,returnedValue,expectedReturnedValue)
+}
+
+func testParseArgumentValue(t *testing.T){
+	value:="$_ARG[value]"
+	expectedReturnedValue:="value"
+
+	context:=dummyResolutionContext(map[string]string{"value":expectedReturnedValue})
+	returnedValue:=ParseParamValue(value,context)
+
+	assert.Equal(t,returnedValue,expectedReturnedValue)
 }
