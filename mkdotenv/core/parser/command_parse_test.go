@@ -144,6 +144,26 @@ func TestParseMkdotenvCommentResolvedArg(t *testing.T) {
 	assert.Equal(t,value.UserParams, map[string]string{"value":"value"},"Item should be an empty String")
 }
 
+func TestParseMkdotenvCommentResolvedArgDoubleQuoted(t *testing.T) {
+	line:="#mkdotenv():resolve(\"value\"):plain(value=$_ARG[\"test\"])"
+	value:=ParseMkDotenvComment(line,dummyResolutionContext(map[string]string{"test":"value"}))
+
+	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
+	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
+	assert.Equal(t,"",value.Item,"Item should be an empry String")
+	assert.Equal(t,value.UserParams, map[string]string{"value":"value"},"Item should be an empty String")
+}
+
+func TestParseMkdotenvCommentResolvedArgSingleQuoted(t *testing.T) {
+	line:="#mkdotenv():resolve(\"value\"):plain(value=$_ARG['test'])"
+	value:=ParseMkDotenvComment(line,dummyResolutionContext(map[string]string{"test":"value"}))
+
+	assert.Equal(t,"default",value.Environment,"Environment is not the expected one")
+	assert.Equal(t,"plain",value.SecretResolverType,"Secret resolver is not the expected One")
+	assert.Equal(t,"",value.Item,"Item should be an empry String")
+	assert.Equal(t,value.UserParams, map[string]string{"value":"value"},"Item should be an empty String")
+}
+
 func testParseParamValueDoubleQuote(t *testing.T) {
 	value:="\"value\""
 	expectedReturnedValue:="value"
@@ -206,6 +226,36 @@ func testParseParamValueSingleQuoteWithDoubleQuoteEscaped(t *testing.T) {
 
 func testParseArgumentValue(t *testing.T){
 	value:="$_ARG[value]"
+	expectedReturnedValue:="value"
+
+	context:=dummyResolutionContext(map[string]string{"value":expectedReturnedValue})
+	returnedValue:=ParseParamValue(value,context)
+
+	assert.Equal(t,returnedValue,expectedReturnedValue)
+}
+
+func testParseArgumentValueDoubleQuoted(t *testing.T){
+	value:="$_ARG[\"value\"]"
+	expectedReturnedValue:="value"
+
+	context:=dummyResolutionContext(map[string]string{"value":expectedReturnedValue})
+	returnedValue:=ParseParamValue(value,context)
+
+	assert.Equal(t,returnedValue,expectedReturnedValue)
+}
+
+func testParseArgumentValueSingleQuoted(t *testing.T){
+	value:="$_ARG['value']"
+	expectedReturnedValue:="value"
+
+	context:=dummyResolutionContext(map[string]string{"value":expectedReturnedValue})
+	returnedValue:=ParseParamValue(value,context)
+
+	assert.Equal(t,returnedValue,expectedReturnedValue)
+}
+
+func testParseArgumentValueSpaces(t *testing.T){
+	value:="$_ARG[    'value'    ]"
 	expectedReturnedValue:="value"
 
 	context:=dummyResolutionContext(map[string]string{"value":expectedReturnedValue})

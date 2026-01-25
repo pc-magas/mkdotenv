@@ -14,15 +14,29 @@ type MkDotenvCommand struct {
 	Item string
 }
 
+func unquote(value string) string {
+	if strings.HasPrefix(value, `"`) && strings.HasSuffix(value, `"`) {
+        value = value[1:len(value)-1]
+        // Replace escaped quotes
+        value = strings.ReplaceAll(value, `\"`, `"`)
+    } else if strings.HasPrefix(value, `'`) && strings.HasSuffix(value, `'`) {
+        value = value[1:len(value)-1]
+        // Replace escaped quotes
+        value = strings.ReplaceAll(value, `\'`, `'`)
+    }
+
+	return value
+}
+
 func GetArg(value string) string {
-	re := regexp.MustCompile(`\$_ARG\[([\w]+)\]`)
+	re := regexp.MustCompile(`\$_ARG\[\s*([\w'\"\-\.]+)\s*\]`)
 	matches :=re.FindStringSubmatch(value)
 
 	if(len(matches) == 0){
 		return ""
 	}
 
-	return matches[1]
+	return unquote(matches[1])
 }
 
 func ParseParamValue(value string,ctx context.ResolutionContext) string {
