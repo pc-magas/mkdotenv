@@ -88,10 +88,6 @@ unset DEBEMAIL
 # Prompt user to edit Debian changelog
 sensible-editor "$DEBIAN_CHANGELOG"
 
-echo "Bump Version for Alpine"
-sed -i "s|pkgver=".*"|pkgver="${UPSTREAM_VERSION}"|" ${SOURCEPATH}/alpinebuild/APKBUILD-template
-sensible-editor "${SOURCEPATH}/alpinebuild/APKBUILD-template"
-
 echo "Bump version for Arch"
 sed -i "s|pkgver=".*"|pkgver="${UPSTREAM_VERSION}"|" ${SOURCEPATH}/aur/PKGBUILD
 sensible-editor "${SOURCEPATH}/aur/PKGBUILD"
