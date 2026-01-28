@@ -1,4 +1,4 @@
-# Mkdotenv Description Language (MDL)
+# Mkdotenv Description Language 
 
 The **Mkdotenv Description Language** provides a standardized way to annotate `.env` file entries so the `mkdotenv` tool can automatically resolve or generate environment variable values.
 
