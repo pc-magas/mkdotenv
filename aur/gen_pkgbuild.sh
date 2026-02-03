@@ -22,11 +22,7 @@ while [[ $# -gt 0 ]]; do
             LOCAL=1
             shift
             ;;
-        --checksum)
-            CHECKSUM="$2"
-            shift 2
-            ;;
-        
+
         *)
             TARGET_DIR="$1"
             shift
@@ -55,10 +51,9 @@ if [[ $LOCAL -eq 0 ]]; then
     SOURCEVAL="source=(\"\$pkgname-\$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/releases/download/v\$pkgver/mkdotenv-\$pkgver.tar.gz\")"
     echo ${SOURCEVAL} >> "${PKGBUILD_PATH}"
 else
+    # TODO check if file exists
     echo "source=(\"\$pkgname-\$pkgver.tar.gz\")" >> "${PKGBUILD_PATH}"
 fi
-
-echo "sha256sums=(\"${CHECKSUM}\")" >> "${PKGBUILD_PATH}"
 
 echo "">>$PKGBUILD_PATH
 cat << 'EOF' >> $PKGBUILD_PATH
@@ -80,6 +75,10 @@ package() {
     INSTALL_MAN_DIR="/usr/share/man/man1"
 }
 EOF
+
+# NOTE tar.gz should exist on same folder with 
+echo "Fxing Checksums"
+docker run --rm -i -v "${TARGET_DIR}":/home/builder pcmagas/arch-pkg-builder run_fixperm updpkgsums
 
 SRC_INFO=${TARGET_DIR}/.SRCINFO
 echo "Generating  ${SRC_INFO}:"
