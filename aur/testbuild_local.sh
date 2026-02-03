@@ -12,16 +12,15 @@ echo ${VERSION}
 
 TARGZ_NAME=mkdotenv-${VERSION}.tar.gz
 TARGZ=${VOLUME_DIR}/${TARGZ_NAME}
+
 PKGBUILD_LOCAL=${VOLUME_DIR}/PKGBUILD
 
 bash ${SCRIPT_DIR}/make_man.sh
 ORIG_TAR=$(bash ${SCRIPT_DIR}/../alpinebuild/make_tar.sh)
-
 cp ${ORIG_TAR} ${TARGZ}
+CHECKSUM=$(sha256sum ${TARGZ} | awk '{print $1}')""
 
-ls -l ${VOLUME_DIR}
-
-LANG=C sed "s/source=.*/source=(\"${TARGZ_NAME}\")/" ${SCRIPT_DIR}/PKGBUILD > ${PKGBUILD_LOCAL}
+bash ${SCRIPT_DIR}/get_pkgbuild.sh --src_local --checksum ${CHECKSUM} ${VOLUME_DIR}
 
 echo "BUILD PKG"
 docker run --rm -v "${VOLUME_DIR}":/home/builder pcmagas/arch-pkg-builder build_n_run mkdotenv -h
