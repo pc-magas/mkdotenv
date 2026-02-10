@@ -13,13 +13,18 @@ TARGET_DIR="${TARGET_DIR%/}"
 LOCAL=0
 OUTPUT_DIR="${SCRIPT_DIR}"
 PKGNAME="mkdotenv"
-
+ECHO=1
 
 # Parse arguments (order-independent)
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --src_local)
             LOCAL=1
+            shift
+            ;;            
+
+        --no-echo-src-info)
+            ECHO=0
             shift
             ;;
 
@@ -86,7 +91,12 @@ EOF
 echo "Fxing Checksums"
 docker run --rm -i -v "${TARGET_DIR}":/home/builder pcmagas/arch-pkg-builder run_fixperm updpkgsums
 
-SRC_INFO=${TARGET_DIR}/.SRCINFO
 echo "Generating  ${SRC_INFO}:"
-docker run --rm -i -v "${TARGET_DIR}":/home/builder pcmagas/arch-pkg-builder run_fixperm makepkg --printsrcinfo > ${TARGET_DIR}/.SRCINFO
+
+if [[ $ECHO -eq 1 ]]; then
+    SRC_INFO=${TARGET_DIR}/.SRCINFO
+    docker run --rm -i -v "${TARGET_DIR}":/home/builder pcmagas/arch-pkg-builder run_fixperm makepkg --printsrcinfo > ${TARGET_DIR}/.SRCINFO
+else
+    docker run --rm -i -v "${TARGET_DIR}":/home/builder pcmagas/arch-pkg-builder /bin/bash -c "run_fixperm makepkg --printsrcinfo > .SRCINFO"
+fi
 

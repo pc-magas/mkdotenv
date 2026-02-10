@@ -555,7 +555,7 @@ jobs:
 
           # Create new branch for PR
           git checkout -b release-attempt-${{ github.run_number }}
-          bash ../aur/gen_pkgbuild.sh $(pwd)
+          bash ../aur/gen_pkgbuild.sh --no-echo-src-info $(pwd)
 
           git add ./
           git commit -m "Update formula via GitHub Actions"
