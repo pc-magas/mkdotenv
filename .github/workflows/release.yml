@@ -6,6 +6,7 @@ on:
       - dev
       - master
     paths:
+      - .github/**
       - mkdotenv/**
       - Makefile
       - debian/**
