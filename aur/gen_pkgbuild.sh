@@ -54,7 +54,7 @@ if [[ $LOCAL -eq 0 ]]; then
     if [[ $IS_PRERELEASE == "true" ]]; then
         SOURCEVAL="source=(\"\$pkgname-\$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/releases/download/v\$pkgver/mkdotenv-\$pkgver.tar.gz\")"
     fi
-
+    echo ${SOURCEVAL}
     echo ${SOURCEVAL} >> "${PKGBUILD_PATH}"
 else
     # TODO check if file exists
