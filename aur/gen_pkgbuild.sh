@@ -51,7 +51,7 @@ if [[ $LOCAL -eq 0 ]]; then
     SOURCEVAL="source=(\"\$pkgname-\$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/releases/download/v\$pkgver/mkdotenv-\$pkgver.tar.gz\")"
 
     # IS_PRERELEASE Is an environmental varialbe that github actions exposes.
-    if [[ $IS_PRERELEASE == "true" ]]; then
+    if [[ "$IS_PRERELEASE" == "true" ]]; then
         SOURCEVAL="source=(\"\$pkgname-\$pkgver.tar.gz::https://github.com/pc-magas/mkdotenv/releases/download/v\$pkgver/mkdotenv-\$pkgver.tar.gz\")"
     fi
     echo ${SOURCEVAL}
