@@ -20,7 +20,7 @@ ORIG_TAR=$(bash ${SCRIPT_DIR}/../alpinebuild/make_tar.sh)
 cp ${ORIG_TAR} ${TARGZ}
 CHECKSUM=$(sha256sum ${TARGZ} | awk '{print $1}')""
 
-bash ${SCRIPT_DIR}/gen_pkgbuild.sh --src_local --checksum ${CHECKSUM} ${VOLUME_DIR}
+bash ${SCRIPT_DIR}/gen_pkgbuild.sh --src_local ${VOLUME_DIR}
 
 echo "BUILD PKG"
 # docker run --rm -v "${VOLUME_DIR}":/home/builder pcmagas/arch-pkg-builder build_n_run mkdotenv -h

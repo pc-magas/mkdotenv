@@ -552,10 +552,14 @@ jobs:
           git clone https://x-access-token:${GH_PAT}@github.com/pc-magas/aur-staging.git
           chmod +w aur-staging
           cd aur-staging
-
+                     
           # Create new branch for PR
           git checkout -b release-attempt-${{ github.run_number }}
+          
+          chmod -R a+rw .
           bash ../aur/gen_pkgbuild.sh --no-echo-src-info $(pwd)
+
+          sudo chown -R $(id -u):$(id -g) .
 
           git add ./
           git commit -m "Update formula via GitHub Actions"
