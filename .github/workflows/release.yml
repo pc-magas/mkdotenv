@@ -5,14 +5,14 @@ on:
     branches:
       - dev
       - master
-    paths:
-      - .github/**
-      - mkdotenv/**
-      - Makefile
-      - debian/**
-      - alpinebuild/**
-      - fedora/**
-      - aur/gen_pkgbuild.sh
+    # paths:
+    #   - .github/**
+    #   - mkdotenv/**
+    #   - Makefile
+    #   - debian/**
+    #   - alpinebuild/**
+    #   - fedora/**
+    #   - aur/gen_pkgbuild.sh
 jobs:
   tag_git:
     runs-on: ubuntu-latest
