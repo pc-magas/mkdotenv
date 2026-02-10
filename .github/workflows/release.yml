@@ -545,15 +545,21 @@ jobs:
           git config --global user.email "actions@github.com"
 
           git clone https://x-access-token:${GH_PAT}@github.com/pc-magas/aur-staging.git
-          cd mkdotenv-alpine-staging
+          cd aur-staging
 
           # Create new branch for PR
           git checkout -b release-attempt-${{ github.run_number }}
+          bash ./aur/gen_pkgbuild.sh .
+
+          git add ./
+          git commit -m "Update formula via GitHub Actions"
+          git push origin release-attempt-${{ github.run_number }}
+
 
 
   release_apkbuild:
     runs-on: ubuntu-latest
-    if:  github.ref == 'refs/heads/master'
+    # if:  github.ref == 'refs/heads/master'
     permissions:
       contents: write
       id-token: write
