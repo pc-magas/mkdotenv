@@ -11,6 +11,7 @@ on:
       - debian/**
       - alpinebuild/**
       - fedora/**
+      - aur/gen_pkgbuild.sh
 jobs:
   tag_git:
     runs-on: ubuntu-latest
