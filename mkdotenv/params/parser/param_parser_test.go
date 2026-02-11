@@ -118,7 +118,7 @@ func TestParamParser_ParseValueSeperatedWithIson(t *testing.T) {
 		return nil
 	}
 
-	complete,err:=parser.Parse([]string{"executable","-name="+expectedValue},&values);
+	complete,err:=parser.Parse([]string{"executable","--name="+expectedValue},&values);
 
 	assert.NoError(t,err)
 	assert.True(t,complete)
@@ -155,7 +155,7 @@ func TestParamParser_ParseValueSeperatedWithIsonShort(t *testing.T) {
 		return nil
 	}
 
-	complete,err:=parser.Parse([]string{"executable","-name="+expectedValue},&values);
+	complete,err:=parser.Parse([]string{"executable","--name="+expectedValue},&values);
 
 	assert.NoError(t,err)
 	assert.True(t,complete)

@@ -11,7 +11,7 @@ type FlagList []FlagMeta
 
 const (
 	StringType CLIArgType = "string"
-	NoValType   CLIArgType = "noval"
+	NoValType  CLIArgType = "noval"
 )
 
 type FlagMeta struct {
@@ -54,10 +54,7 @@ func (p *ParamParser[T]) extractArgumentAndValue(argument string) (string,string
         value = parts[1]
     }
 
-    argument = strings.TrimLeft(argument, "-")
-
     return argument,value
-
 }
 
 func (p *ParamParser[T]) extractValueFromNext(i int, osArgs []string) string {
@@ -133,13 +130,12 @@ func (p *ParamParser[T]) Parse(osArgs []string,target *T) (bool,error) {
 }
 
 func (p *ParamParser[T])SearchFlag(name string) *FlagMeta {
-	name = strings.Trim(name,"-")
     for i := range p.FlagsMeta {
-        if p.FlagsMeta[i].Name == name || p.FlagsMeta[i].Short == name  {
+        if "--"+p.FlagsMeta[i].Name == name || "-"+p.FlagsMeta[i].Short == name  {
             return &p.FlagsMeta[i]
         }
         for _, alias := range p.FlagsMeta[i].Aliases {
-            if alias == name {
+            if "--"+alias == name {
                 return &p.FlagsMeta[i]
             }
         }
