@@ -8,11 +8,46 @@
 |_|  |_|_|\_\_____/ \___/ \__\___|_| |_|\_/  
 ```
                                               
-**Simplify Your .env Files – One Variable at a Time!**
+**Stop Hardcoding Secrets – Use mkdotenv to Build Your Environment!**
 
-MkDotenv is a lightweight and efficient tool for managing your `.env` files. Whether you're adding, updating, or replacing environment variables, MkDotenv makes it easy and hassle-free.
+Managing .env files shouldn't be a manual chore. MkDotenv automates the population of your environment variables by resolving secrets from your preferred backends. Just define your requirements in a template, run mkdotenv, and get a ready-to-use .env file for any environment—local, staging, or production.
 
 [![Copr build status](https://copr.fedorainfracloud.org/coprs/pc-magas/mkdotenv/package/mkdotenv/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/pc-magas/mkdotenv/package/mkdotenv/) 
+
+# Quick Usage
+
+1. Create a `.env.dist` template file containing these:
+
+```
+#mkdotenv(prod):resolve("web/secret")::keepassx(file="mydb.kpbx",password="XXXXX").PASSWORD
+DB_PASSWORD=
+```
+
+2. Setup KeePassXC:
+
+* Create a Group named web.
+* Inside that group, create an Entry with the Title secret.
+* Set the Password field of that entry to your actual secret value.
+
+The final structure should be:
+
+```
+web (Group)
+ └── secret (Entry)
+  ├── Password: [your_password]
+  └── Title: secret
+```
+
+Consult this youtube [video](https://www.youtube.com/watch?v=I4d3xTKHMkg) on how save a password on keepassx.
+
+3. Run
+
+```
+mkdotenv --environment prod
+```
+
+This would populate the `DB_PASSWORD` value from the password stored upon keepassx db into a new file named `.env`.
+Have a look upon project's `docs` folder for mote info.
 
 # Build from source (Supported in Linux & macOS)
 
@@ -263,6 +298,25 @@ sudo chmod 755 /usr/local/mkdotenv
 mkdotenv --version
 ```
 
-# Usage
+# Extended Documentation
 
-For usage consult `./docs` folder.
+For usage consult `./docs` folder:
+
+* [Basic Usage](./docs/Basic%20Usage.md): Bassic Usage of mkdotenv
+* [KeePassX Resolver](./docs/Secret%20Resolver/keepassx.md): Deep dive into KDBX fields.
+* [Plain Resolver](./docs/Secret%20Resolver/plain.md): Standard variable handling.
+* [Description Language Definition](./docs/Mkdotenv%20Description%20Language.md): The full markup language spec.
+* [Docker Usage](./docs/Docker%20Usage.md): Running MkDotenv in CI/CD.
+
+## Local Help
+
+Furthermore argument usage is documented via `man`:
+```
+man mkdotenv
+```
+
+Or via `--help` argument:
+
+```
+mkdotenv --help
+```

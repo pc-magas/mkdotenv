@@ -23,7 +23,7 @@ The general syntax for resolving a KeePassX secret is:
 | Component | Description |
 |-----------|-------------|
 | `#mkdotenv()` | Initializes the MkDotenv processing context. |
-| `resolve(^key^)` | The entry identifier in the KeePassX database. `^key^` is a placeholder for the key of the entry. |
+| `resolve(^key^)` | The path to the secret. Use slashes for nested groups. The final segment must be the Entry Title (e.g., "group/subgroup/entry"). |
 | `keepassx(...)` | Specifies that the resolver should use KeePassX as the secret source. |
 | `file=^kpbx.file^` | Path to the `.kdbx` KeePassX database file. |
 | `password=^password^` | Master password for decrypting the KeePassX database. |
@@ -67,7 +67,7 @@ The `login1` is our password entry.
 #mkdotenv():resolve("databases/db1/login1"):keepassx(file="mypassword.kdbx",password="1234").USERNAME
 ```
 
-### Avoid Hardcoding
+### Pro-Tip: Dynamic Passwords
 
 In order to avoid hardcoding the password you can `$_ARG` entries:
 
