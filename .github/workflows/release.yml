@@ -479,7 +479,7 @@ jobs:
 
   release_corpr:
     runs-on: ubuntu-latest
-    if:  github.ref == 'refs/heads/master'
+    # if:  github.ref == 'refs/heads/master'
     permissions:
       contents: write
     needs:
@@ -562,7 +562,8 @@ jobs:
 
           sudo chown -R $(id -u):$(id -g) .
 
-          git add ./
+          git add ./PKGBUILD
+          git add ./.SRCINFO
           git commit -m "Update formula via GitHub Actions"
           git push origin release-attempt-${{ github.run_number }}
 
@@ -580,7 +581,7 @@ jobs:
 
   release_apkbuild:
     runs-on: ubuntu-latest
-    # if:  github.ref == 'refs/heads/master'
+    if:  github.ref == 'refs/heads/master'
     permissions:
       contents: write
       id-token: write
