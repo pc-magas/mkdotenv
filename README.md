@@ -177,6 +177,25 @@ sudo dnf install dnf-plugins-core
 dnf copr enable pc-magas/mkdotenv 
 sudo dnf install mkdotenv
 ```
+### In amazon Linux 2023
+
+Packages available through corpr
+
+```
+sudo dnf install -y 'dnf-command(copr)'
+sudo dnf copr enable pc-magas/mkdotenv 
+sudo dnf install -y mkdotenv
+```
+
+### In OpenSuse
+
+Fedora Corpr repositories also are available for OpenSuse (both leap and tumbleweed)
+
+```bash
+sudo zypper install opi
+opi copr pc-magas/mkdotenv
+sudo zypper install mkdotenv
+```
 
 ### In Alpine Linux
 
