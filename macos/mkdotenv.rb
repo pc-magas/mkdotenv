@@ -1,5 +1,5 @@
 class Mkdotenv < Formula
-  version "1.0.0"
+  version "1.0.1"
   desc "Simplify Your .env Files – One Variable at a Time!"
 
   homepage "https://github.com/pc-magas/mkdotenv"

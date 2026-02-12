@@ -1,6 +1,6 @@
 %global debug_package %{nil}
 Name:           mkdotenv
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 Summary:        Lightweight and efficient tool for managing your `.env` files.
 
@@ -28,6 +28,9 @@ Whether you're adding, updating, or replacing environment variables, MkDotenv ma
 /usr/share/man/man1/mkdotenv.1.gz
 
 %changelog
+* Thu Feb 12 2026 Dimitrios Desyllas <pcmagas@disroot.org> - 1.0.1-1
+- Fix PPA build.
+
 * Mon Jan 05 2026 Dimitrios Desyllas <pcmagas@disroot.org> - 1.0.0-1
 - 1. Introduce secret resolvers
 - 2. [Breaking Change] Restructure cli command line arguments
