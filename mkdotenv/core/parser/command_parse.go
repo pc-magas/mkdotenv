@@ -1,0 +1,110 @@
+package parser
+
+import( 
+	"regexp"
+	"strings"
+	"github.com/pc-magas/mkdotenv/core/context"
+)
+
+type MkDotenvCommand struct {
+	Environment string
+	SecretResolverType string
+	SecretPath string
+	UserParams map[string]string
+	Item string
+}
+
+func unquote(value string) string {
+	if strings.HasPrefix(value, `"`) && strings.HasSuffix(value, `"`) {
+        value = value[1:len(value)-1]
+        // Replace escaped quotes
+        value = strings.ReplaceAll(value, `\"`, `"`)
+    } else if strings.HasPrefix(value, `'`) && strings.HasSuffix(value, `'`) {
+        value = value[1:len(value)-1]
+        // Replace escaped quotes
+        value = strings.ReplaceAll(value, `\'`, `'`)
+    }
+
+	return value
+}
+
+func GetArg(value string) string {
+	re := regexp.MustCompile(`\$_ARG\[\s*([\w'\"\-\.]+)\s*\]`)
+	matches :=re.FindStringSubmatch(value)
+
+	if(len(matches) == 0){
+		return ""
+	}
+
+	return unquote(matches[1])
+}
+
+func ParseParamValue(value string,ctx context.ResolutionContext) string {
+
+	newValue := strings.TrimSpace(value)
+
+	arg:=GetArg(newValue)
+	val, ok := ctx.Args[arg]
+	if arg != "" && ok {
+		return val
+	}
+
+	if strings.HasPrefix(newValue, `"`) && strings.HasSuffix(newValue, `"`) {
+        newValue = newValue[1:len(newValue)-1]
+        // Replace escaped quotes
+        newValue = strings.ReplaceAll(newValue, `\"`, `"`)
+    } else if strings.HasPrefix(newValue, `'`) && strings.HasSuffix(newValue, `'`) {
+        newValue = newValue[1:len(newValue)-1]
+        // Replace escaped quotes
+        newValue = strings.ReplaceAll(newValue, `\'`, `'`)
+    }
+
+	return newValue
+}
+
+func ParseMkDotenvComment(readline string, ctx context.ResolutionContext) *MkDotenvCommand {
+
+	re := regexp.MustCompile(
+		`^#mkdotenv\(([^)]*)\):resolve\(([^)]*)\):([A-Za-z0-9_]+)\(([^)]*)\)(?:\.([A-Za-z0-9_]+))?$`,
+	)
+	matches := re.FindStringSubmatch(readline)
+
+	if len(matches) == 0 {
+		return nil
+	}
+
+	env := matches[1]
+	secretPath:=matches[2]
+	resolver := matches[3]
+	argString := matches[4]
+	item := matches[5]
+
+	// We assume empty environment is named default
+	if(env == ""){
+		env="default"
+	}
+
+	params := make(map[string]string)
+	if argString != "" {
+		for _, kv := range strings.Split(argString, ",") {
+			pair := strings.SplitN(kv, "=", 2)
+			if len(pair) == 2 {
+				value:=ParseParamValue(pair[1],ctx)
+				params[strings.TrimSpace(pair[0])] = value
+			}
+		}
+	}
+
+	cmd := &MkDotenvCommand{
+		Environment: env,
+		SecretPath : secretPath,
+		SecretResolverType: resolver,
+		UserParams: params,
+	}
+
+	if item != "" {
+		cmd.Item = item
+	}
+
+	return cmd
+}

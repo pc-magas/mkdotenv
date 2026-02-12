@@ -5,7 +5,14 @@ on:
     branches:
       - dev
       - master
-
+    paths:
+      - .github/**
+      - mkdotenv/**
+      - Makefile
+      - debian/**
+      - alpinebuild/**
+      - fedora/**
+      - aur/gen_pkgbuild.sh
 jobs:
   tag_git:
     runs-on: ubuntu-latest
@@ -359,8 +366,7 @@ jobs:
             mkdotenv.deb,
             mkdotenv.rpm, 
             mkdotenv*.tar.gz,
-            mkdotenv*-r0.apk,
-            ./aur/PKGBUILD
+            mkdotenv*-r0.apk
           bodyFile: RELEASE_NOTES
 
       - name: Create a GitHub release
@@ -378,8 +384,7 @@ jobs:
             mkdotenv.rpm, 
             mkdotenv.deb,
             mkdotenv*.tar.gz,
-            mkdotenv*-r0.apk,
-            ./aur/PKGBUILD
+            mkdotenv*-r0.apk
           bodyFile: RELEASE_NOTES
     
 
@@ -512,6 +517,67 @@ jobs:
       - name: upload to corpr
         run: |
          copr-cli build mkdotenv ./fedora/rpmbuild/SRPMS/mkdotenv.src.rpm
+
+  release-aur:
+    runs-on: ubuntu-latest
+    needs:
+      - release
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+         fetch-depth: 0
+      
+      - name: Generate GitHub App token
+        id: token
+        uses: qoomon/actions--access-token@v3
+        with:
+          repository: pc-magas/aur-staging
+          permissions: |
+            contents: write
+            pull_requests: write
+
+      - name: setup git and clone staging
+        env:
+          GH_PAT: ${{ steps.token.outputs.token }}
+          IS_PRERELEASE: ${{ github.ref_name == 'dev' && 'true' || 'false' }}
+        run: |
+          echo "IS_PRERELEASE: $IS_PRERELEASE"
+      
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+          git clone https://x-access-token:${GH_PAT}@github.com/pc-magas/aur-staging.git
+          chmod +w aur-staging
+          cd aur-staging
+                     
+          # Create new branch for PR
+
+          git checkout -b release-attempt-${{ github.run_number }}
+          
+          chmod -R a+rw .
+          bash ../aur/gen_pkgbuild.sh --no-echo-src-info $(pwd)
+
+          sudo chown -R $(id -u):$(id -g) .
+
+          git add ./PKGBUILD
+          git add ./.SRCINFO
+          git commit -m "Update formula via GitHub Actions"
+          git push origin release-attempt-${{ github.run_number }}
+
+          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+          # Create a PR using GitHub CLI
+          VERSION=$(grep '^pkgver' ./PKGBUILD | awk -F'=' '{print $2}')
+          echo "VERSION ${VERSION}"
+          curl --fail-with-body -vvv -X POST https://api.github.com/repos/pc-magas/aur-staging/pulls \
+            -H "Authorization: Bearer $GH_PAT" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Content-Type: application/json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -d "{\"title\": \"Update PKGBUILD [VERSION $VERSION]\",\"head\": \"$BRANCH_NAME\",\"base\": \"master\",\"body\": \"Automated update after deploy.\nBefore merging place APKBUILD upon `aports` folder.\"}"
+
 
   release_apkbuild:
     runs-on: ubuntu-latest

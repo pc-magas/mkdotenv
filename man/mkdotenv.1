@@ -1,84 +1,35 @@
-.TH MKDOTENV 1 "September 2025" "mkdotenv 0.4.3"
+.TH MKDOTENV 1 "February 2026" "mkdotenv 1.0.0"
 .SH NAME
-mkdotenv \- A command-line tool to add or update environment variables in a .env file.
+mkdotenv \- A command-line tool that populates secrets upon a .env file from a template.
+.SH DESCRIPTION
+The \fmkdotenv\fR command allows users to poopulate environmental variables from a template file by placing appropriate markup upon the file.
 .SH SYNOPSIS
 .B mkdotenv
-[\fI--help\fR|\fI-h\fR] 
-[\fI--version\fR|\fI-v\fR] 
-\fI--variable-name\fR <\fIVARIABLE_NAME\fR> \fI--variable-value\fR <\fIVARIABLE_VALUE\fR> 
-[\fI--env-file\fR <\fIFILE\fR>|\fI--input-file\fR <\fIFILE\fR>] 
-[\fI--output-file\fR <\fIFILE\fR>] 
-[\fI--remove-doubles\fR]
-.SH DESCRIPTION
-The \fBmkdotenv\fR command allows users to add or update environment variables in a .env file. 
-By default, it modifies the current \fB.env\fR file. You can optionally specify input and output files. 
+[\fI--help\fR| \fI-h\fR][\fI--version\fR| \fI-v\fR]
+[\fI--environment\fR| \fI-e\fR | \fI--env\fR <\fIENVIRONMENT\fR>]
+[\fI--template-file\fR| \fI-t\fR | \fI--template\fR <\fITEMPLATE-FILE\fR>][\fI--output-file\fR| \fI-o\fR <\fIOUTPUT-FILE\fR>]
+[\fI--argument\fR| \fI-a\fR | \fI--arg\fR <\fIARGUMENT\fR>]
 
-It supports removing duplicate variable declarations while preserving the first occurrence.
-
-.SH PIPE SUPPORT
-To apply multiple updates or transformations sequentially, \fBmkdotenv\fR supports reading from standard input and writing to standard output.  
-Use \fB--output-file=-\fR to stream to stdout, and pipe the result into another \fBmkdotenv\fR invocation. This enables flexible, chainable modification workflows.
-
-.SH REQUIRED ARGUMENTS
-.TP
-.B --variable-name, -variable-name
-The name of the environment variable to be added or updated.
-.TP
-.B --variable-value, -variable-value
-The value assigned to the \fIVARIABLE_NAME\fR.
-
-.SH OPTIONAL OPTIONS
-.TP
-.B --help, -h
-Display the help message and exit.
-.TP
-.B --version, -v
-Display the application version and exit.
-.TP
-.B --env-file <file>, --input-file <file>
-Specify the .env file to read from. Defaults to \fB.env\fR in the current directory.
-.TP
-.B --output-file <file>
-Write the modified contents to the specified file. Use \fB-\fR to write to standard output.
-.TP
-.B --remove-doubles
-Remove duplicate variable entries from the file, keeping only the first occurrence.
-
-.SH EXAMPLES
-.TP
-Add a variable to the default .env file:
-.RS
-$ mkdotenv --variable-name API_KEY --variable-value 123456
-.RE
+.SH Optional ARGUMENTS
 
 .TP
-Add a variable to a specific file:
-.RS
-$ mkdotenv --variable-name API_KEY --variable-value 123456 --env-file config.env
-.RE
-
+.B --help,\fI-h\fR
+Display help message and exit
 .TP
-Write the result to a different file:
-.RS
-$ mkdotenv --variable-name API_KEY --variable-value 123456 --output-file output.env
-.RE
-
+.B --version,\fI-v\fR
+Display version and exit
 .TP
-Remove duplicates while writing:
-.RS
-$ mkdotenv --variable-name API_KEY --variable-value 123456 --remove-doubles
-.RE
-
+.B --environment,\fI-e\fR ,\fI--env\fR
+Environment in which secrets would be resolved
 .TP
-Chain multiple updates using pipes (stream between commands with \fB--output-file=-\fR):
-.RS
-.nf
-$ mkdotenv --variable-name DB_HOST --variable-value 127.0.0.1 --output-file=- \\
-  | mkdotenv --variable-name DB_USER --variable-value maiuser --output-file=- \\
-  | mkdotenv --variable-name DB_PASSWORD --variable-value XXXX --output-file=.env.production
-.fi
-.RE
-
+.B --template-file,\fI-t\fR ,\fI--template\fR
+Template .env file containing commands on how .env file would be generated. If no vanue provided .env.dist assumed.
+.TP
+.B --output-file,\fI-o\fR
+File to write output to
+.TP
+.B --argument,\fI-a\fR ,\fI--arg\fR
+Argument provided as $_ARG upon template file.
 .SH AUTHOR
 Written by Desyllas Dimitrios.
 

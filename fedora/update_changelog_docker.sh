@@ -44,13 +44,21 @@ sed -i "s/^Release:.*/Release:        $NEW_RPM_RELEASE%{?dist}/" "$SPEC_FILE"
 RPM_DATE=$(date +"%a %b %d %Y")
 CHANGELOG_LINE="* $RPM_DATE ${NAME_VAL} <${EMAIL_VAL}> - $UPSTREAM_VERSION-$NEW_RPM_RELEASE"
 
-echo "" >> $SPEC_FILE
-echo "$CHANGELOG_LINE" >> $SPEC_FILE
+CHANGELOG_BLOCK="$CHANGELOG_LINE"$'\n'
 
 while IFS= read -r line; do
-    [[ -z "$line" ]] && echo "LINE EMPTY"&& continue  # Skip empty lines
-    echo "- $line" >> $SPEC_FILE
-done < "${RELEASE_NOTES_FILE}"
+    [[ -z "$line" ]] && continue
+    CHANGELOG_BLOCK+="- $line"$'\n'
+done < "$RELEASE_NOTES_FILE"
+
+awk -v block="$CHANGELOG_BLOCK" '
+    /^%changelog/ {
+        print
+        print block
+        next
+    }
+    { print }
+' "$SPEC_FILE" > "$SPEC_FILE.tmp" && mv "$SPEC_FILE.tmp" "$SPEC_FILE"
 
 sensible-editor "$SPEC_FILE"
 

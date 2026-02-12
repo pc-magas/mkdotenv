@@ -1,1 +1,4 @@
-Enable GCO on some architectures, fine tuning unmapped architectures as well upon MAKEFILE.
+1. Introduce secret resolvers
+2. [Breaking Change] Restructure cli command line arguments
+3. [Breaking change] Use template file and a Description Language on it in order to resolve secrets.
+4. Tool to generate manpage from Arguments

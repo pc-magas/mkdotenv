@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - dev
-        
+    paths:
+      - mkdotenv/**
+      - Makefile
 jobs:
 
   mac_intel_build:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     steps:
 
       - uses: actions/checkout@v4

@@ -10,6 +10,10 @@ SRC_FOLDER=mkdotenv-${VERSION}
 TAR_NAME=${SRC_FOLDER}-rpm.tar.gz
 SRC_DEST=/tmp/${SRC_FOLDER}
 
+cd ${SCRIPTPATH}/..
+echo "Create ManPage"
+make man
+
 cd ${SCRIPTPATH}
 
 echo "Vendoring Go dependencies..."

@@ -19,16 +19,68 @@ package main
 
 import (
     "os"
-    "fmt"
-	"time"
-	"strconv"
+	"bufio"
 	"github.com/pc-magas/mkdotenv/params"
 	"github.com/pc-magas/mkdotenv/msg"
-	"github.com/pc-magas/mkdotenv/files"
 	"github.com/pc-magas/mkdotenv/core"
+	"github.com/pc-magas/mkdotenv/core/executor"
+	"github.com/pc-magas/mkdotenv/core/context"
 )
 
-func displayVersionOrHelp(paramStruct params.Arguments){
+func readTemplateFile(dotenv_filename string) *os.File {
+
+	var file *os.File
+	var err error
+
+	stat, _ := os.Stdin.Stat()
+	hasPipeInput := (stat.Mode() & os.ModeCharDevice) == 0
+
+	// Input is piped through STDIN
+	if(hasPipeInput){
+		return os.Stdin
+	}
+
+	// TODO Raise Error
+	// if(dotenv_filename == ""){
+	// 	dotenv_filename = ".env"
+	// }
+	
+	msg.HandleFileError(err, dotenv_filename)
+	
+	file,err = os.Open(dotenv_filename)
+	msg.HandleFileError(err,dotenv_filename)
+
+	return file
+}
+
+
+func createWriter(filename string) (*bufio.Writer,*os.File) {
+	
+	if(filename == "-"){
+		return bufio.NewWriter(os.Stdout),nil
+	}
+
+	// TODO Raise error initialization happens outside
+	// if(filename == ""){
+	// 	filename=".env"
+	// }
+
+	outfile,err := os.OpenFile(filename,os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
+	if err != nil {
+		msg.HandleFileError(err,filename)
+	}
+		
+	return bufio.NewWriter(outfile),outfile
+}
+
+
+func main() {
+
+	paramErr,paramStruct := params.GetParameters(os.Args)
+
+	if(paramErr != nil){
+		msg.ExitError(paramErr.Error(),true)
+	}
 
 	if(paramStruct.DisplayHelp){
 		msg.PrintHelp()
@@ -39,59 +91,31 @@ func displayVersionOrHelp(paramStruct params.Arguments){
 		msg.PrintVersion()
 		os.Exit(0)
 	}
-}
 
-func main() {
-
-	paramErr,paramStruct := params.GetParameters(os.Args)
-
-	if (paramStruct.ArgumentNum == 1 ){
-		msg.PrintHelp()
-		os.Exit(0)
+	if(paramStruct.TemplateFile == paramStruct.OutputFile){
+		msg.ExitError("Template file and output file should not be the same.",false)
 	}
 
-	if(paramErr != nil){
-		msg.ExitError(paramErr.Error())
-	}
+	templateFile:=readTemplateFile(paramStruct.TemplateFile)
+	defer templateFile.Close()
 
-	displayVersionOrHelp(paramStruct)
-
-	filenameToRead := paramStruct.DotenvFilename
-	filenameCopy:=paramStruct.DotenvFilename+"."+strconv.FormatInt(time.Now().UnixMilli(),10)
-	sameFileToReadAndWrite:=paramStruct.DotenvFilename == paramStruct.OutputFile 
-
-	// If inputfile is same as Outputfile copy the input file to a temporary one
-	if(sameFileToReadAndWrite){
-		files.CopyFile(paramStruct.DotenvFilename,filenameCopy)
-		filenameToRead=filenameCopy
-	}
-
-
-	file:=files.GetFileToRead(filenameToRead)
-	defer file.Close()
-	
-
-	writer,outfile := files.CreateWriter(paramStruct.OutputFile)
+	writer,outfile := createWriter(paramStruct.OutputFile)
 	if(outfile!=nil){
 		defer outfile.Close()
 	}
 	defer writer.Flush()
 
-	_,err := core.AppendValueToDotenv(file,writer,paramStruct.VariableName,paramStruct.VariableValue,paramStruct.RemoveDoubles)
+	manipulator:= core.NewDotEnvManipulator(templateFile,executor.NewExecutor())
+
+	resolutionContext,err:=context.NewResolutionContext(paramStruct.TemplateFile,paramStruct.MiscArguments)
+
+	if(err!=nil){
+		msg.ExitError(err.Error(),false)
+	}
+
+	err = manipulator.Replace(writer,paramStruct.Environment,resolutionContext)
 
     if(err!=nil){
-        fmt.Fprintln(os.Stderr, "Error:", err)
-		if(sameFileToReadAndWrite){
-			files.CopyFile(filenameCopy,paramStruct.DotenvFilename)
-		}
-        os.Exit(1)
+       msg.ExitError(err.Error(),false)
     }
-
-	if sameFileToReadAndWrite {
-		file.Close()
-		err := os.Remove(filenameCopy)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Warning: Failed to remove temp file %s: %v\n", filenameCopy, err)
-		}
-	}
 }

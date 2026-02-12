@@ -1,3 +1,10 @@
+# Version 1.0.0 2026-01-05
+
+1. Introduce secret resolvers
+2. [Breaking Change] Restructure cli command line arguments
+3. [Breaking change] Use template file and a Description Language on it in order to resolve secrets.
+4. Tool to generate manpage from Arguments
+
 # Version 0.4.9 2025-09-14
 
 Enable GCO on some architectures, fine tuning unmapped architectures as well upon MAKEFILE.

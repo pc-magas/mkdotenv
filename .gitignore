@@ -50,3 +50,4 @@ PPA_OVERRIDE
 *.swp
 
 vendor
+mkdotenv/sandbox/*

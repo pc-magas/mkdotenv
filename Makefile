@@ -103,10 +103,10 @@ ifeq ($(VENDOR),1)
 endif
 
 
-.PHONY: all,compile,install
+.PHONY: all compile install man
 
 # Default target
-all: bin
+all: bin man
 
 make_bin_folder:
 	mkdir -p bin
@@ -133,11 +133,16 @@ compile:
 	$(GO) build $(MODFLAG) -ldflags "-X github.com/pc-magas/mkdotenv/msg.version=$(VERSION)" -o $(COMPILED_BIN_PATH) . &&\
 	cd ../
 
-test_run:
+man:
+	@echo "Generating Make file"
+	cd ./tools/man_gen && \
+	$(GO) run .
+
+run:
 	cd ./mkdotenv &&\
 	$(GO) run mkdotenv.go $(ARGS)
 
-test:
+test: vendor-clean
 	cd ./mkdotenv &&\
 	mkdir -p /tmp/go-mod-cache &&\
 	GOCACHE=/tmp/go-build-cache \
@@ -152,7 +157,7 @@ install_bin:
 	mkdir -p $(DESTDIR)$(INSTALL_BIN_DIR)
 	install -m 755 ./bin/$(BIN_NAME) "$(DESTDIR)$(INSTALL_BIN_DIR)/$(PKG_NAME)"
 
-install_man:
+install_man: man/mkdotenv.1
 	mkdir -p $(DESTDIR)$(INSTALL_MAN_DIR)
 	install -m 644 man/$(PKG_NAME).1 "$(DESTDIR)$(INSTALL_MAN_DIR)/$(PKG_NAME).1"
 

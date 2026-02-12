@@ -1,15 +1,13 @@
 # Maintainer: Dimitrios Desyllas <pcmagas@disroot.org>
 pkgname='mkdotenv'
-pkgver=0.4.9
+pkgver=1.0.0
 pkgrel=1
-pkgdesc="Lightweight and efficient tool for managing your .env files."
+pkgdesc="Populate .env files from secrets."
 arch=('x86_64')
 url="https://github.com/pc-magas/mkdotenv"
 license=('GPL-3')
 depends=()
 makedepends=()
-source=("mkdotenv-0.3.0.tar.gz")
-sha256sums=('163ccb78a74532919cee18e4ad6c25670f79096c2dc88dc85f9560d61a17b7a4')
 
 prepare() {
   curl -LO https://go.dev/dl/go1.24.3.linux-amd64.tar.gz
@@ -19,7 +17,7 @@ prepare() {
 
 build() {
   export PATH="$srcdir/go/bin:$PATH"
-  make VERSION="${pkgver}"
+  make bin VERSION="${pkgver}"
 }
 
 package() {
