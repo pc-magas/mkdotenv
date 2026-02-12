@@ -1,3 +1,7 @@
+# Version 1.0.1 2026-02-12
+
+Fix PPA build.
+
 # Version 1.0.0 2026-01-05
 
 1. Introduce secret resolvers

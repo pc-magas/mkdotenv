@@ -11,7 +11,7 @@ override_dh_dwz:
 	# Disable dwz due to Go debug info incompatibility
 
 override_dh_auto_test:
-	$(MAKE) test GO=$(GO) VENDOR=1
+	$(MAKE) test-ppa GO=$(GO) VENDOR=1
 
 override_dh_auto_build:
 	$(MAKE) bin GO=$(GO) VENDOR=1
