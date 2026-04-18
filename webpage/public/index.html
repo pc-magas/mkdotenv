@@ -11,7 +11,8 @@
   <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
       new AsciiartTheme.Sidebar("#sidebar");
-      new AsciiartTheme.autoinit.codewrapper()
+      AsciiartTheme.autoinit.codewrapper()
+      AsciiartTheme.autoinit.treemenu()
     });      
   </script>
   
@@ -33,6 +34,22 @@
     <aside>
       <nav aria-label="Sidebar navigation">
         
+
+<ul class="treemenu">
+    <li><a href="#about">About</a></li>
+    <li>
+        <button>Setup</button>
+        <ul>
+            <li><a href="#setup-windows">Upon windows</a></li>
+            <li><a href="#setup-mac">Upon MacOs</a></li>
+            <li><a href="#setup-linux">Upon Linux</a></li>
+        </ul>
+    </li>
+    <li><a href="#compile">Build from source</a></li>
+    <li><a href="#quick_usage">Quick Usage</a></li>
+</ul>
+
+
       </nav>
     </aside>
 
@@ -135,8 +152,8 @@ mkdotenv --version
         </div>
         </p>
     </section>
-    <section>
-        <h2>Compile from source</h2>
+    <section id="compile">
+        <h2>Build from source</h2>
         <section>
            <h3>Step 1: Setup Go and make</h3>
            <p>
@@ -189,7 +206,7 @@ git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git
     </section>
 </article>
 <hr>
-</article>
+<article id="quick_usage">
     <h1>Quick Usage</h1>
     <section>
         <h2>Step 1: Create a template file:
