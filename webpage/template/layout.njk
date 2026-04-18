@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Default Title{% endblock %}</title>
+
+  <!-- SCSS compiled CSS -->
+  <link rel="stylesheet" href="/style.css">
+  <script type="application/javascript" src="/asciiart.min.js"></script>
+  <script type="application/javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+      new AsciiartTheme.Sidebar("#sidebar");
+    });      
+  </script>
+  {% block scripts %}{% endblock %}
+</head>
+<body class="sidebar-layout">
+  <div id="sidebar" class="aside-wrapper-fullheight">
+    <button class="button-close" data-control-element="#sidebar"></button>
+    <header class="banner">
+   <pre>
+ __  __ _    _____        _                  
+|  \/  | |  |  __ \      | |                 
+| \  / | | _| |  | | ___ | |_ ___ _ ____   __
+| |\/| | |/ / |  | |/ _ \| __/ _ \ '_ \ \ / /
+| |  | |   <| |__| | (_) | ||  __/ | | \ V / 
+|_|  |_|_|\_\_____/ \___/ \__\___|_| |_|\_/  
+    </pre>
+</header>
+    <aside>
+      <nav aria-label="Sidebar navigation">
+        {% block sidebar %}{% endblock %}
+      </nav>
+    </aside>
+
+    {% block footer %}{% endblock %}
+  </div>
+
+  <div class="main-wrapper">
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

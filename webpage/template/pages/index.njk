@@ -1,0 +1,69 @@
+{% extends '../layout.njk' %}
+
+{% block content %}
+<article id="about">
+    <h1>About</h1>
+    <p>
+        Managing .env files shouldn't be a manual chore. MkDotenv automates the population of your environment variables by resolving secrets from your preferred backends. Just define your requirements in a template, run mkdotenv, and get a ready-to-use .env file for any environment—local, staging, or production.
+    </p>
+</article>
+<section id="setup">
+    <h1>Setup</h1>
+    <article id="setup-windows">
+        <h2>Upon windows</h2>
+        <p>
+            Download the exe upon <a href="https://github.com/pc-magas/mkdotenv/releases">releases</a> page. The exe is ready to run as is cia cmd/powershell:
+            <div class="code-wrapper">
+                <div>
+                    <h5>CMD/Powershell</h5>
+                    <button class="copy">COPY</button>
+                </div>
+                <pre><code>mkdotenv-windows-amd64.exe -v</code></pre>
+            </div>
+        </p>
+    </article>
+    <article id="setup-mac">
+        <h2>Upon MacOs</h2>
+        <p>MacOs Distributions are available either in <a href="https://github.com/pc-magas/mkdotenv/releases">releases</a> page or via homebrew:
+        <div class="code-wrapper">
+            <div>
+                <h5>Bash</h5>
+                <button class="copy">COPY</button>
+            </div>
+            <pre><code>brew tap pc-magas/mkdotenv
+brew install pc-magas/mkdotenv/mkdotenv
+mkdotenv --help</code></pre>
+        </div>
+    </article>
+    <article id="setup-linux">
+        <h2>Upon Linux</h2>
+        <p id="packageSetup">
+            Base on the distribution you run upon you can use the nessesary package manager
+            <div class="code-wrapper">
+                <div>
+                    <div class="tab-button-container">
+                        <button class="btn-tab" role="tab" aria-selected="true" aria-controls="#ubuntu">Ubuntu/Mint</button>
+                        <button class="btn-tab" role="tab" aria-controls="#fedora">Fedora</button>
+                        <button class="btn-tab" role="tab" aria-controls="#amazon-linux">Amazon Linux</button>
+                        <button class="btn-tab" role="tab" aria-controls="#opensuse">OpenSuse</button>
+                        <button class="btn-tab" role="tab" aria-controls="#apine">Alpine</button>
+                    </div>
+                    <button class="copy">COPY</button>
+                </div>
+<pre id="ubuntu" class="tab-code" ><code>sudo add-apt-repository ppa:pcmagas/mkdotenv
+sudo apt-get update
+sudo apt-get install mkdotenv</code></pre>
+                <pre id="fedora" class="tab-code" ><code>sudo dnf install dnf-plugins-core
+dnf copr enable pc-magas/mkdotenv 
+sudo dnf install mkdotenv</code></pre>
+                <pre id="amazon-linux" class="tab-code" ><code>sudo dnf install -y 'dnf-command(copr)'
+sudo dnf copr enable pc-magas/mkdotenv 
+sudo dnf install -y mkdotenv</code></pre>
+            <pre id="opensuse" class="tab-code" ><code>sudo zypper install opi
+opi copr pc-magas/mkdotenv
+sudo zypper install mkdotenv</code></pre>
+            </div>
+        </p>
+    </article>
+</section>
+{% endblock %}
