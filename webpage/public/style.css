@@ -646,59 +646,63 @@ a.button {
   content: "[";
 }
 
-.treemenu {
+.treemenu, .tree {
   list-style: none;
 }
-.treemenu ul {
+.treemenu ul, .tree ul {
   list-style: none;
   padding-left: 20px;
 }
-.treemenu li {
+.treemenu li, .tree li {
   position: relative;
   padding-left: 10px;
 }
-.treemenu li::before {
+.treemenu li::before, .tree li::before {
   content: "├─";
   position: absolute;
   left: -20px;
 }
-.treemenu li:has(> ul) {
+.treemenu li:has(> ul), .tree li:has(> ul) {
   padding-left: 20px;
 }
-.treemenu li:has(> ul)::before {
+.treemenu li:has(> ul)::before, .tree li:has(> ul)::before {
   content: "└─[-]";
 }
-.treemenu li:has(> ul)[data-visible=false] ul {
+.treemenu li:has(> ul)[data-visible=false] ul, .tree li:has(> ul)[data-visible=false] ul {
   display: none;
 }
-.treemenu li:has(> ul)[data-visible=false]::before {
+.treemenu li:has(> ul)[data-visible=false]::before, .tree li:has(> ul)[data-visible=false]::before {
   content: "├─[+]";
 }
-.treemenu li:last-child::before {
+.treemenu li:last-child::before, .tree li:last-child::before {
   content: "└─";
 }
-.treemenu li:last-child:has(> ul)::before {
+.treemenu li:last-child:has(> ul)::before, .tree li:last-child:has(> ul)::before {
   content: "└─[-]";
 }
-.treemenu li:last-child:has(> ul)[data-visible=false]::before {
+.treemenu li:last-child:has(> ul)[data-visible=false]::before, .tree li:last-child:has(> ul)[data-visible=false]::before {
   content: "└─[+]";
 }
-.treemenu li a, .treemenu li button {
+.treemenu li a, .treemenu li button, .tree li a, .tree li button {
   text-decoration: none;
   font-weight: bold;
   margin: 0.1 rem;
   text-align: center;
   width: auto;
 }
-.treemenu li a::before, .treemenu li button::before {
+.treemenu li a::before, .treemenu li button::before, .tree li a::before, .tree li button::before {
   content: "";
 }
-.treemenu li a::after, .treemenu li button::after {
+.treemenu li a::after, .treemenu li button::after, .tree li a::after, .tree li button::after {
   content: "";
 }
-.treemenu li a:hover, .treemenu li button:hover {
+.treemenu li a:hover, .treemenu li button:hover, .tree li a:hover, .tree li button:hover {
   background-color: var(--color-fe);
   color: var(--color-bg);
+}
+
+.tree span {
+  padding-left: 5px;
 }
 
 .alert {
