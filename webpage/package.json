@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@pc-magas/asciiart": "^1.0.1"
+    "@pc-magas/asciiart": "^1.1.0"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.5",

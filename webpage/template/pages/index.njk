@@ -9,6 +9,7 @@
         Managing .env files shouldn't be a manual chore. MkDotenv automates the population of your environment variables by resolving secrets from your preferred backends. Just define your requirements in a template, run mkdotenv, and get a ready-to-use .env file for any environment—local, staging, or production.
     </p>
 </article>
+<hr>
 <article id="setup">
     <h1>Setup</h1>
     <section id="setup-windows">
@@ -98,11 +99,57 @@ mkdotenv --version
     <section>
         <h2>Compile from source</h2>
         <section>
-            
+           <h3>Step 1: Setup Go and make</h3>
+           <p>
+                Golang is required, for windows and macOs follow oficial <a href="https://go.dev/doc/install">instructions</a>.
+                For ubuntu and mint use <code>apt</code>.
+            <div class="code-wrapper">
+                <div>
+                    <h5>Setup Dependencies</h5>
+                    <button class="copy">COPY</button>
+                </div>
+                <pre><code>sudo apt-get install make golang-1.23*</code></pre>
+            </div>
+           </p>
+           <p>The <code>make</code> upon MacOs is available via xcode or <a href="https://formulae.brew.sh/formula/make" target="_blank">homebrew</a>.</p>
         </section>
     </section>
-</article>
+    <section>
+        <h3>Step 2: Clone repo</h3>
+        <p>
+            <div class="code-wrapper">
+                <div>
+                    <h5>Clone</h5>
+                  
+                    <button class="copy">COPY</button>
+                </div>
+                <pre><code>
+export VERSION=v{{version}}
+git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git 
+                </code></pre>
+            </div>
+        </p>
+    </section>
+    <section>
+        <h3>Step 3: Compile</h3>
+        <p>
+            <div class="code-wrapper">
+                <div>
+                    <h5 style="width:auto">Setup</h5>
+                    <div style="width:auto" class="tab-button-container">
+                        <button class="btn-tab" role="tab" aria-selected="true" aria-controls="#normal">Normal</button>
+                        <button class="btn-tab" role="tab" aria-controls="#compile_deb">Using ubuntu/mint golang-1.23 deb package</button>
+                    </div>
+                    <button style="width:auto" class="copy">COPY</button>
+                </div>
+                <pre id="normal"><code>make</code></pre>
+                <pre id="compile_deb"><code>make GO=/usr/lib/go-1.23/bin/go</code></pre>
+            </div>
+        </p>
 
+    </section>
+</article>
+<hr>
 </article>
     <h1>Quick Usage</h1>
     <section>
@@ -132,11 +179,11 @@ DB_PASSWORD=
             </p>
             <p>
                 The final structure should be:
-                <ul class="treemenu">
+                <ul class="tree">
                     <li>
-                        <span style="margin-left: 5px;">web (group)</span>
+                        <span>web (group)</span>
                         <ul>
-                            <li><span style="margin-left: 5px;">secret (entry)</span>
+                            <li><span>secret (entry)</span>
                                 <ul>
                                     <li>Password: [your_password]</li>
                                     <li>Title: secret</li>
@@ -148,7 +195,7 @@ DB_PASSWORD=
             </p>
     </section>
     <section>
-        <h2>Generate a .env file</h2>
+        <h2>Step 3: Generate a .env file</h2>
         <p>
         <div class="code-wrapper">
             <div>
