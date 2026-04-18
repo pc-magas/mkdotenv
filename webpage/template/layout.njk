@@ -11,7 +11,8 @@
   <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
       new AsciiartTheme.Sidebar("#sidebar");
-      new AsciiartTheme.autoinit.codewrapper()
+      AsciiartTheme.autoinit.codewrapper()
+      AsciiartTheme.autoinit.treemenu()
     });      
   </script>
   {% block scripts %}{% endblock %}
