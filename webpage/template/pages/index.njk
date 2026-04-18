@@ -1,0 +1,232 @@
+{% extends '../layout.njk' %}
+
+{% block title %}Mkdotenv - Powerup your .env generation{% endblock %}
+
+{% block sidebar %}
+
+<ul class="treemenu">
+    <li><a href="#about">About</a></li>
+    <li>
+        <button>Setup</button>
+        <ul>
+            <li><a href="#setup-windows">Upon windows</a></li>
+            <li><a href="#setup-mac">Upon MacOs</a></li>
+            <li><a href="#setup-linux">Upon Linux</a></li>
+        </ul>
+    </li>
+    <li><a href="#compile">Build from source</a></li>
+    <li><a href="#quick_usage">Quick Usage</a></li>
+</ul>
+
+{% endblock %}
+
+
+{% block content %}
+<article id="about">
+    <h1>About</h1>
+    <p>
+        Managing .env files shouldn't be a manual chore. MkDotenv automates the population of your environment variables by resolving secrets from your preferred backends. Just define your requirements in a template, run mkdotenv, and get a ready-to-use .env file for any environment—local, staging, or production.
+    </p>
+</article>
+<hr>
+<article id="setup">
+    <h1>Setup</h1>
+    <section id="setup-windows">
+        <h2>Upon windows</h2>
+        <p>
+            Download the exe upon <a href="https://github.com/pc-magas/mkdotenv/releases">releases</a> page. The exe is ready to run as is cia cmd/powershell:
+            <div class="code-wrapper">
+                <div>
+                    <h5>CMD/Powershell</h5>
+                    <button class="copy">COPY</button>
+                </div>
+                <pre><code>mkdotenv-windows-amd64.exe -v</code></pre>
+            </div>
+        </p>
+    </section>
+    <section id="setup-mac">
+        <h2>Upon MacOs</h2>
+        <p>MacOs Distributions are available either in <a href="https://github.com/pc-magas/mkdotenv/releases">releases</a> page or via homebrew:
+        <div class="code-wrapper">
+            <div>
+                <h5>Bash</h5>
+                <button class="copy">COPY</button>
+            </div>
+            <pre><code>
+brew tap pc-magas/mkdotenv
+brew install pc-magas/mkdotenv/mkdotenv
+mkdotenv --help</code></pre>
+        </div>
+    </section>
+    <section id="setup-linux">
+        <h2>Upon Linux</h2>
+        <p id="packageSetup">
+            Base on the distribution you run upon you can use the nessesary package manager
+            <div class="code-wrapper">
+                <div>
+                    <div class="tab-button-container" style="width:auto">
+                        <button class="btn-tab" role="tab" aria-selected="true" aria-controls="#ubuntu">Ubuntu/Mint</button>
+                        <button class="btn-tab" role="tab" aria-controls="#fedora">Fedora</button>
+                        <button class="btn-tab" role="tab" aria-controls="#amazon-linux">Amazon Linux 2023</button>
+                        <button class="btn-tab" role="tab" aria-controls="#opensuse">OpenSuse</button>
+                        <button class="btn-tab" role="tab" aria-controls="#alpine">Alpine</button>
+                        <button class="btn-tab" role="tab" aria-controls="#static-binaries">Static Binaries</button>
+                        <button class="btn-tab" role="tab" aria-controls="#static-binaries-no-root">Static Binaries (No Root)</button>
+                    </div>
+                    <h5 style="width:auto"></h5>
+                    <button class="copy" style="width:auto">COPY</button>
+                </div>
+<pre id="ubuntu" class="tab-code" ><code>
+sudo add-apt-repository ppa:pcmagas/mkdotenv
+sudo apt-get update
+sudo apt-get install mkdotenv</code></pre>
+<pre id="fedora" class="tab-code" ><code>
+sudo dnf install dnf-plugins-core
+dnf copr enable pc-magas/mkdotenv 
+sudo dnf install mkdotenv</code></pre>
+<pre id="amazon-linux" class="tab-code" ><code>
+sudo dnf install -y 'dnf-command(copr)'
+sudo dnf copr enable pc-magas/mkdotenv 
+sudo dnf install -y mkdotenv</code></pre>
+<pre id="opensuse" class="tab-code" ><code>
+sudo zypper install opi
+opi copr pc-magas/mkdotenv
+sudo zypper install mkdotenv</code></pre>
+<pre id="alpine" class="tab-code"><code>
+wget https://github.com/pc-magas/mkdotenv/releases/download/v{{version}}/mkdotenv-{{version}}-r0.apk
+apk add mkdotenv-{{version}}-r0.apk
+            </code></pre>
+<pre id="static-binaries" class="tab-code"><code>
+export VERSION=v{{version}}
+wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-linux-amd64 
+sudo cp mkdotenv-linux-amd64  /bin/mkdotenv
+sudo chmod 755 /bin/mkdotenv
+
+mkdotenv --version
+</code></pre>
+<pre id="static-binaries-no-root" class="tab-code"><code>
+export VERSION=v{{version}}
+wget -o mkdotenv https://github.com/pc-magas/mkdotenv/releases/download/${VERSION}/mkdotenv-linux-amd64 
+cp mkdotenv-linux-amd64  ~/.local/bin/mkdotenv
+chmod 755 ~/.local/bin/mkdotenv
+
+mkdotenv --version
+</code></pre>
+        </div>
+        </p>
+    </section>
+    <section id="compile">
+        <h2>Build from source</h2>
+        <section>
+           <h3>Step 1: Setup Go and make</h3>
+           <p>
+                Golang is required, for windows and macOs follow oficial <a href="https://go.dev/doc/install">instructions</a>.
+                For ubuntu and mint use <code>apt</code>.
+            <div class="code-wrapper">
+                <div>
+                    <h5>Setup Dependencies</h5>
+                    <button class="copy">COPY</button>
+                </div>
+                <pre><code>sudo apt-get install make golang-1.23*</code></pre>
+            </div>
+           </p>
+           <p>The <code>make</code> upon MacOs is available via xcode or <a href="https://formulae.brew.sh/formula/make" target="_blank">homebrew</a>.</p>
+        </section>
+    </section>
+    <section>
+        <h3>Step 2: Clone repo</h3>
+        <p>
+            <div class="code-wrapper">
+                <div>
+                    <h5>Clone</h5>
+                  
+                    <button class="copy">COPY</button>
+                </div>
+                <pre><code>
+export VERSION=v{{version}}
+git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git 
+                </code></pre>
+            </div>
+        </p>
+    </section>
+    <section>
+        <h3>Step 3: Compile</h3>
+        <p>
+            <div class="code-wrapper">
+                <div>
+                    <h5 style="width:auto">Setup</h5>
+                    <div style="width:auto" class="tab-button-container">
+                        <button class="btn-tab" role="tab" aria-selected="true" aria-controls="#normal">Normal</button>
+                        <button class="btn-tab" role="tab" aria-controls="#compile_deb">Using ubuntu/mint golang-1.23 deb package</button>
+                    </div>
+                    <button style="width:auto" class="copy">COPY</button>
+                </div>
+                <pre id="normal"><code>make</code></pre>
+                <pre id="compile_deb"><code>make GO=/usr/lib/go-1.23/bin/go</code></pre>
+            </div>
+        </p>
+
+    </section>
+</article>
+<hr>
+<article id="quick_usage">
+    <h1>Quick Usage</h1>
+    <section>
+        <h2>Step 1: Create a template file:
+        <p>
+            Create a `.env.dist` template file containing these:
+        <div class="code-wrapper">
+            <div>
+                <h5>Template file</h5>
+                <button class="copy">COPY</button>
+            </div>
+            <pre><code>
+#mkdotenv(prod):resolve("web/secret")::keepassx(file="mydb.kpbx",password="XXXXX").PASSWORD
+DB_PASSWORD=
+</code></pre>
+        </div>
+        </p>
+    </section>
+    <section>
+        <h2>Step 2: Create a Keepassx file</h2>
+            <p>
+            <ol>
+                <li>Create a Group named web.</li>
+                <li> Inside that group, create an Entry with the Title secret.</li>
+                <li>Set the Password field of that entry to your actual secret value.</li>
+            </ol>
+            </p>
+            <p>
+                The final structure should be:
+                <ul class="tree">
+                    <li>
+                        <span>web (group)</span>
+                        <ul>
+                            <li><span>secret (entry)</span>
+                                <ul>
+                                    <li>Password: [your_password]</li>
+                                    <li>Title: secret</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </p>
+    </section>
+    <section>
+        <h2>Step 3: Generate a .env file</h2>
+        <p>
+        <div class="code-wrapper">
+            <div>
+                <h5>Generate .env</h5>
+                <button class="copy">COPY</button>
+            </div>
+            <pre><code>
+mkdotenv --environment prod
+</code></pre>
+        </div>
+        </p>
+        <p>The command above would populate the `DB_PASSWORD` value from the password stored upon keepassx db into a new file named `.env`.</p>
+    </section>
+</article>
+{% endblock %}

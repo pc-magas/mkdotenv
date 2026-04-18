@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@pc-magas/asciiart": "^1.1.0"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.5",
+    "handlebars": "^4.7.9",
+    "nunjucks": "^3.2.4"
+  }
+}
