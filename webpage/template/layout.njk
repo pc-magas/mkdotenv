@@ -11,6 +11,7 @@
   <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
       new AsciiartTheme.Sidebar("#sidebar");
+      new AsciiartTheme.autoinit.codewrapper()
     });      
   </script>
   {% block scripts %}{% endblock %}
@@ -24,9 +25,10 @@
 |  \/  | |  |  __ \      | |                 
 | \  / | | _| |  | | ___ | |_ ___ _ ____   __
 | |\/| | |/ / |  | |/ _ \| __/ _ \ '_ \ \ / /
-| |  | |   <| |__| | (_) | ||  __/ | | \ V / 
+| |  | |   &lt;| |__| | (_) | ||  __/ | | \ V / 
 |_|  |_|_|\_\_____/ \___/ \__\___|_| |_|\_/  
     </pre>
+    <h1>VERSION {{ version }}</h1>
 </header>
     <aside>
       <nav aria-label="Sidebar navigation">
