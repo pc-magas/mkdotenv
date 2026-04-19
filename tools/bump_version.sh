@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+SOURCEPATH=${SCRIPTPATH}/../ 
+
 test -n "$BASH_VERSION" || exec /bin/bash $0 "$@"
 if ! command -v dialog &> /dev/null; then
     echo "Error: 'dialog' is not installed. Install it with: sudo apt install dialog"
@@ -36,8 +39,7 @@ if [[ $response -ne 0 ]]; then
     exit 0
 fi
 
-SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-SOURCEPATH=${SCRIPTPATH}/../ 
+
 
 cd ${SOURCEPATH}
 
@@ -115,3 +117,7 @@ echo "GENERATING MANPAGES"
 
 cd ${SOURCEPATH}
 make man
+
+echo "GENERATING WEBPAGE"
+cd ${SOURCEPATH}
+bash ./webpage/build.sh
