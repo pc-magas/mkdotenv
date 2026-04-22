@@ -16,6 +16,6 @@ func main() {
 
 	man_file := path.Join(filepath.Dir(filename),"..","..","man","mkdotenv.1")
 	version_file := path.Join(filepath.Dir(filename),"..","..","VERSION")
-
+	html_file := path.Join(filepath.Dir(filename),"..","..","webpage","template","content","manpage.njk")
 	man.MakeManpage(man_file,version_file)
 }

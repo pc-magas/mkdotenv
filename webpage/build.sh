@@ -2,6 +2,10 @@
 
 SCRIPTPATH="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
+cd ${SCRIPTPATH}/..
+
+make man
+
 cd $SCRIPTPATH
 
 npm ci
