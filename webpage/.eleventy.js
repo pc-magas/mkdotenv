@@ -8,7 +8,7 @@ module.exports = function (eleventyConfig) {
     dir: {
       input: "template/pages",
       includes: "_includes",
-      output: "../docs"
+      output: "page"
     },
     templateFormats: ["njk", "html", "md"],
     markdownTemplateEngine: "njk",
