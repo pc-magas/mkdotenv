@@ -9,7 +9,7 @@ make man
 cd $SCRIPTPATH
 
 npm ci
-cp ./node_modules/@pc-magas/asciiart/dist/js/asciiart.min.js ./page
-cp ./node_modules/@pc-magas/asciiart/dist/css/style.css ./page
+cp ./node_modules/@pc_magas/asciiart/dist/js/asciiart.min.js ./page
+cp ./node_modules/@pc_magas/asciiart/dist/css/style.css ./page
 
 npx @11ty/eleventy

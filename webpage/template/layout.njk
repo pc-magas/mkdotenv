@@ -18,8 +18,11 @@
   {% block scripts %}{% endblock %}
 </head>
 <body class="sidebar-layout">
-  <div id="sidebar" class="aside-wrapper-fullheight">
-    <button class="button-close" data-control-element="#sidebar"></button>
+  <div class="sidebar-btn">
+    <button class="button-expand button-toggle" aria-controls="#sidebar" aria-expanded="true"></button>
+  </div>
+  <div id="sidebar" class="aside-wrapper">
+    <button class="button-close" aria-controls="#sidebar"></button>
     <header class="banner">
    <pre>
  __  __ _    _____        _                  
