@@ -64,7 +64,7 @@ mkdotenv --help</code></pre>
             Base on the distribution you run upon you can use the nessesary package manager
             <div class="code-wrapper">
                 <div>
-                    <div class="tab-button-container" style="width:auto">
+                    <div class="tab-button-container" >
                         <button class="btn-tab" role="tab" aria-selected="true" aria-controls="#ubuntu">Ubuntu/Mint</button>
                         <button class="btn-tab" role="tab" aria-controls="#fedora">Fedora</button>
                         <button class="btn-tab" role="tab" aria-controls="#amazon-linux">Amazon Linux 2023</button>
@@ -73,8 +73,8 @@ mkdotenv --help</code></pre>
                         <button class="btn-tab" role="tab" aria-controls="#static-binaries">Static Binaries</button>
                         <button class="btn-tab" role="tab" aria-controls="#static-binaries-no-root">Static Binaries (No Root)</button>
                     </div>
-                    <h5 style="width:auto"></h5>
-                    <button class="copy" style="width:auto">COPY</button>
+                    <h5 ></h5>
+                    <button class="copy" >COPY</button>
                 </div>
 <pre id="ubuntu" class="tab-code" ><code>
 sudo add-apt-repository ppa:pcmagas/mkdotenv
@@ -154,12 +154,11 @@ git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git
         <p>
             <div class="code-wrapper">
                 <div>
-                    <h5 style="width:auto">Setup</h5>
-                    <div style="width:auto" class="tab-button-container">
+                    <div  class="tab-button-container">
                         <button class="btn-tab" role="tab" aria-selected="true" aria-controls="#normal">Normal</button>
                         <button class="btn-tab" role="tab" aria-controls="#compile_deb">Using ubuntu/mint golang-1.23 deb package</button>
                     </div>
-                    <button style="width:auto" class="copy">COPY</button>
+                    <button  class="copy">COPY</button>
                 </div>
                 <pre id="normal"><code>make</code></pre>
                 <pre id="compile_deb"><code>make GO=/usr/lib/go-1.23/bin/go</code></pre>
