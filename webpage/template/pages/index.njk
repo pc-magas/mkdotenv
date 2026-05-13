@@ -62,6 +62,7 @@ mkdotenv --help</code></pre>
         <h2>Upon Linux</h2>
         <p id="packageSetup">
             Base on the distribution you run upon you can use the nessesary package manager
+        </p>
             <div class="code-wrapper">
                 <div>
                     <div class="tab-button-container" >
@@ -112,7 +113,6 @@ chmod 755 ~/.local/bin/mkdotenv
 mkdotenv --version
 </code></pre>
         </div>
-        </p>
     </section>
     <section id="compile">
         <h2>Build from source</h2>
@@ -121,6 +121,7 @@ mkdotenv --version
            <p>
                 Golang is required, for windows and macOs follow oficial <a href="https://go.dev/doc/install">instructions</a>.
                 For ubuntu and mint use <code>apt</code>.
+            </p>    
             <div class="code-wrapper">
                 <div>
                     <h5>Setup Dependencies</h5>
@@ -128,13 +129,11 @@ mkdotenv --version
                 </div>
                 <pre><code>sudo apt-get install make golang-1.23*</code></pre>
             </div>
-           </p>
            <p>The <code>make</code> upon MacOs is available via xcode or <a href="https://formulae.brew.sh/formula/make" target="_blank">homebrew</a>.</p>
         </section>
     </section>
     <section>
         <h3>Step 2: Clone repo</h3>
-        <p>
             <div class="code-wrapper">
                 <div>
                     <h5>Clone</h5>
@@ -146,11 +145,9 @@ export VERSION=v{{version}}
 git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git 
                 </code></pre>
             </div>
-        </p>
     </section>
     <section>
         <h3>Step 3: Compile</h3>
-        <p>
             <div class="code-wrapper">
                 <div>
                     <div  class="tab-button-container">
@@ -162,8 +159,6 @@ git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git
                 <pre id="normal"><code>make</code></pre>
                 <pre id="compile_deb"><code>make GO=/usr/lib/go-1.23/bin/go</code></pre>
             </div>
-        </p>
-
     </section>
 </article>
 <hr>
@@ -173,6 +168,7 @@ git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git
         <h2>Step 1: Create a template file:
         <p>
             Create a `.env.dist` template file containing these:
+            </p>
         <div class="code-wrapper">
             <div>
                 <h5>Template file</h5>
@@ -183,7 +179,6 @@ git clone --depth 1 --branch ${VERSION} https://github.com/pc-magas/mkdotenv.git
 DB_PASSWORD=
 </code></pre>
         </div>
-        </p>
     </section>
     <section>
         <h2>Step 2: Create a Keepassx file</h2>
