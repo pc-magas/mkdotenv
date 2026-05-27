@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"path"
 	"man_gen/man"
+	"man_gen/html"
 )
 
 func main() {
@@ -14,8 +15,11 @@ func main() {
 		panic("cannot get caller info")
 	}
 
-	man_file := path.Join(filepath.Dir(filename),"..","..","man","mkdotenv.1")
 	version_file := path.Join(filepath.Dir(filename),"..","..","VERSION")
-	html_file := path.Join(filepath.Dir(filename),"..","..","webpage","template","content","manpage.njk")
+	
+	man_file := path.Join(filepath.Dir(filename),"..","..","man","mkdotenv.1")
 	man.MakeManpage(man_file,version_file)
+	
+	html_file := path.Join(filepath.Dir(filename),"..","..","webpage","template","content","manpage_main.njk")
+	html.MakeHtml(html_file)
 }

@@ -1,0 +1,9 @@
+<article class="manpage"><h1>mkdotenv</h1><section><h2>NAME</h2><p>mkdotenv - A command-line tool that populates secrets upon a .env file from a template.
+<p></section><section><h2>DESCRIPTION</h2><p>
+The <strong>mkdotenv</strong> command allows users to populate environmental variables from a template file by placing appropriate markup upon the file.</p></section><section><h1>SYNOPSIS</h1><pre class="synopsis">
+mkdotenv
+[<var>--help</var> | <var>-h</var>][<var>--version</var> | <var>-v</var>]
+[<var>--environment</var> | <var>-e</var> | <var>--env&lt;ENVIRONMENT&gt;</var>]
+[<var>--template-file</var> | <var>-t</var> | <var>--template&lt;TEMPLATE-FILE&gt;</var>][<var>--output-file</var> | <var>-o&lt;OUTPUT-FILE&gt;</var>]
+[<var>--argument</var> | <var>-a</var> | <var>--arg&lt;ARGUMENT&gt;</var>]
+</pre></section><section><h2>Optional ARGUMENTS</h2><dt><code>--help</code>,<code>-h</code></dt><dd>Display help message and exit</dd><dt><code>--version</code>,<code>-v</code></dt><dd>Display version and exit</dd><dt><code>--environment</code>,<code>-e</code> ,<code>--env</code></dt><dd>Environment in which secrets would be resolved</dd><dt><code>--template-file</code>,<code>-t</code> ,<code>--template</code></dt><dd>Template .env file containing commands on how .env file would be generated. If no vanue provided .env.dist assumed.</dd><dt><code>--output-file</code>,<code>-o</code></dt><dd>File to write output to</dd><dt><code>--argument</code>,<code>-a</code> ,<code>--arg</code></dt><dd>Argument provided as $_ARG upon template file.</dd></section><section><h1>AUTHOR</h1><p>Written by Desyllas Dimitrios</p></section><section><h1>BUGS</h1><p>Report issues at <a href="https://github.com/pc-magas/mkdotenv/issues">https://github.com/pc-magas/mkdotenv/issues</a></p></section></article>
