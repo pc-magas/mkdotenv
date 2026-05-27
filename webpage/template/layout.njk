@@ -18,10 +18,8 @@
   {% block scripts %}{% endblock %}
 </head>
 <body class="sidebar-layout">
-  <div class="sidebar-btn">
-    <button class="button-expand button-toggle" aria-controls="#sidebar" aria-expanded="true"></button>
-  </div>
-  <div id="sidebar" class="aside-wrapper">
+ 
+  <div id="sidebar" class="aside-wrapper-fullheight bellow-nav">
     <button class="button-close" aria-controls="#sidebar"></button>
     <header class="banner">
    <pre>
@@ -44,6 +42,18 @@
   </div>
 
   <div class="main-wrapper">
+     <div class="nav-wrapper sticky-top">
+        <div class="lead">
+          <button
+            class="button-expand button-toggle" 
+            aria-controls="#sidebar"
+          ></button>
+        </div>
+        <nav class="main-nav">
+          <a href="/">Index</a>
+          <a href="/man/mainpage_main">Command Line Argument</a>
+        </nav>
+    </div>
     <main>
         {% block content %}{% endblock %}
     </main>

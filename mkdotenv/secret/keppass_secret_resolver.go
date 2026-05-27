@@ -14,6 +14,8 @@ type KepassXResolver struct {
 	Password string
 }
 
+
+
 func NewKeepassXResolver(file types.ContextPath, password string) (*KepassXResolver, error) {
 
 	dbfile := file.Value()
