@@ -43,7 +43,7 @@ func GenerateSynopsisPart(meta parser.FlagMeta ) string {
 	}
 
 	if(meta.Type != parser.NoValType ){
-		synopsis_part+="&lt;"+strings.ToUpper(meta.Name)+"&gt;"
+		synopsis_part+=" &lt;"+strings.ToUpper(meta.Name)+"&gt;"
 	}
 
 	synopsis_part+="</var>";
