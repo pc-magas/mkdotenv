@@ -1,3 +1,31 @@
+/**
+ * @command keepassx
+ * @short-description Resolve secrets from kepassx database file and place them upon .env
+ * 
+ * @description
+ *
+ * Keepassx resolver is used to read a keepassx datapase provided from @param{name} locked with @param{password}.
+ * Then it is traversed upon the entry provided from resolve(), afterwards the appropriate field provided from @field{USERNAME}
+ * 
+ * @resolves parent/child/entry 
+ * 
+ * KeePassX databases are structured as a tree:
+ *
+ * - parent
+ *   - child
+ *     - entry
+ *
+ * Each node in the hierarchy is represented as a string segment in the path.
+ *
+ * @param name REQUIRED <mydb.kpbx> Keepassx database file name
+ * @param password REQUIRED <***>  keepassx password
+ *
+ * @field USERNAME Fetch the username of an entry
+ * @field PASSWORD Fetch the password of the entry
+ * @field URL Fetch the url  of the entry
+ * @field NOTES Fetch the notes of the entry
+ */
+
 package secret
 
 import (
@@ -15,8 +43,12 @@ type KepassXResolver struct {
 }
 
 
-
-func NewKeepassXResolver(file types.ContextPath, password string) (*KepassXResolver, error) {
+//@resolver{name} keepassx
+//@resolver{description} Keepassx secret resolver
+func NewKeepassXResolver(
+		file types.ContextPath, //@resolver{arg} 
+		password string //@resolver{arg}
+	) (*KepassXResolver, error) {
 
 	dbfile := file.Value()
 

@@ -12,7 +12,7 @@ The general syntax for resolving a KeePassX secret is:
 #mkdotenv()::resolve(^key^)::keepassx(file=^path_to_kpbx.file^,password=^password^).PASSWORD
 #mkdotenv()::resolve(^key^)::keepassx(file=^path_to_kpbx.file^,password=^password^).USERNAME
 #mkdotenv()::resolve(^key^)::keepassx(file=^path_to_kpbx.file^,password=^password^).URL
-#mkdotenv()::resolve(^key^)::keepassx(file=^path_to_kpbx.file^,password=^password^).URL
+#mkdotenv()::resolve(^key^)::keepassx(file=^path_to_kpbx.file^,password=^password^).NOTE
 
 ```
 
