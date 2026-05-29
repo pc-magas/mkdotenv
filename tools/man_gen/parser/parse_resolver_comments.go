@@ -3,6 +3,7 @@ package parser
 import (
 	"fmt"
 	"strings"
+	"io"
 )
 
 // CommandSpec represents a parsed @command block.
@@ -17,7 +18,7 @@ type CommandSpec struct {
 	Description string
 
 	// Resolution path from @resolves (e.g. parent/child/entry)
-	ResolvesPath string
+	ValueToResolve Resolve
 
 	// Input parameters (@param)
 	Params map[string]Param
@@ -40,45 +41,111 @@ type Field struct {
 	Description string
 }
 
-func generateBaseCommand(spec CommandSpec) string {
-	var b strings.Builder
-
-	fmt.Fprintf(
-		&b,
-		"mkdotenv()::resolve(%s)::%s(",
-		spec.ResolvesPath,
-		spec.Command,
-	)
-
-	// append params
-	for i, param := range spec.Params {
-		if i > 0 {
-			b.WriteString(",")
-		}
-		b.WriteString(param.Name)
-		b.WriteString("=")
-		b.WriteString(param.DummyVal)
-	}
-
-	b.WriteString(")")
-
-	return b.String()
+type Resolve struct {
+	Value string
+	FormatDescription string
 }
 
-func GenerateUsage(spec CommandSpec) []string {
 
-	baseCommand := generateBaseCommand(spec)
 
-	if len(spec.Fields) == 0 {
-		return []string{baseCommand}
+func parseParam(parts []string) Param {
+	p := Param{}
+
+	if len(parts) > 0 {
+		p.Name = parts[0]
 	}
 
-	var results []string
-
-	for _, field := range spec.Fields {
-		baseCommand := fmt.Sprintf("%s.%s", base, field.Name)
-		results = append(results, line)
+	if len(parts) > 1 {
+		p.Required = parts[1] == "REQUIRED"
 	}
 
-	return results
+	// extract <default>
+	for i, v := range parts {
+		if strings.HasPrefix(v, "<") && strings.HasSuffix(v, ">") {
+			p.Default = strings.Trim(v, "<>")
+			p.Desc = strings.Join(parts[i+1:], " ")
+			break
+		}
+	}
+
+	return p
+}
+
+func parseField(parts []string) Field {
+	f := Field{}
+
+	if len(parts) > 0 {
+		f.Name = parts[0]
+	}
+	if len(parts) > 1 {
+		f.Description = strings.Join(parts[1:], " ")
+	}
+
+	return f
+}
+
+func ParseComment(r io.Reader) CommandSpec{
+
+	scanner := bufio.NewScanner(r)
+	var spec CommandSpec
+
+	var current string
+
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		line = strings.TrimSpace(line)
+		line = strings.TrimPrefix(line, "*")
+		line = strings.TrimSpace(line)
+
+
+		if strings.HasPrefix(line, "@") {
+			
+			if current == "description" {
+				spec.Description += line
+				continue
+			}
+
+			if current == "resolves" {
+				spec.ValueToResolve.FormatDescription +=line
+				continue
+			}
+
+			line = strings.TrimPrefix(line, "@")
+
+			parts := strings.Fields(line)
+			if len(parts) == 0 {
+				continue
+			}
+
+			key := parts[0]
+			rest := parts[1:]
+
+			current = key
+			switch key {
+				case "command":
+					if len(rest) > 0 {
+						spec.Command = rest[0]
+					}
+				case "short-description":
+					spec.ShortDescription = strings.Join(rest, " ")
+				case "description":
+					continue			
+				case "resolves":
+					spec.Resolves.Value = rest[0]
+					continue
+				case "param":
+					// param name REQUIRED <mydb.kpbx> Keepassx database file name
+					p := parseParam(rest)
+					spec.Params = append(spec.Params, p)
+
+				case "field":
+					// field USERNAME Fetch the username...
+					f := parseField(rest)
+					spec.Fields = append(spec.Fields, f)
+			}
+		}
+	}
+	
+	return spec
 }
