@@ -6,28 +6,15 @@ import (
 	"io"
 )
 
-// CommandSpec represents a parsed @command block.
 type CommandSpec struct {
-	// Command name, e.g. "keepassx"
 	Command string
-
-	// Short description from @short-description
 	ShortDescription string
-
-	// Full description block from @description
 	Description string
-
-	// Resolution path from @resolves (e.g. parent/child/entry)
 	ValueToResolve Resolve
-
-	// Input parameters (@param)
 	Params map[string]Param
-
-	// Available entry fields (@field)
 	Fields map[string]Field
 }
 
-// Param represents a @param definition.
 type Param struct {
 	Name        string
 	Description string
@@ -35,7 +22,6 @@ type Param struct {
 	Required    bool
 }
 
-// Field represents a @field definition.
 type Field struct {
 	Name        string
 	Description string
@@ -45,7 +31,6 @@ type Resolve struct {
 	Value string
 	FormatDescription string
 }
-
 
 
 func parseParam(parts []string) Param {
@@ -84,7 +69,7 @@ func parseField(parts []string) Field {
 	return f
 }
 
-func ParseComment(r io.Reader) CommandSpec{
+func ParseComment(r io.Reader) CommandSpec {
 
 	scanner := bufio.NewScanner(r)
 	var spec CommandSpec
