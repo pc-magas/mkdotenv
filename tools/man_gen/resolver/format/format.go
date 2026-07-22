@@ -2,7 +2,7 @@ package format
 
 import(
 	"fmt"
-	"man_gen/parser"
+	"man_gen/resolver/parser"
 )
 
 func generateBaseCommand(spec parser.CommandSpec, prefix string, suffix string) string {
