@@ -6,7 +6,7 @@ import (
 	"path"
 	"man_gen/man"
 	"man_gen/html"
-	"man_gen/parser/scan"
+	"man_gen/resolver"
 	"fmt"
 )
 
@@ -28,13 +28,6 @@ func main() {
 	html_file := path.Join(html_path,"manpage_main.njk")
 	html.MakeHtml(html_file)
 
-	// dest_parser_folder := path.Join(html_path,"resolvers")
-	
 	parser_folder := path.Join(filepath.Dir(filename),"..","..","mkdotenv","secret")
-	fmt.Println(parser_folder)
-	files,_:=scan.ScanDirectory(parser_folder)
-
-	for _, file := range files {
-    	fmt.Println(file)
-	}
+	resolver.GenerateDocsForSecretResolvers(parser_folder)
 }

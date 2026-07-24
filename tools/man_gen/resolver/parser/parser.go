@@ -1,9 +1,9 @@
 package parser
 
 import (
-	"fmt"
 	"strings"
 	"io"
+	"bufio"
 )
 
 type CommandSpec struct {
@@ -47,8 +47,8 @@ func parseParam(parts []string) Param {
 	// extract <default>
 	for i, v := range parts {
 		if strings.HasPrefix(v, "<") && strings.HasSuffix(v, ">") {
-			p.Default = strings.Trim(v, "<>")
-			p.Desc = strings.Join(parts[i+1:], " ")
+			p.DummyVal = strings.Trim(v, "<>")
+			p.Description = strings.Join(parts[i+1:], " ")
 			break
 		}
 	}
@@ -117,7 +117,7 @@ func ParseComment(r io.Reader) CommandSpec {
 				case "description":
 					continue			
 				case "resolves":
-					spec.Resolves.Value = rest[0]
+					spec.ValueToResolve.Value = rest[0]
 					continue
 				case "param":
 					// param name REQUIRED <mydb.kpbx> Keepassx database file name
